@@ -5,17 +5,49 @@ import StringsCanvas from '../components/StringsCanvas.astro';
 import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 ---
 
-<Layout
-  title="Baken — An AI companion that stays yours."
-  description="In the shifting channels of the Wadden Sea, a baken was the fixed mark sailors took their bearings from. Baken is an AI companion that lives on your computer, goes with you on your phone, and keeps your memory in your own hands."
->
-  <!-- HERO: NO PILL, NO AI CLICHÉS — JUST THE THESIS + INTERACTIVE TRANSIT ALIGNMENT -->
+<Layout>
+  <!-- 1. HERO: WHAT IT DOES + CAST OF MASCOTS + FULL PRODUCT WINDOW -->
   <section class="hero">
     <div class="container hero-center">
-      <h1>An AI companion<br />that stays yours.</h1>
+      <!-- Mascot Cast Row (Grok Bot / Muse visual warmth up top) -->
+      <div class="mascot-lineup" aria-hidden="true">
+        <div class="mascot-wrap m-chip" title="Meridian">
+          <svg width="46" height="46" viewBox="-185 -185 370 370">
+            <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
+            <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(-8)" />
+            <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+          </svg>
+        </div>
+        <div class="mascot-wrap m-chip" style="animation-delay:-1.1s" title="Builder">
+          <svg width="44" height="44" viewBox="-185 -185 370 370">
+            <path d={MASCOT_BODIES.triangle} fill="#FF6A1A" />
+            <rect x="-56" y="-42" width="112" height="112" rx="26" fill="#F7F7F7" />
+            <g class="m-gaze" transform="translate(0,14)"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+          </svg>
+        </div>
+        <div class="baken-hero-badge">
+          <BakenMark uid="hero-mark" size={42} state="idle" />
+        </div>
+        <div class="mascot-wrap m-chip" style="animation-delay:-2.2s" title="Planner">
+          <svg width="44" height="44" viewBox="-185 -185 370 370">
+            <path d={MASCOT_BODIES.squircle} fill="#1DA34A" />
+            <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(5)" />
+            <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+          </svg>
+        </div>
+        <div class="mascot-wrap m-chip" style="animation-delay:-3.1s" title="Archivist">
+          <svg width="44" height="44" viewBox="-185 -185 370 370">
+            <path d={MASCOT_BODIES.circle} fill="#E5484D" />
+            <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(-5)" />
+            <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+          </svg>
+        </div>
+      </div>
+
+      <h1>AI agents you can give<br />real work to.</h1>
 
       <p class="hero-lead">
-        Most AI apps rent you a forgetful stranger on a company server — one policy change, price hike, or shutdown away from vanishing. Baken lives on your own computer and travels with you on your phone, so the memory you build together over years can never be taken away.
+        Baken gives you a team of agents that live on your own computer, remember everything you teach them, and come with you on your phone. Hand them a task, close the lid, and come back to finished work.
       </p>
 
       <div class="hero-cta-row">
@@ -25,86 +57,32 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
           </svg>
           Download for Android, Windows &amp; Linux
         </a>
-      </div>
-
-      <div class="trust-row" aria-label="What stays in your control">
-        <span>No account to get locked out of</span>
-        <span>Can't be nerfed or shut down</span>
-        <span>Memory stays on your machine</span>
+        <a class="btn btn-outline" href="#capabilities">
+          See what they do
+        </a>
       </div>
     </div>
 
-    <!-- SIGNATURE INTERACTIVE ARTIFACT: THE TRANSIT LINE (KENNING / MERK) + PRODUCT SHOWCASE -->
+    <!-- HERO PRODUCT SHOWCASE: FULL DESKTOP + PHONE CONTINUITY -->
     <div class="container">
-      <div class="chart-stage dark-surface" id="bearing">
-        <!-- Interactive Wadden Sea Transit Sightline Header -->
-        <div class="transit-instrument" id="transitInstrument">
-          <div class="transit-meta">
-            <span class="transit-coord" id="transitCoord">53°22′N · 05°13′E &nbsp;—&nbsp; WADDEN SEA TRANSIT</span>
-            <span class="transit-readout" id="transitReadout">Bearing aligned · 0.0° drift · channel locked</span>
-          </div>
-
-          <svg class="transit-svg" id="transitSvg" viewBox="0 0 1080 148" aria-label="Interactive seamark alignment">
-            <defs>
-              <radialGradient id="transitGlow" cx="50%" cy="52%" r="48%">
-                <stop offset="0%" stop-color="#EE5A3F" stop-opacity="0.46" />
-                <stop offset="60%" stop-color="#EE5A3F" stop-opacity="0.1" />
-                <stop offset="100%" stop-color="#EE5A3F" stop-opacity="0" />
-              </radialGradient>
-            </defs>
-
-            <!-- Bathymetric depth contour arcs (shifting sandbanks) -->
-            <path class="contour c1" d="M -40 124 C 240 68, 460 144, 760 88 C 920 58, 1020 96, 1120 74" />
-            <path class="contour c2" d="M -40 96 C 210 42, 510 122, 810 62 C 950 36, 1040 72, 1120 48" />
-            <path class="contour c3" d="M -40 64 C 260 18, 540 92, 840 36 C 960 14, 1050 44, 1120 26" />
-
-            <!-- Compass degree ticks along the horizon -->
-            <g class="compass-ticks" stroke="rgba(220,230,238,0.16)" stroke-width="1">
-              <line x1="140" y1="0" x2="140" y2="10" /><line x1="220" y1="0" x2="220" y2="6" />
-              <line x1="300" y1="0" x2="300" y2="10" /><line x1="380" y1="0" x2="380" y2="6" />
-              <line x1="460" y1="0" x2="460" y2="10" /><line x1="540" y1="0" x2="540" y2="16" stroke="rgba(238,90,63,0.7)" />
-              <line x1="620" y1="0" x2="620" y2="10" /><line x1="700" y1="0" x2="700" y2="6" />
-              <line x1="780" y1="0" x2="780" y2="10" /><line x1="860" y1="0" x2="860" y2="6" />
-              <line x1="940" y1="0" x2="940" y2="10" />
-            </g>
-
-            <!-- Sightline ray (kenning) passing between the two stones -->
-            <line id="sightRay" x1="540" y1="0" x2="540" y2="148" stroke="rgba(238,90,63,0.55)" stroke-width="1.5" stroke-dasharray="4 4" />
-            <circle id="sightGlow" cx="540" cy="84" r="68" fill="url(#transitGlow)" />
-
-            <!-- Rear Mark (Tall Basalt Stone — Your Computer / Fixed Memory) -->
-            <g id="rearStone" transform="translate(468, 2) scale(0.72)">
-              <path d={BAKEN_ANCHOR} fill="#DCE6EE" />
-            </g>
-
-            <!-- Front Mark (Vermilion Stone — Your Phone / Moving With You) -->
-            <g id="frontStone" transform="translate(468, 2) scale(0.72)">
-              <path d={BAKEN_PEBBLE} fill="#EE5A3F" />
-            </g>
-
-            <!-- Left & right nautical chart annotations -->
-            <text x="28" y="84" fill="#7D93A5" font-size="11.5" font-family="ui-monospace, monospace">REAR MARK · YOUR COMPUTER (MEMORY &amp; WORK)</text>
-            <text x="738" y="84" fill="#EE5A3F" font-size="11.5" font-family="ui-monospace, monospace">FRONT MARK · YOUR PHONE (ALWAYS IN LINE)</text>
-          </svg>
-        </div>
-
-        <!-- LIVE PRODUCT WINDOW -->
-        <div class="app-window scene active" data-scene="desktop">
+      <div class="showcase-stage dark-surface">
+        <div class="app-window">
           <div class="win-titlebar">
             <div class="win-left">
               <BakenMark uid="win-top" size={18} state="idle" tight />
               <span class="win-tab active-tab">Meridian</span>
-              <span class="win-tab">Research</span>
+              <span class="win-tab">Builder</span>
+              <span class="win-tab">Planner</span>
               <span class="win-tab">+</span>
             </div>
-            <div class="win-search">Search conversations and memory…</div>
+            <div class="win-search">Search agents, tasks, and memory…</div>
             <div class="win-dots" aria-hidden="true">
               <span></span><span></span><span></span>
             </div>
           </div>
 
           <div class="win-body">
-            <aside class="win-rail" aria-label="Companions">
+            <aside class="win-rail" aria-label="Agent rail">
               <div class="rail-icon rail-selected" title="Meridian">
                 <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
                   <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
@@ -147,7 +125,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
                   </svg>
                 </div>
                 <strong>Meridian</strong>
-                <span class="agent-sub">Lives on your computer</span>
+                <span class="agent-sub">Running on your computer</span>
               </div>
 
               <div class="side-nav">
@@ -157,8 +135,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
               </div>
 
               <div class="side-threads">
-                <span class="side-label">Threads</span>
-                <div class="thread active-thread">Store launch &amp; domain</div>
+                <span class="side-label">Active work</span>
+                <div class="thread active-thread">Store domain &amp; launch</div>
                 <div class="thread">Living room TV setup</div>
                 <div class="thread">Monthly budget check</div>
               </div>
@@ -167,84 +145,139 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <div class="win-chat">
               <div class="chat-feed">
                 <div class="msg-user">
-                  Pick up where we left off on the store — did we finish separating the support email from my personal inbox?
+                  Wire the new store domain to Shopify, move support@ off my personal email, and verify nothing leaks on the live pages.
                 </div>
 
                 <div class="tool-fold">
                   <span class="fold-dot"></span>
-                  Checked memory &amp; storefront policies · 1.2s
+                  Worked · configured DNS, email routing &amp; verified 4 pages · 18s
                 </div>
 
                 <div class="msg-agent">
-                  <p>Yes — we finished that on Thursday and I saved it in your project notes:</p>
+                  <p>Done and verified live across the homepage, contact page, privacy policy, and terms:</p>
                   <ul>
-                    <li>Your personal address is off the storefront and policies completely.</li>
-                    <li><strong>support@</strong> is live on the new domain. Only thing left on your list was ordering a physical print sample before running ads.</li>
+                    <li><strong>redactedattire.com</strong> is primary with SSL active.</li>
+                    <li><strong>support@redactedattire.com</strong> is live and verified; your personal address appears <strong>0</strong> times on the site.</li>
                   </ul>
                 </div>
               </div>
 
               <div class="win-composer">
-                <span>Keep talking — even while background work is running…</span>
+                <span>Ask for the next thing — composer stays open while tasks run…</span>
                 <div class="comp-right">
-                  <span>On this computer</span>
+                  <span>Synced to phone</span>
                   <span class="comp-mic">●</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- SCENE 02: IN YOUR POCKET -->
-        <div class="app-window scene" data-scene="pair">
-          <div class="pair-stage">
-            <div class="pair-panel">
-              <h3>Walk away from your desk. Keep the thread going.</h3>
-              <p>Hand off a long job on your computer, close the lid, and check in from your phone. Your phone talks straight to your computer — nothing sits on a company's cloud in between.</p>
-              <div class="pair-state-row">
-                <BakenMark uid="sc-pair" size={44} state="connecting" />
-                <div>
-                  <strong>Paired with one scan</strong>
-                  <span>Your phone and your computer, talking directly</span>
-                </div>
+  <!-- 2. BENTO CAPABILITY GRID (x.ai/bot style: each card is a concrete behavior + live mini-UI artifact) -->
+  <section class="band" id="capabilities">
+    <div class="container">
+      <div class="band-head">
+        <h2>Everything you want in a companion.<br />And a teammate.</h2>
+        <p>Every card below is a real surface in Baken — built to take work off your plate and remember how you like things done.</p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Card 1: Remembers what you teach it -->
+        <article class="bento-card">
+          <div class="bento-copy">
+            <h3>Gets smarter every week you use it.</h3>
+            <p>Tell your agent a preference or a rule once. It writes it to its own memory on your machine and follows it from then on — no repeating yourself every session.</p>
+          </div>
+          <div class="bento-ui dark-surface">
+            <div class="ui-msg-u">Never put my personal Gmail on any public store page.</div>
+            <div class="ui-memory-toast">
+              <div class="mem-head">
+                <span class="mem-dot"></span>
+                <strong>Saved to memory</strong>
+                <span class="mem-file">projects/store-opsec.md</span>
+              </div>
+              <p>Keep personal email off all public storefronts and policies; always use the domain support@ address.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2: Every agent has its own computer (yours) -->
+        <article class="bento-card">
+          <div class="bento-copy">
+            <h3>Works directly on your computer.</h3>
+            <p>Your agents use your real files, terminal, browser, and local apps. You stay in control — auto-approve routine steps or have it ask before touching anything sensitive.</p>
+          </div>
+          <div class="bento-ui dark-surface">
+            <div class="ui-term-head">
+              <span>Computer · You're in control</span>
+              <span class="ui-badge-live">● Working</span>
+            </div>
+            <div class="ui-diff">
+              <div class="diff-file">wrangler.jsonc</div>
+              <div class="diff-del">- "pattern": "staging.baken.ca"</div>
+              <div class="diff-add">+ "pattern": "baken.ca", "custom_domain": true</div>
+            </div>
+            <div class="ui-approve-bar">
+              <span>Deployed to baken.ca · HTTP 200 verified</span>
+              <span class="ui-ok">✓ Done</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3: Keeps working when you walk away (Fork & Relay) -->
+        <article class="bento-card">
+          <div class="bento-copy">
+            <h3>Keeps working while you walk away.</h3>
+            <p>Hand off a 20-minute job and keep chatting, or lock your phone and leave. Background workers finish the heavy lifting and bring the result back into the conversation.</p>
+          </div>
+          <div class="bento-ui dark-surface">
+            <div class="ui-run-row">
+              <BakenMark uid="b-run" size={24} state="loading" />
+              <div class="run-meta">
+                <strong>Scanning 45 repositories for leaked keys…</strong>
+                <span>Background worker · 3m elapsed · chat stays unlocked</span>
               </div>
             </div>
+            <div class="ui-relay">
+              <strong>Meridian</strong> · just now<br />
+              <span>Finished the scan in the background — found 2 old tokens, revoked both, and verified they return 401.</span>
+            </div>
+          </div>
+        </article>
 
-            <div class="phone-mock">
-              <div class="phone-top">
-                <span>Meridian</span>
-                <span class="phone-ok">● connected home</span>
+        <!-- Card 4: Agents work with each other -->
+        <article class="bento-card">
+          <div class="bento-copy">
+            <h3>Agents delegate to each other.</h3>
+            <p>Your main companion stays fast and conversational while delegating code, reviews, or research to specialized workers — and you see every handoff in one place.</p>
+          </div>
+          <div class="bento-ui dark-surface">
+            <div class="ui-handoff">
+              <div class="ho-row">
+                <span class="ho-dot blue"></span>
+                <div><strong>Meridian</strong> → <strong>PM-baken</strong><p>Handing over the 24dp notification icon and Rive state split.</p></div>
               </div>
-              <div class="phone-msg-u">Look into why the living room TV kept dropping off Wi-Fi while I'm out.</div>
-              <div class="phone-tool">Finished in the background · 2m ago</div>
-              <div class="phone-msg-a">
-                Found it — disabling the stock setup app wiped the Wi-Fi profile it originally created. Re-saved it under system settings so it won't drop again.
-              </div>
-              <div class="phone-bar">
-                <BakenMark uid="ph-amb" size={18} state="ambient" tight />
-                <span>Composer stays open while tasks run</span>
+              <div class="ho-row">
+                <span class="ho-dot green"></span>
+                <div><strong>PM-baken</strong><p>Wired into Android adaptive icon layers. Running check suite now.</p></div>
               </div>
             </div>
           </div>
-        </div>
+        </article>
 
-        <!-- SCENE 03: ALIVE, NOT A CHATBOT -->
-        <div class="app-window scene" data-scene="voice">
-          <div class="voice-stage">
-            <div class="voice-left">
-              <h3>See how it's doing at a glance.</h3>
-              <p>Your companion isn't a dead text box. You can see when it's listening, when it's working on something in the background, and when it's resting — and you can talk to it out loud, hands-free.</p>
-              <div class="mini-states">
-                <div class="ms-pill"><BakenMark uid="ms-load" size={24} state="loading" /> <span>Waking up</span></div>
-                <div class="ms-pill"><BakenMark uid="ms-conn" size={24} state="connecting" /> <span>Reconnecting</span></div>
-                <div class="ms-pill"><BakenMark uid="ms-amb" size={24} state="ambient" /> <span>Finished a task</span></div>
-                <div class="ms-pill"><BakenMark uid="ms-deg" size={24} state="degraded" /> <span>Away from home</span></div>
-              </div>
-            </div>
-
-            <div class="voice-right">
+        <!-- Card 5: Hands-free voice -->
+        <article class="bento-card">
+          <div class="bento-copy">
+            <h3>Talk to it out loud, hands-free.</h3>
+            <p>Start a voice session from your phone or desktop. Speech is recognized locally and your agent answers out loud sentence by sentence from your own GPU or model.</p>
+          </div>
+          <div class="bento-ui dark-surface">
+            <div class="ui-voice-box">
               <div class="mascot-wrap">
-                <svg width="96" height="96" viewBox="-190 -190 380 380" aria-hidden="true">
+                <svg width="56" height="56" viewBox="-190 -190 380 380" aria-hidden="true">
                   <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
                   <g transform="rotate(-6)">
                     <rect x="-56" y="-56" width="112" height="112" rx="26" fill="#F7F7F7" />
@@ -253,80 +286,162 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
                 </svg>
               </div>
               <div class="v-bars" aria-hidden="true">
-                <span style="--h:34%"></span><span style="--h:76%"></span><span style="--h:52%"></span>
-                <span style="--h:94%"></span><span style="--h:62%"></span><span style="--h:82%"></span>
-                <span style="--h:44%"></span>
+                <span style="--h:36%"></span><span style="--h:82%"></span><span style="--h:54%"></span>
+                <span style="--h:95%"></span><span style="--h:60%"></span><span style="--h:78%"></span>
+                <span style="--h:40%"></span>
               </div>
-              <span class="voice-tag">Hands-free voice · runs on your own machine</span>
+              <span class="v-live">Speaking · 0:14</span>
             </div>
+          </div>
+        </article>
+
+        <!-- Card 6: Phone + Desktop paired directly -->
+        <article class="bento-card">
+          <div class="bento-copy">
+            <h3>Your computer's power, in your pocket.</h3>
+            <p>Scan one code to pair your Android phone straight to your computer. Every agent, file, and conversation is there instantly — encrypted end to end with zero cloud middleman.</p>
+          </div>
+          <div class="bento-ui dark-surface">
+            <div class="ui-pair-box">
+              <BakenMark uid="b-pair" size={38} state="connecting" />
+              <div class="pair-text">
+                <strong>Pixel 9 Pro ⇄ Home Workstation</strong>
+                <span>Direct encrypted tunnel · 0 cloud relays · instant resume</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. GIVE EACH AGENT A JOB (Interactive Role Switcher — x.ai/bot's signature section adapted to Baken) -->
+  <section class="band band-rule" id="jobs">
+    <div class="container">
+      <div class="band-head">
+        <h2>Give each agent a job.</h2>
+        <p>Run one personal companion for your day-to-day life, and spin up focused specialists for your code, your homelab, your store, or your research.</p>
+      </div>
+
+      <div class="jobs-pills" id="jobPills" role="tablist" aria-label="Agent roles">
+        <button type="button" class="job-pill active" data-job="companion" role="tab" aria-selected="true">Daily Companion</button>
+        <button type="button" class="job-pill" data-job="coding" role="tab" aria-selected="false">Code &amp; PRs</button>
+        <button type="button" class="job-pill" data-job="homelab" role="tab" aria-selected="false">Home &amp; Media</button>
+        <button type="button" class="job-pill" data-job="store" role="tab" aria-selected="false">Store &amp; Ops</button>
+        <button type="button" class="job-pill" data-job="finances" role="tab" aria-selected="false">Finances &amp; Admin</button>
+        <button type="button" class="job-pill" data-job="research" role="tab" aria-selected="false">Deep Research</button>
+      </div>
+
+      <div class="job-stage dark-surface" id="jobStage">
+        <!-- Job 1: Daily Companion -->
+        <div class="job-panel active" data-panel="companion">
+          <div class="job-desc">
+            <h3>Remembers the thread of your life across months.</h3>
+            <p>Knows your family, your schedule, what you're building, and how you like to be talked to. Points at your real life — shipping your work, resting on time — never at fake app-open streaks.</p>
+            <ul>
+              <li>Picks up threads you paused weeks ago without re-explaining</li>
+              <li>Reaches you across desktop, phone, voice, or chat rooms</li>
+              <li>Stays honest when a plan won't work</li>
+            </ul>
+          </div>
+          <div class="job-chat">
+            <div class="jc-u">Did we ever fix that slow search on the media box?</div>
+            <div class="jc-a">Yes — back on Nov 20 we moved DrunkenSlug direct into Sonarr and Radarr and scoped Nyaa to anime-only. Search dropped from 815ms to 370ms.</div>
+          </div>
+        </div>
+
+        <!-- Job 2: Code & PRs -->
+        <div class="job-panel" data-panel="coding">
+          <div class="job-desc">
+            <h3>Takes a bug from diagnosis to a verified PR.</h3>
+            <p>Works in isolated git worktrees, runs the build and test suite, inspects failure logs bottom-up, and watches CI until the branch is genuinely ready to merge.</p>
+            <ul>
+              <li>Spawns fresh coding workers while staying in chat with you</li>
+              <li>Simulates merges to catch conflicts before you click</li>
+              <li>Verifies real artifacts on disk, never claims "done" on faith</li>
+            </ul>
+          </div>
+          <div class="job-chat">
+            <div class="jc-u">Review the open PRs and tell me the safe merge order.</div>
+            <div class="jc-a">Checked all 6 open heads against main: merge #2469 first (zero overlap), then rebase #2471 (shares TimelineStreamReducer.kt). All required checks green on current SHA.</div>
+          </div>
+        </div>
+
+        <!-- Job 3: Home & Media -->
+        <div class="job-panel" data-panel="homelab">
+          <div class="job-desc">
+            <h3>Runs your home servers, TV, and smart home.</h3>
+            <p>Connects to Proxmox, Docker, Home Assistant, Jellyfin, and your TV over ADB. Diagnoses why a stream buffered, expands a full RAM disk live, or puts on a movie from chat.</p>
+            <ul>
+              <li>Controls lights, speakers, and Google TV directly</li>
+              <li>Watches container health and disk pressure before things crash</li>
+              <li>Adds shows or movies and pops a quiet toast on the TV when ready</li>
+            </ul>
+          </div>
+          <div class="job-chat">
+            <div class="jc-u">Play I, Robot on the family room TV and set the transcode cleanup to 4 hours.</div>
+            <div class="jc-a">Playing I, Robot (2004) on Family Room TV via DirectPlay, and updated Jellyfin's Clean Transcode Directory task to run every 4 hours.</div>
+          </div>
+        </div>
+
+        <!-- Job 4: Store & Ops -->
+        <div class="job-panel" data-panel="store">
+          <div class="job-desc">
+            <h3>Launch pages, domains, print files, and store ops.</h3>
+            <p>Registers and wires Cloudflare DNS, sets up email routing, audits public pages for personal data leaks, generates print-ready vector artwork, and wires self-hosted analytics.</p>
+            <ul>
+              <li>End-to-end Cloudflare Workers, DNS, and Shopify API automation</li>
+              <li>Generates exact 300 DPI print files and SVG brand kits</li>
+              <li>First-party analytics proxies so third-party domains never leak</li>
+            </ul>
+          </div>
+          <div class="job-chat">
+            <div class="jc-u">Check what personal info is exposed on our live store policies.</div>
+            <div class="jc-a">Verified all 4 live pages: 0 occurrences of your personal Gmail, name, or city. Only support@redactedattire.com is shown.</div>
+          </div>
+        </div>
+
+        <!-- Job 5: Finances & Admin -->
+        <div class="job-panel" data-panel="finances">
+          <div class="job-desc">
+            <h3>Keeps your household numbers and inbox clean.</h3>
+            <p>Bridges bank imports into your self-hosted finance tracker, categorizes transactions with your household rules, and sweeps thousands of promo emails out of your inbox with a review brake before mutating.</p>
+            <ul>
+              <li>Works with self-hosted SureFinance, Invoice Ninja, and IMAP</li>
+              <li>Proposes bulk changes with exact counts before touching data</li>
+              <li>Respects hard privacy boundaries on work vs. personal data</li>
+            </ul>
+          </div>
+          <div class="job-chat">
+            <div class="jc-u">How much did we spend on dining out this month compared to last?</div>
+            <div class="jc-a">Pulled from SureFinance: $342 across 9 transactions so far this month, down $118 from the same point last month.</div>
+          </div>
+        </div>
+
+        <!-- Job 6: Deep Research -->
+        <div class="job-panel" data-panel="research">
+          <div class="job-desc">
+            <h3>Digs through primary sources and writes it down.</h3>
+            <p>Searches through your self-hosted SearXNG, crawls documentation, cross-checks claims against primary PDFs or commit history, and saves structured reference notes into your knowledge base.</p>
+            <ul>
+              <li>Verifies every quote and page number against the real source</li>
+              <li>Writes durable notes to BookStack or your git memory repo</li>
+              <li>Runs in the background while you keep working</li>
+            </ul>
+          </div>
+          <div class="job-chat">
+            <div class="jc-u">Pull verbatim quotes from the 2019 court order PDF and verify every page number.</div>
+            <div class="jc-a">Extracted 8 complete-sentence quotes directly from the Document 435 text layer, verified each page number, and saved the manifest to SOURCES.md.</div>
           </div>
         </div>
       </div>
-
-      <div class="scene-tabs" id="sceneTabs" role="tablist" aria-label="What Baken does">
-        <button type="button" class="scene-tab active" data-target="desktop" role="tab" aria-selected="true">
-          Remembers your world
-        </button>
-        <button type="button" class="scene-tab" data-target="pair" role="tab" aria-selected="false">
-          Goes with you on your phone
-        </button>
-        <button type="button" class="scene-tab" data-target="voice" role="tab" aria-selected="false">
-          Talks &amp; works in the background
-        </button>
-      </div>
     </div>
   </section>
 
-  <!-- HISTORICAL ANCHOR: WHY IT'S CALLED BAKEN (Wadden Sea zeebaken / kaap heritage) -->
-  <section class="band band-rule" id="origin">
-    <div class="container origin-grid">
-      <div class="origin-plate">
-        <svg viewBox="0 0 420 260" class="plate-svg" aria-label="Historical Wadden Sea transit diagram">
-          <!-- Nautical chart plate frame -->
-          <rect x="1" y="1" width="418" height="258" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.18" />
-          <rect x="8" y="8" width="404" height="244" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.08" />
-
-          <!-- Shifting tidal sandbank contours -->
-          <path d="M 16 198 C 110 166, 230 220, 404 176" fill="none" stroke="currentColor" stroke-opacity="0.16" stroke-dasharray="3 3" />
-          <path d="M 16 218 C 140 190, 260 236, 404 198" fill="none" stroke="currentColor" stroke-opacity="0.22" />
-
-          <!-- Line of sight (Kenning) from ship through front & rear baken -->
-          <line x1="58" y1="204" x2="346" y2="62" stroke="var(--stone-2)" stroke-width="1.5" stroke-dasharray="4 4" />
-          <circle cx="58" cy="204" r="4" fill="currentColor" />
-
-          <!-- Front Baken (shore pebble / buoy) -->
-          <g transform="translate(178, 108) scale(0.28)">
-            <path d={BAKEN_PEBBLE} fill="var(--stone-2)" />
-          </g>
-          <!-- Rear Baken (tall standing stone / kaap on the dune) -->
-          <g transform="translate(306, 22) scale(0.42)">
-            <path d={BAKEN_ANCHOR} fill="currentColor" />
-          </g>
-
-          <text x="24" y="30" font-size="10.5" fill="currentColor" fill-opacity="0.6" font-family="ui-monospace, monospace">FIG. I — DE KENNING (LINE OF SIGHT)</text>
-          <text x="24" y="236" font-size="10" fill="currentColor" fill-opacity="0.55" font-family="ui-monospace, monospace">TEXEL · VLIELAND · TERSCHELLING (16th–19th C.)</text>
-        </svg>
-      </div>
-
-      <div class="origin-copy">
-        <h2>Why it's called Baken.</h2>
-        <p>
-          For four hundred years along the Dutch Wadden Sea, the sandbanks shifted with every tide. A chart drawn in spring could ground a ship by autumn. So islanders on Texel, Vlieland, and Terschelling erected <em>bakens</em> — fixed landmarks of stone, iron, and timber set into the dunes.
-        </p>
-        <p>
-          They worked in pairs. When a sailor lined up the smaller front mark against the tall rear mark on the shore — a sightline called a <em>kenning</em> — they knew they were in the safe channel, no matter how the water moved beneath them.
-        </p>
-        <p>
-          AI models shift the same way today: providers change their rules, raise prices, or retire the model you relied on overnight. Baken is the fixed mark you own. The rear stone is your computer, holding years of memory; the front stone is your phone, aligned with it wherever you go.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FULL-BLEED ELASTIC STRINGS BOARD -->
+  <!-- 4. OWNERSHIP: FULL-BLEED ELASTIC STRINGS BOARD (Mistral-inspired) -->
   <StringsCanvas />
 
-  <!-- WHAT IT ACTUALLY DOES FOR YOU (zero buzzwords) -->
+  <!-- 5. WHY THIS MATTERS + 3-STEP SETUP -->
   <section class="band" id="details">
     <div class="container">
       <div class="band-head">
@@ -336,7 +451,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
 
       <div class="clean-grid">
         <div class="clean-item">
-          <h3>It actually remembers you.</h3>
+          <h3>Plain files you actually own.</h3>
           <p>Everything your companion learns — your projects, the people in your life, what you decided three months ago — is saved as plain, readable files on your own computer. Open them, edit them, or back them up anytime.</p>
         </div>
         <div class="clean-item">
@@ -344,8 +459,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
           <p>New models come out every month. Because your companion's memory and personality live on your machine, you can swap the underlying AI model whenever you want without starting over from a blank slate.</p>
         </div>
         <div class="clean-item">
-          <h3>Never makes you stare at a spinner.</h3>
-          <p>Hand off a big task and keep talking, or lock your phone and walk away. Your computer does the heavy lifting in the background and brings the answer back into the conversation when it's ready.</p>
+          <h3>Up and running in three steps.</h3>
+          <p><strong>1.</strong> Run Baken on your Windows or Linux computer. <strong>2.</strong> Install the free Android or Desktop app. <strong>3.</strong> Scan the code on your screen to lock them directly together — no account, no middleman server.</p>
         </div>
         <div class="clean-item">
           <h3>Points at your life, not at the app.</h3>
@@ -355,40 +470,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     </div>
   </section>
 
-  <!-- HOW YOU SET IT UP (genuine 1-2-3 sequence) -->
-  <section class="band band-rule" id="pair">
-    <div class="container">
-      <div class="band-head centered">
-        <h2>Up and running in a minute.</h2>
-        <p>Your computer holds the memory and does the work. Your phone is your window into it from anywhere.</p>
-      </div>
-
-      <div class="steps-row">
-        <div class="step">
-          <span class="step-idx">1</span>
-          <h3>Put Baken on your computer.</h3>
-          <p>Run it on the machine you already own — with a local model on your graphics card, or connected to the cloud model you prefer.</p>
-          <div class="req">Windows or Linux · local or cloud models</div>
-        </div>
-
-        <div class="step">
-          <span class="step-idx">2</span>
-          <h3>Install the phone app.</h3>
-          <p>Download Baken on Android. There is no account to create and nothing to subscribe to.</p>
-          <div class="req">Android 8.0 or later · free download</div>
-        </div>
-
-        <div class="step">
-          <span class="step-idx">3</span>
-          <h3>Scan the code on your screen.</h3>
-          <p>Point your phone at the code on your computer. They lock directly to each other, encrypted end to end.</p>
-          <div class="req">Direct connection · no middleman server</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
+  <!-- 6. FAQ -->
   <section class="band band-rule" id="faq">
     <div class="container faq-container">
       <div class="band-head centered">
@@ -420,7 +502,62 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     </div>
   </section>
 
-  <!-- CLOSING -->
+  <!-- 7. THE "WHY BAKEN" ORIGIN & INTERACTIVE TRANSIT (MOVED TO THE END AS THE SIGNATURE CODA) -->
+  <section class="band band-rule" id="why-baken">
+    <div class="container">
+      <div class="origin-grid">
+        <div class="origin-copy">
+          <h2>Why it's called Baken.</h2>
+          <p>
+            For four hundred years along the Dutch Wadden Sea, the sandbanks shifted with every tide. A chart drawn in spring could ground a ship by autumn. So islanders on Texel, Vlieland, and Terschelling built <em>bakens</em> — fixed landmarks of stone, iron, and timber set into the dunes.
+          </p>
+          <p>
+            They worked in pairs. When a sailor lined up the smaller front mark against the tall rear mark on the shore — a sightline called a <em>kenning</em> — they knew they were in the safe channel, no matter how the water moved beneath them.
+          </p>
+          <p>
+            AI shifts the same way today: providers change their rules, raise prices, or retire the model you relied on overnight. Baken is the fixed mark you own. The rear stone is your computer, holding years of memory; the front stone is your phone, aligned with it wherever you go.
+          </p>
+        </div>
+
+        <!-- Interactive Wadden Sea Transit Instrument at the end of the story -->
+        <div class="origin-instrument dark-surface" id="transitInstrument">
+          <div class="transit-meta">
+            <span>FIG. I — DE KENNING (WADDEN SEA TRANSIT)</span>
+            <span class="transit-readout" id="transitReadout">Bearing aligned · 0.0° drift</span>
+          </div>
+
+          <svg class="transit-svg" id="transitSvg" viewBox="0 0 560 220" aria-label="Interactive seamark alignment">
+            <defs>
+              <radialGradient id="transitGlow" cx="50%" cy="52%" r="48%">
+                <stop offset="0%" stop-color="#EE5A3F" stop-opacity="0.48" />
+                <stop offset="60%" stop-color="#EE5A3F" stop-opacity="0.12" />
+                <stop offset="100%" stop-color="#EE5A3F" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <path class="contour c1" d="M -20 176 C 140 124, 290 198, 450 144 C 510 124, 550 148, 580 136" />
+            <path class="contour c2" d="M -20 142 C 120 92, 310 166, 470 112 C 520 96, 555 118, 580 104" />
+            <path class="contour c3" d="M -20 106 C 150 58, 330 132, 480 80 C 530 64, 560 88, 580 74" />
+
+            <line id="sightRay" x1="280" y1="12" x2="280" y2="208" stroke="rgba(238,90,63,0.7)" stroke-width="1.5" stroke-dasharray="4 4" />
+            <circle id="sightGlow" cx="280" cy="112" r="76" fill="url(#transitGlow)" />
+
+            <g id="rearStone" transform="translate(202, 24) scale(0.78)">
+              <path d={BAKEN_ANCHOR} fill="#DCE6EE" />
+            </g>
+            <g id="frontStone" transform="translate(202, 24) scale(0.78)">
+              <path d={BAKEN_PEBBLE} fill="#EE5A3F" />
+            </g>
+
+            <text x="18" y="204" fill="#7D93A5" font-size="10.5" font-family="ui-monospace, monospace">REAR · YOUR COMPUTER</text>
+            <text x="392" y="204" fill="#EE5A3F" font-size="10.5" font-family="ui-monospace, monospace">FRONT · YOUR PHONE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CLOSING -->
   <section class="band band-rule">
     <div class="container hero-center">
       <BakenMark uid="close" size={48} state="idle" />
@@ -441,66 +578,62 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
 </Layout>
 
 <style>
-  .hero { padding: 64px 0 88px; }
+  /* 1. Hero */
+  .hero { padding: 48px 0 88px; }
   .hero-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+  .mascot-lineup {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+  .m-chip {
+    width: 54px; height: 54px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--pill-shadow);
+    display: grid;
+    place-items: center;
+  }
+  .baken-hero-badge {
+    width: 62px; height: 62px;
+    border-radius: 18px;
+    background: #0D1821;
+    border: 1px solid rgba(220, 230, 238, 0.16);
+    box-shadow: 0 10px 26px rgba(13, 24, 33, 0.22);
+    display: grid;
+    place-items: center;
+  }
+
   .hero h1 {
-    margin: 0 0 22px; font-size: clamp(46px, 6.4vw, 76px);
-    line-height: 1.02; letter-spacing: -0.045em; font-weight: 700; max-width: 14ch;
+    margin: 0 0 20px; font-size: clamp(46px, 6.4vw, 76px);
+    line-height: 1.02; letter-spacing: -0.045em; font-weight: 700; max-width: 15ch;
   }
   .hero-lead {
-    margin: 0 0 32px; font-size: 17px; line-height: 1.64; color: var(--muted); max-width: 55ch;
+    margin: 0 0 30px; font-size: 17.5px; line-height: 1.62; color: var(--muted); max-width: 54ch;
   }
   .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-  .trust-row {
-    margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 10px 26px; font-size: 13.5px; color: var(--muted);
-  }
-  .trust-row span { display: inline-flex; align-items: center; gap: 7px; }
-  .trust-row span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-2); }
 
-  /* Nautical Chart + Transit Sightline Stage */
-  .chart-stage {
-    margin-top: 56px; border-radius: 16px; padding: 24px 36px 0;
+  .showcase-stage {
+    margin-top: 52px; border-radius: 16px; padding: 36px 36px 0;
     background:
-      radial-gradient(circle at 50% 18%, rgba(238, 90, 63, 0.14), transparent 48%),
-      linear-gradient(165deg, #162836 0%, #0e1b25 55%, #09131a 100%);
-    border: 1px solid rgba(220, 230, 238, 0.14);
-    box-shadow: 0 24px 64px rgba(6, 13, 19, 0.28);
+      radial-gradient(circle at 22% 0%, rgba(238, 90, 63, 0.16), transparent 46%),
+      radial-gradient(circle at 80% 15%, rgba(62, 134, 178, 0.22), transparent 50%),
+      radial-gradient(rgba(220, 230, 238, 0.15) 1px, transparent 1px),
+      linear-gradient(160deg, #1b2f3d 0%, #0f1d28 55%, #0a141c 100%);
+    background-size: auto, auto, 24px 24px, auto;
+    border: 1px solid rgba(16, 32, 44, 0.12);
+    box-shadow: 0 24px 64px rgba(10, 20, 28, 0.18);
     overflow: hidden;
   }
-
-  .transit-instrument {
-    margin-bottom: 18px;
-  }
-  .transit-meta {
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 10px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11.5px; color: #849BAE;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(220, 230, 238, 0.1);
-  }
-  .transit-readout {
-    color: #DCE6EE;
-  }
-  .transit-svg {
-    width: 100%; height: auto; display: block;
-  }
-  .contour {
-    fill: none; stroke: rgba(220, 230, 238, 0.11); stroke-width: 1;
-  }
-  .contour.c2 { stroke-dasharray: 4 4; stroke: rgba(220, 230, 238, 0.15); }
-  .contour.c3 { stroke: rgba(220, 230, 238, 0.07); }
-
-  .scene { display: none; }
-  .scene.active { display: block; }
 
   .app-window {
     background: #0e161d; color: #e8eff4;
     border-radius: 12px 12px 0 0; border: 1px solid rgba(255, 255, 255, 0.11); border-bottom: none;
     overflow: hidden; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.48);
   }
-
   .win-titlebar {
     height: 44px; padding: 0 16px; background: #0a1117;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -516,7 +649,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   .win-dots { display: flex; gap: 7px; }
   .win-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
 
-  .win-body { display: grid; grid-template-columns: 56px 210px 1fr; min-height: 396px; }
+  .win-body { display: grid; grid-template-columns: 56px 210px 1fr; min-height: 390px; }
   .win-rail {
     background: #091016; border-right: 1px solid rgba(255, 255, 255, 0.07);
     padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -561,110 +694,169 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   .comp-right { display: flex; align-items: center; gap: 10px; font-size: 12px; }
   .comp-mic { color: #ee5a3f; }
 
-  .pair-stage, .voice-stage {
-    padding: 40px 44px 44px; display: grid; grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px; align-items: center; min-height: 396px;
-  }
-  .pair-panel h3, .voice-left h3 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.03em; line-height: 1.15; }
-  .pair-panel p, .voice-left p { margin: 0 0 24px; color: #95abb9; font-size: 15px; max-width: 46ch; }
-  .pair-state-row {
-    display: inline-flex; align-items: center; gap: 16px; padding: 14px 18px;
-    border-radius: 12px; background: #13212d; border: 1px solid rgba(255, 255, 255, 0.09);
-  }
-  .pair-state-row strong { display: block; font-size: 14px; }
-  .pair-state-row span { font-size: 12px; color: #7f96a8; }
-
-  .phone-mock {
-    max-width: 310px; width: 100%; justify-self: center;
-    background: #111c26; border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 12px;
-  }
-  .phone-top { display: flex; justify-content: space-between; font-size: 12px; color: #7f96a8; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .phone-ok { color: #ee5a3f; }
-  .phone-msg-u { align-self: flex-end; background: #1a3a4e; padding: 9px 12px; border-radius: 12px 12px 3px 12px; font-size: 12.5px; }
-  .phone-tool { font-size: 11.5px; color: #7f96a8; }
-  .phone-msg-a { font-size: 13px; color: #dce6ee; line-height: 1.5; }
-  .phone-bar { margin-top: 8px; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: #0c151d; border: 1px solid rgba(255,255,255,0.08); font-size: 11.5px; color: #b5c7d4; }
-
-  .mini-states { display: flex; flex-wrap: wrap; gap: 10px; }
-  .ms-pill {
-    display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px;
-    border-radius: 8px; background: #13212d; border: 1px solid rgba(255, 255, 255, 0.08); font-size: 13px; color: #dce6ee;
-  }
-  .voice-right {
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
-    padding: 32px; border-radius: 16px; background: #12202b; border: 1px solid rgba(255,255,255,0.08);
-  }
-  .v-bars { height: 52px; display: flex; align-items: center; gap: 8px; }
-  .v-bars span { width: 6px; height: var(--h); border-radius: 999px; background: #ee5a3f; animation: vbar 1.4s ease-in-out infinite; }
-  .v-bars span:nth-child(even) { background: #dce6ee; animation-delay: -0.45s; }
-  @keyframes vbar { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.1); } }
-  .voice-tag { font-size: 12px; color: #869cae; }
-
-  .scene-tabs { margin-top: 18px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
-  .scene-tab {
-    display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
-    border-radius: var(--radius); background: transparent; border: 1px solid transparent;
-    color: var(--muted); font-family: inherit; font-size: 13.5px; font-weight: 500;
-    cursor: pointer; transition: all 150ms ease;
-  }
-  .scene-tab:hover { color: var(--text); }
-  .scene-tab.active {
-    background: var(--surface); border-color: var(--border); color: var(--text);
-    font-weight: 700; box-shadow: var(--pill-shadow);
-  }
-
-  /* Historical Origin Plate + Essay */
-  .origin-grid {
-    display: grid;
-    grid-template-columns: 0.95fr 1.05fr;
-    gap: 56px;
-    align-items: center;
-  }
-  .origin-plate {
-    color: var(--text);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 18px;
-  }
-  .plate-svg { width: 100%; height: auto; display: block; }
-  .origin-copy h2 {
-    margin: 0 0 18px;
-    font-size: clamp(32px, 3.8vw, 44px);
-    line-height: 1.08;
-    letter-spacing: -0.04em;
-  }
-  .origin-copy p {
-    margin: 0 0 16px;
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 58ch;
-  }
-  .origin-copy em {
-    color: var(--text);
-    font-style: italic;
-  }
-
-  .band { padding: 104px 0; }
+  /* 2. Bento Capability Grid (x.ai/bot style: each card has copy + miniature live UI artifact) */
+  .band { padding: 100px 0; }
   .band-rule { border-top: 1px solid var(--border); }
-  .band-head { max-width: 650px; margin-bottom: 52px; }
+  .band-head { max-width: 660px; margin-bottom: 48px; }
   .band-head.centered { margin-left: auto; margin-right: auto; text-align: center; }
   .band-head h2 { margin: 0 0 14px; font-size: clamp(32px, 4vw, 46px); line-height: 1.08; letter-spacing: -0.04em; font-weight: 700; }
   .band-head p { margin: 0; font-size: 16.5px; color: var(--muted); }
 
-  .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; }
-  .step { padding-top: 22px; border-top: 1px solid var(--border-strong); }
-  .step-idx { display: inline-block; font-size: 13px; font-weight: 700; color: var(--stone-2); margin-bottom: 12px; }
-  .step h3 { margin: 0 0 10px; font-size: 19px; letter-spacing: -0.025em; }
-  .step p { margin: 0 0 18px; font-size: 15px; color: var(--muted); }
-  .req { font-size: 13px; color: var(--muted); opacity: 0.9; }
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .bento-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 22px;
+  }
+  .bento-copy h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    letter-spacing: -0.025em;
+  }
+  .bento-copy p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .bento-ui {
+    background: #0D1821;
+    color: #E8EFF4;
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid rgba(220, 230, 238, 0.1);
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ui-msg-u {
+    align-self: flex-end;
+    background: #173447;
+    padding: 7px 12px;
+    border-radius: 10px 10px 3px 10px;
+    font-size: 12.5px;
+  }
+  .ui-memory-toast {
+    background: #13222E;
+    border: 1px solid rgba(238, 90, 63, 0.35);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .mem-head {
+    display: flex; align-items: center; gap: 7px; font-size: 12px; margin-bottom: 4px;
+  }
+  .mem-dot { width: 7px; height: 7px; border-radius: 50%; background: #EE5A3F; }
+  .mem-file { margin-left: auto; font-family: ui-monospace, monospace; font-size: 11px; color: #7F96A8; }
+  .ui-memory-toast p { margin: 0; font-size: 12px; color: #B8C9D6; }
 
+  .ui-term-head {
+    display: flex; justify-content: space-between; font-size: 11.5px; color: #849BAE;
+  }
+  .ui-badge-live { color: #EE5A3F; font-weight: 700; }
+  .ui-diff {
+    background: #091118; border-radius: 7px; padding: 10px 12px;
+    font-family: ui-monospace, monospace; font-size: 11.5px; line-height: 1.55;
+  }
+  .diff-file { color: #7F96A8; margin-bottom: 3px; }
+  .diff-del { color: #F07167; }
+  .diff-add { color: #57CC99; }
+  .ui-approve-bar {
+    display: flex; justify-content: space-between; font-size: 12px; color: #9BB0C1;
+  }
+  .ui-ok { color: #57CC99; font-weight: 700; }
+
+  .ui-run-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 10px; border-radius: 8px; background: #13222E;
+  }
+  .run-meta { display: flex; flex-direction: column; font-size: 12px; }
+  .run-meta span { font-size: 11px; color: #7F96A8; }
+  .ui-relay {
+    font-size: 12.5px; color: #C5D4E0; padding: 8px 10px;
+    border-left: 2px solid #EE5A3F; background: rgba(255,255,255,0.02);
+  }
+
+  .ui-handoff { display: flex; flex-direction: column; gap: 10px; }
+  .ho-row { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; }
+  .ho-row p { margin: 2px 0 0; color: #95ABB9; font-size: 12px; }
+  .ho-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .ho-dot.blue { background: #1E7BF0; }
+  .ho-dot.green { background: #1DA34A; }
+
+  .ui-voice-box {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 6px 8px;
+  }
+  .v-bars { height: 42px; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; }
+  .v-bars span { width: 5px; height: var(--h); border-radius: 999px; background: #EE5A3F; animation: vbar 1.4s ease-in-out infinite; }
+  .v-bars span:nth-child(even) { background: #DCE6EE; animation-delay: -0.45s; }
+  @keyframes vbar { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.1); } }
+  .v-live { font-family: ui-monospace, monospace; font-size: 11.5px; color: #849BAE; }
+
+  .ui-pair-box {
+    display: flex; align-items: center; gap: 14px; padding: 10px 8px;
+  }
+  .pair-text { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .pair-text span { font-size: 11.5px; color: #849BAE; }
+
+  /* 3. Give Each Agent a Job (Role Switcher) */
+  .jobs-pills {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px;
+  }
+  .job-pill {
+    padding: 9px 16px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted); font-family: inherit; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all 150ms ease;
+  }
+  .job-pill:hover { color: var(--text); border-color: var(--border-strong); }
+  .job-pill.active {
+    background: var(--stone-2); border-color: var(--stone-2); color: #FFFFFF;
+  }
+
+  .job-stage {
+    background: #0D1821; color: #E8EFF4;
+    border-radius: 14px; border: 1px solid rgba(220, 230, 238, 0.12);
+    padding: 34px 36px;
+  }
+  .job-panel {
+    display: none;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .job-panel.active { display: grid; }
+  .job-desc h3 { margin: 0 0 10px; font-size: 24px; letter-spacing: -0.03em; color: #F2F7FA; }
+  .job-desc p { margin: 0 0 16px; font-size: 15px; color: #9BB0C1; }
+  .job-desc ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px; color: #DCE6EE; }
+  .job-chat {
+    background: #13222E; border: 1px solid rgba(220, 230, 238, 0.1);
+    border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .jc-u {
+    align-self: flex-end; background: #1B3B50; padding: 9px 14px;
+    border-radius: 12px 12px 3px 12px; font-size: 13.5px; color: #F2F7FA;
+  }
+  .jc-a {
+    font-size: 13.5px; color: #C9D8E4; line-height: 1.55;
+  }
+
+  /* 5. Clean 2x2 Grid */
   .clean-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 44px 64px; }
   .clean-item { padding-top: 22px; border-top: 1px solid var(--border); }
   .clean-item h3 { margin: 0 0 10px; font-size: 19px; letter-spacing: -0.025em; }
   .clean-item p { margin: 0; font-size: 15px; color: var(--muted); max-width: 48ch; }
+  .clean-item strong { color: var(--text); }
 
+  /* 6. FAQ */
   .faq-container { max-width: 760px; }
   .faq-list { border-top: 1px solid var(--border); }
   .faq-list details { border-bottom: 1px solid var(--border); padding: 22px 0; }
@@ -677,41 +869,81 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   .faq-list details[open] summary::after { content: "−"; color: var(--stone-2); }
   .faq-list details p { margin: 12px 0 0; font-size: 15px; color: var(--muted); max-width: 62ch; }
 
+  /* 7. Why Baken Origin Coda at the Bottom */
+  .origin-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 52px;
+    align-items: center;
+  }
+  .origin-copy h2 {
+    margin: 0 0 16px;
+    font-size: clamp(30px, 3.6vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+  }
+  .origin-copy p {
+    margin: 0 0 14px;
+    font-size: 15.5px;
+    color: var(--muted);
+    max-width: 56ch;
+  }
+  .origin-copy em { color: var(--text); font-style: italic; }
+
+  .origin-instrument {
+    background: #0D1821;
+    border: 1px solid rgba(220, 230, 238, 0.14);
+    border-radius: 12px;
+    padding: 18px 20px 14px;
+  }
+  .transit-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; color: #849BAE;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(220, 230, 238, 0.1);
+  }
+  .transit-readout { color: #DCE6EE; }
+  .transit-svg { width: 100%; height: auto; display: block; }
+  .contour { fill: none; stroke: rgba(220, 230, 238, 0.12); stroke-width: 1; }
+  .contour.c2 { stroke-dasharray: 4 4; stroke: rgba(220, 230, 238, 0.16); }
+  .contour.c3 { stroke: rgba(220, 230, 238, 0.08); }
+
   .closing-h2 { margin: 22px 0 14px; font-size: clamp(34px, 4.5vw, 52px); line-height: 1.06; letter-spacing: -0.04em; }
 
   @media (prefers-reduced-motion: reduce) { .v-bars span { animation: none !important; } }
   @media (max-width: 900px) {
-    .chart-stage { padding: 20px 18px 0; }
+    .showcase-stage { padding: 20px 18px 0; }
     .win-body { grid-template-columns: 52px 1fr; }
     .win-sidebar, .win-search { display: none; }
-    .pair-stage, .voice-stage, .origin-grid { grid-template-columns: 1fr; padding: 28px 20px; }
-    .origin-grid { padding: 0; gap: 32px; }
-    .steps-row { grid-template-columns: 1fr; gap: 32px; }
+    .bento-grid, .job-panel.active, .origin-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 680px) {
     .hero { padding-top: 28px; }
     .band { padding: 72px 0; }
     .clean-grid { grid-template-columns: 1fr; gap: 32px; }
+    .job-stage { padding: 24px 20px; }
   }
 </style>
 
 <script is:inline>
-  // Scene tabs
-  const tabs = document.querySelectorAll('#sceneTabs .scene-tab');
-  const scenes = document.querySelectorAll('.chart-stage .scene');
-  tabs.forEach((btn) => {
+  // Role Switcher ("Give each agent a job")
+  const jobPills = document.querySelectorAll('#jobPills .job-pill');
+  const jobPanels = document.querySelectorAll('#jobStage .job-panel');
+  jobPills.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-target');
-      tabs.forEach((t) => {
-        const active = t === btn;
-        t.classList.toggle('active', active);
-        t.setAttribute('aria-selected', String(active));
+      const target = btn.getAttribute('data-job');
+      jobPills.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-selected', String(active));
       });
-      scenes.forEach((s) => s.classList.toggle('active', s.getAttribute('data-scene') === target));
+      jobPanels.forEach((p) => p.classList.toggle('active', p.getAttribute('data-panel') === target));
     });
   });
 
-  // Interactive Wadden Sea Transit Sightline (Kenning) + mascot gaze
+  // Mascot pointer gaze + bottom Wadden Sea Transit Sightline
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const rear = document.getElementById('rearStone');
     const front = document.getElementById('frontStone');
@@ -720,30 +952,28 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     const readout = document.getElementById('transitReadout');
 
     window.addEventListener('pointermove', (e) => {
-      const nx = (e.clientX / window.innerWidth) * 2 - 1; // -1 .. +1
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
       const ny = (e.clientY / window.innerHeight) * 2 - 1;
 
-      // Mascot eye gaze
       document.querySelectorAll('.m-gaze').forEach((g) => {
         g.setAttribute('transform', `translate(${(nx * 12).toFixed(1)}, ${(ny * 9).toFixed(1)})`);
       });
 
-      // Parallax between rear shore stone (slow) and front buoy stone (faster)
       if (rear && front && ray && glow && readout) {
-        const rearDx = nx * 7;
-        const frontDx = nx * 24;
-        rear.setAttribute('transform', `translate(${(468 + rearDx).toFixed(1)}, 2) scale(0.72)`);
-        front.setAttribute('transform', `translate(${(468 + frontDx).toFixed(1)}, 2) scale(0.72)`);
-        ray.setAttribute('x1', (540 + rearDx).toFixed(1));
-        ray.setAttribute('x2', (540 + frontDx * 1.35).toFixed(1));
+        const rearDx = nx * 6;
+        const frontDx = nx * 20;
+        rear.setAttribute('transform', `translate(${(202 + rearDx).toFixed(1)}, 24) scale(0.78)`);
+        front.setAttribute('transform', `translate(${(202 + frontDx).toFixed(1)}, 24) scale(0.78)`);
+        ray.setAttribute('x1', (280 + rearDx).toFixed(1));
+        ray.setAttribute('x2', (280 + frontDx * 1.3).toFixed(1));
 
         const driftDeg = Math.abs(nx * 4.2);
         const aligned = driftDeg < 0.8;
         glow.setAttribute('opacity', aligned ? '1' : '0.35');
         ray.setAttribute('stroke', aligned ? 'rgba(238,90,63,0.85)' : 'rgba(220,230,238,0.28)');
         readout.textContent = aligned
-          ? `Bearing aligned · ${driftDeg.toFixed(1)}° drift · channel locked`
-          : `Sighting transit · ${driftDeg.toFixed(1)}° offset · bring marks in line`;
+          ? `Bearing aligned · ${driftDeg.toFixed(1)}° drift`
+          : `Sighting transit · ${driftDeg.toFixed(1)}° offset`;
       }
     });
   }
