@@ -6,20 +6,20 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 ---
 
 <Layout
-  title="Baken — Your agents, on your hardware"
-  description="Baken is an Android, Windows, and Linux client for stateful agents running on your own machine. Direct Iroh pairing, git-backed memory, and no account."
+  title="Baken — An AI companion that stays yours."
+  description="An AI companion that remembers your life and your work, lives on your own computer, and stays with you on your phone. It can't be nerfed, sunset, or taken away."
 >
-  <!-- CENTERED HERO -->
+  <!-- CENTERED HERO: WHAT IT IS & WHY IT WON'T DISAPPEAR -->
   <section class="hero">
     <div class="container hero-center">
       <a class="eyebrow-pill" href={LINKS.releases} target="_blank" rel="noreferrer">
-        Public Beta &nbsp;·&nbsp; Android, Windows &amp; Linux
+        Baken Public Beta &nbsp;·&nbsp; Free &amp; Open Source
       </a>
 
-      <h1>Your agents,<br />on your hardware.</h1>
+      <h1>An AI companion<br />that stays yours.</h1>
 
       <p class="hero-lead">
-        Baken is a native client for stateful agents running on a machine you control. Pair your phone and desktop straight to your host with one QR scan — no cloud relay, no login, and no model lock-in.
+        Most AI apps rent you a forgetful chatbot on someone else's server — one policy change, price hike, or shutdown away from disappearing. Baken lives on your own computer and travels with you on your phone, so the memory you build over months and years is yours to keep.
       </p>
 
       <div class="hero-cta-row">
@@ -27,38 +27,38 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5M4 20h16" />
           </svg>
-          Download latest release
+          Download Baken
         </a>
       </div>
 
-      <div class="trust-row" aria-label="Highlights">
-        <span>No account</span>
-        <span>Android 8+, Windows &amp; Linux</span>
-        <span>Iroh QUIC P2P</span>
-        <span>Git-tracked memory</span>
+      <div class="trust-row" aria-label="What stays in your control">
+        <span>No account to get locked out of</span>
+        <span>Can't be nerfed or sunset</span>
+        <span>Android, Windows &amp; Linux</span>
+        <span>Memory stays on your machine</span>
       </div>
     </div>
 
-    <!-- FULL-WIDTH FRAMED PRODUCT SHOWCASE -->
+    <!-- FULL-WIDTH FRAMED PRODUCT SHOWCASE (human outcomes, not protocol names) -->
     <div class="container">
       <div class="showcase-backdrop dark-surface">
-        <!-- SCENE 01: DESKTOP WORKSPACE -->
+        <!-- SCENE 01: REMEMBERS & KEEPS WORKING -->
         <div class="app-window scene active" data-scene="desktop">
           <div class="win-titlebar">
             <div class="win-left">
               <BakenMark uid="win-top" size={18} state="idle" tight />
               <span class="win-tab active-tab">Meridian</span>
-              <span class="win-tab">PM</span>
+              <span class="win-tab">Research</span>
               <span class="win-tab">+</span>
             </div>
-            <div class="win-search mono">Search agents, threads, memory…</div>
+            <div class="win-search mono">Search conversations and memory…</div>
             <div class="win-dots" aria-hidden="true">
               <span></span><span></span><span></span>
             </div>
           </div>
 
           <div class="win-body">
-            <aside class="win-rail" aria-label="Agent rail">
+            <aside class="win-rail" aria-label="Companions">
               <div class="rail-icon rail-selected" title="Meridian">
                 <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
                   <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
@@ -66,21 +66,21 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                   <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
                 </svg>
               </div>
-              <div class="rail-icon" title="Worker">
+              <div class="rail-icon" title="Builder">
                 <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
                   <path d={MASCOT_BODIES.triangle} fill="#FF6A1A" />
                   <rect x="-58" y="-44" width="116" height="116" rx="28" fill="#F7F7F7" />
                   <g class="m-gaze" transform="translate(0,14)"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
                 </svg>
               </div>
-              <div class="rail-icon" title="PM">
+              <div class="rail-icon" title="Planner">
                 <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
                   <path d={MASCOT_BODIES.squircle} fill="#1DA34A" />
                   <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(4)" />
                   <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
                 </svg>
               </div>
-              <div class="rail-icon" title="Research">
+              <div class="rail-icon" title="Archivist">
                 <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
                   <path d={MASCOT_BODIES.circle} fill="#E5484D" />
                   <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(-5)" />
@@ -101,47 +101,47 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                   </svg>
                 </div>
                 <strong>Meridian</strong>
-                <span class="mono agent-sub">host · direct QUIC</span>
+                <span class="mono agent-sub">On your computer</span>
               </div>
 
               <div class="side-nav">
                 <div class="side-item">Memory</div>
-                <div class="side-item">Schedules</div>
+                <div class="side-item">Routines</div>
                 <div class="side-item">Skills</div>
               </div>
 
               <div class="side-threads">
-                <span class="mono side-label">PINNED</span>
-                <div class="thread active-thread">Server health check</div>
-                <div class="thread">Release prep</div>
-                <div class="thread">Notes</div>
+                <span class="mono side-label">RECENT</span>
+                <div class="thread active-thread">Store launch &amp; domain</div>
+                <div class="thread">Living room TV setup</div>
+                <div class="thread">Monthly budget check</div>
               </div>
             </aside>
 
             <div class="win-chat">
               <div class="chat-feed">
                 <div class="msg-user">
-                  Why did the media server transcode cache fill up?
+                  Pick up where we left off on the store — did we ever separate the support email from my personal inbox?
                 </div>
 
                 <div class="tool-fold mono">
                   <span class="fold-dot"></span>
-                  Worked · 2 tools · 1.4s
+                  Checked memory &amp; live policies · 1.2s
                 </div>
 
                 <div class="msg-agent">
-                  <p>Four stale sessions were sitting on the 16 GB tmpfs mount, and segment deletion was off.</p>
+                  <p>Yes — we finished that on Thursday and I saved it in your project notes:</p>
                   <ul>
-                    <li>Remounted `/mnt/jellyfin-transcodes` to 24 GB and pruned files older than an hour.</li>
-                    <li>Turned on transcode throttling and segment cleanup — down to 21% used with no dropped streams.</li>
+                    <li>Your personal address is completely off the storefront and policies.</li>
+                    <li><strong>support@</strong> is live on the new domain and verified. Only thing left on your list was ordering a physical print sample before running ads.</li>
                   </ul>
                 </div>
               </div>
 
               <div class="win-composer">
-                <span>Message Meridian…</span>
+                <span>Keep talking — even while background work is running…</span>
                 <div class="comp-right mono">
-                  <span>Direct P2P</span>
+                  <span>On this computer</span>
                   <span class="comp-mic">●</span>
                 </div>
               </div>
@@ -149,52 +149,52 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
           </div>
         </div>
 
-        <!-- SCENE 02: QR PAIRING & ANDROID -->
+        <!-- SCENE 02: IN YOUR POCKET -->
         <div class="app-window scene" data-scene="pair">
           <div class="pair-stage">
             <div class="pair-panel">
-              <span class="mono pair-eyebrow">HOST · QR INVITE</span>
-              <h3>Scan once. No tokens to copy.</h3>
-              <p>The host prints a one-time QR invite. Scan it from Android and the two peers exchange keys over encrypted Iroh QUIC — works on your LAN or over cellular without opening firewall ports.</p>
+              <span class="mono pair-eyebrow">WITH YOU EVERYWHERE</span>
+              <h3>Walk away from your desk. Keep the conversation going.</h3>
+              <p>Start a long job on your computer, close your laptop, and check in from your phone. Your phone talks straight to your computer — nothing sits on a company's cloud in between.</p>
               <div class="pair-state-row">
                 <BakenMark uid="sc-pair" size={44} state="connecting" />
                 <div>
-                  <strong>Seeking peer</strong>
-                  <span class="mono">Channel seam closes when keys bind</span>
+                  <strong>Paired with one scan</strong>
+                  <span class="mono">Your phone and your computer, talking directly</span>
                 </div>
               </div>
             </div>
 
             <div class="phone-mock">
               <div class="phone-top mono">
-                <span>baken</span>
-                <span class="phone-ok">● paired</span>
+                <span>Meridian</span>
+                <span class="phone-ok">● connected home</span>
               </div>
-              <div class="phone-msg-u">Kick off the release build and let me know when the APK lands.</div>
-              <div class="phone-tool mono">Worked · 1 tool · 0.6s</div>
+              <div class="phone-msg-u">Look into why the living room TV kept dropping off Wi-Fi while I'm out.</div>
+              <div class="phone-tool mono">Finished in the background · 2m ago</div>
               <div class="phone-msg-a">
-                Build finished clean on main. APK and Windows installer are posted to the latest release.
+                Found it — disabling the stock setup app wiped the Wi-Fi profile it originally created. Re-saved it under system settings so it won't drop again.
               </div>
               <div class="phone-bar">
                 <BakenMark uid="ph-amb" size={18} state="ambient" tight />
-                <span>1 background run finished</span>
+                <span>Composer stays open while tasks run</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- SCENE 03: VOICE & LIVING PRESENCE -->
+        <!-- SCENE 03: ALIVE, NOT A CHATBOT -->
         <div class="app-window scene" data-scene="voice">
           <div class="voice-stage">
             <div class="voice-left">
-              <span class="mono pair-eyebrow">VOICE &amp; RIVE PRESENCE</span>
-              <h3>Two layers. Never fighting.</h3>
-              <p>The basalt mark owns app and connection state — boot, hydration, pairing, offline, and quiet background updates. The Rive mascots own agent turns, tool activity, and voice.</p>
+              <span class="mono pair-eyebrow">FEELS ALIVE</span>
+              <h3>See how it's doing at a glance.</h3>
+              <p>Your companion isn't a dead text box. You can see when it's listening, when it's working on something in the background, and when it's resting — and you can talk to it out loud, hands-free.</p>
               <div class="mini-states">
-                <div class="ms-pill"><BakenMark uid="ms-load" size={24} state="loading" /> <span>Hydrating</span></div>
-                <div class="ms-pill"><BakenMark uid="ms-conn" size={24} state="connecting" /> <span>Pairing</span></div>
-                <div class="ms-pill"><BakenMark uid="ms-amb" size={24} state="ambient" /> <span>Ambient</span></div>
-                <div class="ms-pill"><BakenMark uid="ms-deg" size={24} state="degraded" /> <span>Offline</span></div>
+                <div class="ms-pill"><BakenMark uid="ms-load" size={24} state="loading" /> <span>Waking up</span></div>
+                <div class="ms-pill"><BakenMark uid="ms-conn" size={24} state="connecting" /> <span>Reconnecting</span></div>
+                <div class="ms-pill"><BakenMark uid="ms-amb" size={24} state="ambient" /> <span>Finished a task</span></div>
+                <div class="ms-pill"><BakenMark uid="ms-deg" size={24} state="degraded" /> <span>Away from home</span></div>
               </div>
             </div>
 
@@ -213,85 +213,86 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                 <span style="--h:94%"></span><span style="--h:62%"></span><span style="--h:82%"></span>
                 <span style="--h:44%"></span>
               </div>
-              <span class="mono voice-tag">Local Whisper + Kokoro endpoint · streaming</span>
+              <span class="mono voice-tag">Hands-free voice · runs on your own machine</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="scene-tabs" id="sceneTabs" role="tablist" aria-label="Product views">
+      <div class="scene-tabs" id="sceneTabs" role="tablist" aria-label="What Baken does">
         <button type="button" class="scene-tab active" data-target="desktop" role="tab" aria-selected="true">
-          <span class="mono">01</span> Desktop
+          <span class="mono">01</span> Remembers your world
         </button>
         <button type="button" class="scene-tab" data-target="pair" role="tab" aria-selected="false">
-          <span class="mono">02</span> QR pairing &amp; Android
+          <span class="mono">02</span> Goes with you on your phone
         </button>
         <button type="button" class="scene-tab" data-target="voice" role="tab" aria-selected="false">
-          <span class="mono">03</span> Voice &amp; presence
+          <span class="mono">03</span> Talks &amp; works in the background
         </button>
       </div>
     </div>
   </section>
 
-  <!-- INTERACTIVE DRAGGABLE STRINGS BAND (Mistral-inspired) -->
+  <!-- FULL-BLEED ELASTIC STRINGS BOARD (pull any block, snaps back home) -->
   <StringsCanvas />
 
+  <!-- WHY THIS MATTERS: WHAT YOU KEEP vs WHAT CAN DISAPPEAR -->
+  <section class="band" id="details">
+    <div class="container">
+      <div class="band-head">
+        <h2>Built so it can't be taken<br />away from you tomorrow.</h2>
+        <p>When an AI lives in a company's cloud, they decide what it's allowed to remember, how much it costs next month, and when to shut it down. Baken flips that completely.</p>
+      </div>
+
+      <div class="clean-grid">
+        <div class="clean-item">
+          <h3>It actually remembers you.</h3>
+          <p>Everything your companion learns — your projects, your preferences, what you decided three months ago — is saved as plain, readable files on your own computer. You can open them, edit them, or back them up anytime.</p>
+        </div>
+        <div class="clean-item">
+          <h3>Change the brain, keep the companion.</h3>
+          <p>Models get better every month, and providers change their rules overnight. Because your companion's memory and personality live on your machine, you can swap the underlying AI model whenever you want without starting over from a blank slate.</p>
+        </div>
+        <div class="clean-item">
+          <h3>Never waits for you to stare at a spinner.</h3>
+          <p>Hand off a big task and keep talking, or lock your phone and walk away. Your computer does the heavy lifting in the background and brings the answer back into the conversation when it's ready.</p>
+        </div>
+        <div class="clean-item">
+          <h3>Points at your life, not at the app.</h3>
+          <p>No fake streaks for opening the app, no subscription traps, and no guilt notifications. Baken is built to help you ship your work, run your home, and close the app when you're done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PAIRED IN A MINUTE -->
-  <section class="band" id="pair">
+  <section class="band band-rule" id="pair">
     <div class="container">
       <div class="band-head centered">
-        <h2>Paired in a minute.</h2>
-        <p>Run the host where your files and GPUs already live. Pair every phone and laptop straight to it.</p>
+        <h2>Up and running in a minute.</h2>
+        <p>Your computer holds the memory and does the work. Your phone is your window into it from anywhere.</p>
       </div>
 
       <div class="steps-row">
         <div class="step">
           <span class="step-idx mono">01</span>
-          <h3>Start the host.</h3>
-          <p>Run the agent backend and Iroh wrapper on a Linux box or desktop with your models, tools, and memory repo.</p>
-          <div class="req mono">Linux host · local or cloud model</div>
+          <h3>Put Baken on your computer.</h3>
+          <p>Run it on the machine you already own — with a local model on your graphics card, or connected to the cloud model you prefer.</p>
+          <div class="req mono">Windows or Linux · local or cloud models</div>
         </div>
 
         <div class="step">
           <span class="step-idx mono">02</span>
-          <h3>Install the client.</h3>
-          <p>Grab the Android APK, Windows installer, or Linux AppImage from GitHub Releases.</p>
-          <div class="req mono">Android 8.0+ · Windows x64 · Linux x64</div>
+          <h3>Install the phone app.</h3>
+          <p>Download Baken on Android. There is no account to create and nothing to subscribe to.</p>
+          <div class="req mono">Android 8.0 or later · free download</div>
         </div>
 
         <div class="step">
           <span class="step-idx mono">03</span>
-          <h3>Scan the QR code.</h3>
-          <p>Generate an invite on the host and scan it on the device. Peer keys bind once and reconnect automatically.</p>
-          <div class="req mono">Encrypted Iroh QUIC · no open ports</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS (concrete, zero fluff) -->
-  <section class="band band-rule" id="details">
-    <div class="container">
-      <div class="band-head">
-        <h2>Built for long-running work,<br />not disposable chat tabs.</h2>
-      </div>
-
-      <div class="clean-grid">
-        <div class="clean-item">
-          <h3>Turns survive closing the app.</h3>
-          <p>Lock your phone or switch apps mid-run. The host keeps executing tools and streams the result back as soon as you reconnect.</p>
-        </div>
-        <div class="clean-item">
-          <h3>Bring your own voice stack.</h3>
-          <p>Use Android's built-in recognizer or point Baken at any OpenAI-compatible speech endpoint — like faster-whisper and Kokoro on your own GPU.</p>
-        </div>
-        <div class="clean-item">
-          <h3>Plain files for memory.</h3>
-          <p>Agent memory is stored as markdown in a local git repo on your host. Read it, diff it, back it up, or swap models without losing context.</p>
-        </div>
-        <div class="clean-item">
-          <h3>Multi-agent rail, one transport.</h3>
-          <p>Jump between a personal companion, a coding worker, and a project manager in the same sidebar — each with its own mascot, memory, and model.</p>
+          <h3>Scan the code on your screen.</h3>
+          <p>Point your phone at the code on your computer. They lock directly to each other, encrypted end to end.</p>
+          <div class="req mono">Direct connection · no middleman server</div>
         </div>
       </div>
     </div>
@@ -306,24 +307,24 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
       <div class="faq-list">
         <details open>
+          <summary>What happens if Baken stops being updated tomorrow?</summary>
+          <p>Your companion keeps working. The app is open source, it runs on your own machine without calling any server we own, and all of your companion's memory sits in plain text files on your hard drive.</p>
+        </details>
+        <details>
           <summary>Is Baken free?</summary>
-          <p>Yes. The client and host wrapper are free and open source. You only pay if you configure a paid model API on your host.</p>
+          <p>Yes. Baken is free and open source. If you run local models on your own computer, it costs nothing to run. If you connect a cloud model, you only pay that provider for what you use.</p>
         </details>
         <details>
-          <summary>Do I need my own machine to run the host?</summary>
-          <p>Yes. Your agents, memory, and tools run on a computer or home server you control. Baken connects your phone and desktop to it directly.</p>
+          <summary>Do I need my own computer?</summary>
+          <p>Yes. Your companion lives on a computer or home server you control so that your memory, files, and tools stay in your hands. The phone app connects straight to that computer.</p>
         </details>
         <details>
-          <summary>What platforms ship today?</summary>
-          <p>Android 8.0+ (APK), Windows x64 (.exe / .msi), and Linux x64 (AppImage), plus the Linux Iroh host wrapper. Everything publishes on GitHub Releases.</p>
+          <summary>What happens when I switch to a newer AI model?</summary>
+          <p>Your companion stays the same. Its memory, history, and habits aren't locked inside OpenAI, Anthropic, or Google — they stay on your machine, and the new model picks right up where the last one left off.</p>
         </details>
         <details>
-          <summary>How is the connection secured?</summary>
-          <p>QR pairing binds peer keys known only to your client and host. Traffic is end-to-end encrypted over Iroh QUIC — even on your local network.</p>
-        </details>
-        <details>
-          <summary>What breaks if I switch models?</summary>
-          <p>Nothing. Memory, skills, MCP tools, and conversation history live on your host independently of the model provider.</p>
+          <summary>Who can see my conversations?</summary>
+          <p>Only you. There is no Baken account and no central cloud database. Your phone and your computer talk directly to each other with a key only the two of them share.</p>
         </details>
       </div>
     </div>
@@ -333,13 +334,13 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   <section class="band band-rule">
     <div class="container hero-center">
       <BakenMark uid="close" size={48} state="idle" />
-      <h2 class="closing-h2">Run it on your own box.</h2>
+      <h2 class="closing-h2">Keep what you build together.</h2>
       <p class="hero-lead" style="margin-bottom:28px">
-        No account, no subscription. Latest Android and Desktop builds are on GitHub.
+        Free and open source on Android, Windows, and Linux. No account, no lock-in.
       </p>
       <div class="hero-cta-row">
         <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-footer">
-          Download latest release
+          Download Baken
         </a>
         <a class="btn btn-outline" href={LINKS.appRepo} target="_blank" rel="noreferrer">
           Source on GitHub
@@ -364,7 +365,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     line-height: 1.03; letter-spacing: -0.045em; font-weight: 700; max-width: 14ch;
   }
   .hero-lead {
-    margin: 0 0 32px; font-size: 16.5px; line-height: 1.62; color: var(--muted); max-width: 52ch;
+    margin: 0 0 32px; font-size: 16.5px; line-height: 1.64; color: var(--muted); max-width: 55ch;
   }
   .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .trust-row {
@@ -447,6 +448,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   .msg-agent { font-size: 14.5px; color: #dce6ee; max-width: 60ch; }
   .msg-agent p { margin: 0 0 10px; }
   .msg-agent ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #b5c7d4; }
+  .msg-agent strong { color: #e8eff4; }
   .win-composer {
     display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
     border-radius: 10px; background: #14212c; border: 1px solid rgba(255, 255, 255, 0.09);
@@ -460,7 +462,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     gap: 40px; align-items: center; min-height: 410px;
   }
   .pair-eyebrow { display: block; font-size: 11px; letter-spacing: 0.08em; color: #ee5a3f; margin-bottom: 10px; }
-  .pair-panel h3, .voice-left h3 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.03em; }
+  .pair-panel h3, .voice-left h3 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.03em; line-height: 1.15; }
   .pair-panel p, .voice-left p { margin: 0 0 24px; color: #95abb9; font-size: 15px; max-width: 46ch; }
   .pair-state-row {
     display: inline-flex; align-items: center; gap: 16px; padding: 14px 18px;
@@ -512,7 +514,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
   .band { padding: 104px 0; }
   .band-rule { border-top: 1px solid var(--border); }
-  .band-head { max-width: 640px; margin-bottom: 52px; }
+  .band-head { max-width: 650px; margin-bottom: 52px; }
   .band-head.centered { margin-left: auto; margin-right: auto; text-align: center; }
   .band-head h2 { margin: 0 0 14px; font-size: clamp(32px, 4vw, 46px); line-height: 1.08; letter-spacing: -0.04em; font-weight: 700; }
   .band-head p { margin: 0; font-size: 16.5px; color: var(--muted); }
