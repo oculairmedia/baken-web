@@ -2,24 +2,20 @@
 import Layout from '../layouts/Layout.astro';
 import BakenMark from '../components/BakenMark.astro';
 import StringsCanvas from '../components/StringsCanvas.astro';
-import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
+import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 ---
 
 <Layout
   title="Baken — An AI companion that stays yours."
-  description="An AI companion that remembers your life and your work, lives on your own computer, and stays with you on your phone. It can't be nerfed, sunset, or taken away."
+  description="In the shifting channels of the Wadden Sea, a baken was the fixed mark sailors took their bearings from. Baken is an AI companion that lives on your computer, goes with you on your phone, and keeps your memory in your own hands."
 >
-  <!-- CENTERED HERO: WHAT IT IS & WHY IT WON'T DISAPPEAR -->
+  <!-- HERO: NO PILL, NO AI CLICHÉS — JUST THE THESIS + INTERACTIVE TRANSIT ALIGNMENT -->
   <section class="hero">
     <div class="container hero-center">
-      <a class="eyebrow-pill" href={LINKS.releases} target="_blank" rel="noreferrer">
-        Baken Public Beta &nbsp;·&nbsp; Free &amp; Open Source
-      </a>
-
       <h1>An AI companion<br />that stays yours.</h1>
 
       <p class="hero-lead">
-        Most AI apps rent you a forgetful chatbot on someone else's server — one policy change, price hike, or shutdown away from disappearing. Baken lives on your own computer and travels with you on your phone, so the memory you build over months and years is yours to keep.
+        Most AI apps rent you a forgetful stranger on a company server — one policy change, price hike, or shutdown away from vanishing. Baken lives on your own computer and travels with you on your phone, so the memory you build together over years can never be taken away.
       </p>
 
       <div class="hero-cta-row">
@@ -27,22 +23,72 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5M4 20h16" />
           </svg>
-          Download Baken
+          Download for Android, Windows &amp; Linux
         </a>
       </div>
 
       <div class="trust-row" aria-label="What stays in your control">
         <span>No account to get locked out of</span>
-        <span>Can't be nerfed or sunset</span>
-        <span>Android, Windows &amp; Linux</span>
+        <span>Can't be nerfed or shut down</span>
         <span>Memory stays on your machine</span>
       </div>
     </div>
 
-    <!-- FULL-WIDTH FRAMED PRODUCT SHOWCASE (human outcomes, not protocol names) -->
+    <!-- SIGNATURE INTERACTIVE ARTIFACT: THE TRANSIT LINE (KENNING / MERK) + PRODUCT SHOWCASE -->
     <div class="container">
-      <div class="showcase-backdrop dark-surface">
-        <!-- SCENE 01: REMEMBERS & KEEPS WORKING -->
+      <div class="chart-stage dark-surface" id="bearing">
+        <!-- Interactive Wadden Sea Transit Sightline Header -->
+        <div class="transit-instrument" id="transitInstrument">
+          <div class="transit-meta">
+            <span class="transit-coord" id="transitCoord">53°22′N · 05°13′E &nbsp;—&nbsp; WADDEN SEA TRANSIT</span>
+            <span class="transit-readout" id="transitReadout">Bearing aligned · 0.0° drift · channel locked</span>
+          </div>
+
+          <svg class="transit-svg" id="transitSvg" viewBox="0 0 1080 148" aria-label="Interactive seamark alignment">
+            <defs>
+              <radialGradient id="transitGlow" cx="50%" cy="52%" r="48%">
+                <stop offset="0%" stop-color="#EE5A3F" stop-opacity="0.46" />
+                <stop offset="60%" stop-color="#EE5A3F" stop-opacity="0.1" />
+                <stop offset="100%" stop-color="#EE5A3F" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <!-- Bathymetric depth contour arcs (shifting sandbanks) -->
+            <path class="contour c1" d="M -40 124 C 240 68, 460 144, 760 88 C 920 58, 1020 96, 1120 74" />
+            <path class="contour c2" d="M -40 96 C 210 42, 510 122, 810 62 C 950 36, 1040 72, 1120 48" />
+            <path class="contour c3" d="M -40 64 C 260 18, 540 92, 840 36 C 960 14, 1050 44, 1120 26" />
+
+            <!-- Compass degree ticks along the horizon -->
+            <g class="compass-ticks" stroke="rgba(220,230,238,0.16)" stroke-width="1">
+              <line x1="140" y1="0" x2="140" y2="10" /><line x1="220" y1="0" x2="220" y2="6" />
+              <line x1="300" y1="0" x2="300" y2="10" /><line x1="380" y1="0" x2="380" y2="6" />
+              <line x1="460" y1="0" x2="460" y2="10" /><line x1="540" y1="0" x2="540" y2="16" stroke="rgba(238,90,63,0.7)" />
+              <line x1="620" y1="0" x2="620" y2="10" /><line x1="700" y1="0" x2="700" y2="6" />
+              <line x1="780" y1="0" x2="780" y2="10" /><line x1="860" y1="0" x2="860" y2="6" />
+              <line x1="940" y1="0" x2="940" y2="10" />
+            </g>
+
+            <!-- Sightline ray (kenning) passing between the two stones -->
+            <line id="sightRay" x1="540" y1="0" x2="540" y2="148" stroke="rgba(238,90,63,0.55)" stroke-width="1.5" stroke-dasharray="4 4" />
+            <circle id="sightGlow" cx="540" cy="84" r="68" fill="url(#transitGlow)" />
+
+            <!-- Rear Mark (Tall Basalt Stone — Your Computer / Fixed Memory) -->
+            <g id="rearStone" transform="translate(468, 2) scale(0.72)">
+              <path d={BAKEN_ANCHOR} fill="#DCE6EE" />
+            </g>
+
+            <!-- Front Mark (Vermilion Stone — Your Phone / Moving With You) -->
+            <g id="frontStone" transform="translate(468, 2) scale(0.72)">
+              <path d={BAKEN_PEBBLE} fill="#EE5A3F" />
+            </g>
+
+            <!-- Left & right nautical chart annotations -->
+            <text x="28" y="84" fill="#7D93A5" font-size="11.5" font-family="ui-monospace, monospace">REAR MARK · YOUR COMPUTER (MEMORY &amp; WORK)</text>
+            <text x="738" y="84" fill="#EE5A3F" font-size="11.5" font-family="ui-monospace, monospace">FRONT MARK · YOUR PHONE (ALWAYS IN LINE)</text>
+          </svg>
+        </div>
+
+        <!-- LIVE PRODUCT WINDOW -->
         <div class="app-window scene active" data-scene="desktop">
           <div class="win-titlebar">
             <div class="win-left">
@@ -51,7 +97,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
               <span class="win-tab">Research</span>
               <span class="win-tab">+</span>
             </div>
-            <div class="win-search mono">Search conversations and memory…</div>
+            <div class="win-search">Search conversations and memory…</div>
             <div class="win-dots" aria-hidden="true">
               <span></span><span></span><span></span>
             </div>
@@ -101,7 +147,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                   </svg>
                 </div>
                 <strong>Meridian</strong>
-                <span class="mono agent-sub">On your computer</span>
+                <span class="agent-sub">Lives on your computer</span>
               </div>
 
               <div class="side-nav">
@@ -111,7 +157,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
               </div>
 
               <div class="side-threads">
-                <span class="mono side-label">RECENT</span>
+                <span class="side-label">Threads</span>
                 <div class="thread active-thread">Store launch &amp; domain</div>
                 <div class="thread">Living room TV setup</div>
                 <div class="thread">Monthly budget check</div>
@@ -121,26 +167,26 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
             <div class="win-chat">
               <div class="chat-feed">
                 <div class="msg-user">
-                  Pick up where we left off on the store — did we ever separate the support email from my personal inbox?
+                  Pick up where we left off on the store — did we finish separating the support email from my personal inbox?
                 </div>
 
-                <div class="tool-fold mono">
+                <div class="tool-fold">
                   <span class="fold-dot"></span>
-                  Checked memory &amp; live policies · 1.2s
+                  Checked memory &amp; storefront policies · 1.2s
                 </div>
 
                 <div class="msg-agent">
                   <p>Yes — we finished that on Thursday and I saved it in your project notes:</p>
                   <ul>
-                    <li>Your personal address is completely off the storefront and policies.</li>
-                    <li><strong>support@</strong> is live on the new domain and verified. Only thing left on your list was ordering a physical print sample before running ads.</li>
+                    <li>Your personal address is off the storefront and policies completely.</li>
+                    <li><strong>support@</strong> is live on the new domain. Only thing left on your list was ordering a physical print sample before running ads.</li>
                   </ul>
                 </div>
               </div>
 
               <div class="win-composer">
                 <span>Keep talking — even while background work is running…</span>
-                <div class="comp-right mono">
+                <div class="comp-right">
                   <span>On this computer</span>
                   <span class="comp-mic">●</span>
                 </div>
@@ -153,25 +199,24 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
         <div class="app-window scene" data-scene="pair">
           <div class="pair-stage">
             <div class="pair-panel">
-              <span class="mono pair-eyebrow">WITH YOU EVERYWHERE</span>
-              <h3>Walk away from your desk. Keep the conversation going.</h3>
-              <p>Start a long job on your computer, close your laptop, and check in from your phone. Your phone talks straight to your computer — nothing sits on a company's cloud in between.</p>
+              <h3>Walk away from your desk. Keep the thread going.</h3>
+              <p>Hand off a long job on your computer, close the lid, and check in from your phone. Your phone talks straight to your computer — nothing sits on a company's cloud in between.</p>
               <div class="pair-state-row">
                 <BakenMark uid="sc-pair" size={44} state="connecting" />
                 <div>
                   <strong>Paired with one scan</strong>
-                  <span class="mono">Your phone and your computer, talking directly</span>
+                  <span>Your phone and your computer, talking directly</span>
                 </div>
               </div>
             </div>
 
             <div class="phone-mock">
-              <div class="phone-top mono">
+              <div class="phone-top">
                 <span>Meridian</span>
                 <span class="phone-ok">● connected home</span>
               </div>
               <div class="phone-msg-u">Look into why the living room TV kept dropping off Wi-Fi while I'm out.</div>
-              <div class="phone-tool mono">Finished in the background · 2m ago</div>
+              <div class="phone-tool">Finished in the background · 2m ago</div>
               <div class="phone-msg-a">
                 Found it — disabling the stock setup app wiped the Wi-Fi profile it originally created. Re-saved it under system settings so it won't drop again.
               </div>
@@ -187,7 +232,6 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
         <div class="app-window scene" data-scene="voice">
           <div class="voice-stage">
             <div class="voice-left">
-              <span class="mono pair-eyebrow">FEELS ALIVE</span>
               <h3>See how it's doing at a glance.</h3>
               <p>Your companion isn't a dead text box. You can see when it's listening, when it's working on something in the background, and when it's resting — and you can talk to it out loud, hands-free.</p>
               <div class="mini-states">
@@ -213,7 +257,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                 <span style="--h:94%"></span><span style="--h:62%"></span><span style="--h:82%"></span>
                 <span style="--h:44%"></span>
               </div>
-              <span class="mono voice-tag">Hands-free voice · runs on your own machine</span>
+              <span class="voice-tag">Hands-free voice · runs on your own machine</span>
             </div>
           </div>
         </div>
@@ -221,40 +265,86 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
       <div class="scene-tabs" id="sceneTabs" role="tablist" aria-label="What Baken does">
         <button type="button" class="scene-tab active" data-target="desktop" role="tab" aria-selected="true">
-          <span class="mono">01</span> Remembers your world
+          Remembers your world
         </button>
         <button type="button" class="scene-tab" data-target="pair" role="tab" aria-selected="false">
-          <span class="mono">02</span> Goes with you on your phone
+          Goes with you on your phone
         </button>
         <button type="button" class="scene-tab" data-target="voice" role="tab" aria-selected="false">
-          <span class="mono">03</span> Talks &amp; works in the background
+          Talks &amp; works in the background
         </button>
       </div>
     </div>
   </section>
 
-  <!-- FULL-BLEED ELASTIC STRINGS BOARD (pull any block, snaps back home) -->
+  <!-- HISTORICAL ANCHOR: WHY IT'S CALLED BAKEN (Wadden Sea zeebaken / kaap heritage) -->
+  <section class="band band-rule" id="origin">
+    <div class="container origin-grid">
+      <div class="origin-plate">
+        <svg viewBox="0 0 420 260" class="plate-svg" aria-label="Historical Wadden Sea transit diagram">
+          <!-- Nautical chart plate frame -->
+          <rect x="1" y="1" width="418" height="258" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.18" />
+          <rect x="8" y="8" width="404" height="244" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.08" />
+
+          <!-- Shifting tidal sandbank contours -->
+          <path d="M 16 198 C 110 166, 230 220, 404 176" fill="none" stroke="currentColor" stroke-opacity="0.16" stroke-dasharray="3 3" />
+          <path d="M 16 218 C 140 190, 260 236, 404 198" fill="none" stroke="currentColor" stroke-opacity="0.22" />
+
+          <!-- Line of sight (Kenning) from ship through front & rear baken -->
+          <line x1="58" y1="204" x2="346" y2="62" stroke="var(--stone-2)" stroke-width="1.5" stroke-dasharray="4 4" />
+          <circle cx="58" cy="204" r="4" fill="currentColor" />
+
+          <!-- Front Baken (shore pebble / buoy) -->
+          <g transform="translate(178, 108) scale(0.28)">
+            <path d={BAKEN_PEBBLE} fill="var(--stone-2)" />
+          </g>
+          <!-- Rear Baken (tall standing stone / kaap on the dune) -->
+          <g transform="translate(306, 22) scale(0.42)">
+            <path d={BAKEN_ANCHOR} fill="currentColor" />
+          </g>
+
+          <text x="24" y="30" font-size="10.5" fill="currentColor" fill-opacity="0.6" font-family="ui-monospace, monospace">FIG. I — DE KENNING (LINE OF SIGHT)</text>
+          <text x="24" y="236" font-size="10" fill="currentColor" fill-opacity="0.55" font-family="ui-monospace, monospace">TEXEL · VLIELAND · TERSCHELLING (16th–19th C.)</text>
+        </svg>
+      </div>
+
+      <div class="origin-copy">
+        <h2>Why it's called Baken.</h2>
+        <p>
+          For four hundred years along the Dutch Wadden Sea, the sandbanks shifted with every tide. A chart drawn in spring could ground a ship by autumn. So islanders on Texel, Vlieland, and Terschelling erected <em>bakens</em> — fixed landmarks of stone, iron, and timber set into the dunes.
+        </p>
+        <p>
+          They worked in pairs. When a sailor lined up the smaller front mark against the tall rear mark on the shore — a sightline called a <em>kenning</em> — they knew they were in the safe channel, no matter how the water moved beneath them.
+        </p>
+        <p>
+          AI models shift the same way today: providers change their rules, raise prices, or retire the model you relied on overnight. Baken is the fixed mark you own. The rear stone is your computer, holding years of memory; the front stone is your phone, aligned with it wherever you go.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL-BLEED ELASTIC STRINGS BOARD -->
   <StringsCanvas />
 
-  <!-- WHY THIS MATTERS: WHAT YOU KEEP vs WHAT CAN DISAPPEAR -->
+  <!-- WHAT IT ACTUALLY DOES FOR YOU (zero buzzwords) -->
   <section class="band" id="details">
     <div class="container">
       <div class="band-head">
         <h2>Built so it can't be taken<br />away from you tomorrow.</h2>
-        <p>When an AI lives in a company's cloud, they decide what it's allowed to remember, how much it costs next month, and when to shut it down. Baken flips that completely.</p>
+        <p>When an AI lives in a company's cloud, they decide what it's allowed to remember, how much it costs next month, and when to shut it down. Baken keeps the relationship on your side.</p>
       </div>
 
       <div class="clean-grid">
         <div class="clean-item">
           <h3>It actually remembers you.</h3>
-          <p>Everything your companion learns — your projects, your preferences, what you decided three months ago — is saved as plain, readable files on your own computer. You can open them, edit them, or back them up anytime.</p>
+          <p>Everything your companion learns — your projects, the people in your life, what you decided three months ago — is saved as plain, readable files on your own computer. Open them, edit them, or back them up anytime.</p>
         </div>
         <div class="clean-item">
           <h3>Change the brain, keep the companion.</h3>
-          <p>Models get better every month, and providers change their rules overnight. Because your companion's memory and personality live on your machine, you can swap the underlying AI model whenever you want without starting over from a blank slate.</p>
+          <p>New models come out every month. Because your companion's memory and personality live on your machine, you can swap the underlying AI model whenever you want without starting over from a blank slate.</p>
         </div>
         <div class="clean-item">
-          <h3>Never waits for you to stare at a spinner.</h3>
+          <h3>Never makes you stare at a spinner.</h3>
           <p>Hand off a big task and keep talking, or lock your phone and walk away. Your computer does the heavy lifting in the background and brings the answer back into the conversation when it's ready.</p>
         </div>
         <div class="clean-item">
@@ -265,7 +355,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     </div>
   </section>
 
-  <!-- PAIRED IN A MINUTE -->
+  <!-- HOW YOU SET IT UP (genuine 1-2-3 sequence) -->
   <section class="band band-rule" id="pair">
     <div class="container">
       <div class="band-head centered">
@@ -275,24 +365,24 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
       <div class="steps-row">
         <div class="step">
-          <span class="step-idx mono">01</span>
+          <span class="step-idx">1</span>
           <h3>Put Baken on your computer.</h3>
           <p>Run it on the machine you already own — with a local model on your graphics card, or connected to the cloud model you prefer.</p>
-          <div class="req mono">Windows or Linux · local or cloud models</div>
+          <div class="req">Windows or Linux · local or cloud models</div>
         </div>
 
         <div class="step">
-          <span class="step-idx mono">02</span>
+          <span class="step-idx">2</span>
           <h3>Install the phone app.</h3>
           <p>Download Baken on Android. There is no account to create and nothing to subscribe to.</p>
-          <div class="req mono">Android 8.0 or later · free download</div>
+          <div class="req">Android 8.0 or later · free download</div>
         </div>
 
         <div class="step">
-          <span class="step-idx mono">03</span>
+          <span class="step-idx">3</span>
           <h3>Scan the code on your screen.</h3>
           <p>Point your phone at the code on your computer. They lock directly to each other, encrypted end to end.</p>
-          <div class="req mono">Direct connection · no middleman server</div>
+          <div class="req">Direct connection · no middleman server</div>
         </div>
       </div>
     </div>
@@ -351,49 +441,63 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 </Layout>
 
 <style>
-  .hero { padding: 56px 0 88px; }
+  .hero { padding: 64px 0 88px; }
   .hero-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
-  .eyebrow-pill {
-    display: inline-flex; align-items: center; padding: 7px 16px; border-radius: 999px;
-    font-size: 13px; font-weight: 500; color: var(--text); background: var(--pill-bg);
-    border: 1px solid var(--border); box-shadow: var(--pill-shadow); margin-bottom: 28px;
-    transition: transform 160ms ease, border-color 160ms ease;
-  }
-  .eyebrow-pill:hover { transform: translateY(-1px); border-color: var(--border-strong); }
   .hero h1 {
-    margin: 0 0 22px; font-size: clamp(44px, 6.2vw, 74px);
-    line-height: 1.03; letter-spacing: -0.045em; font-weight: 700; max-width: 14ch;
+    margin: 0 0 22px; font-size: clamp(46px, 6.4vw, 76px);
+    line-height: 1.02; letter-spacing: -0.045em; font-weight: 700; max-width: 14ch;
   }
   .hero-lead {
-    margin: 0 0 32px; font-size: 16.5px; line-height: 1.64; color: var(--muted); max-width: 55ch;
+    margin: 0 0 32px; font-size: 17px; line-height: 1.64; color: var(--muted); max-width: 55ch;
   }
   .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .trust-row {
     margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 10px 26px; font-size: 13px; color: var(--muted);
+    gap: 10px 26px; font-size: 13.5px; color: var(--muted);
   }
   .trust-row span { display: inline-flex; align-items: center; gap: 7px; }
   .trust-row span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-2); }
 
-  .showcase-backdrop {
-    margin-top: 56px; border-radius: 18px; padding: 44px 44px 0;
+  /* Nautical Chart + Transit Sightline Stage */
+  .chart-stage {
+    margin-top: 56px; border-radius: 16px; padding: 24px 36px 0;
     background:
-      radial-gradient(circle at 20% 0%, rgba(238, 90, 63, 0.16), transparent 46%),
-      radial-gradient(circle at 82% 15%, rgba(62, 134, 178, 0.22), transparent 50%),
-      radial-gradient(rgba(220, 230, 238, 0.16) 1px, transparent 1px),
-      linear-gradient(160deg, #1b2f3d 0%, #0f1d28 55%, #0a141c 100%);
-    background-size: auto, auto, 24px 24px, auto;
-    border: 1px solid rgba(16, 32, 44, 0.12);
-    box-shadow: 0 24px 64px rgba(10, 20, 28, 0.16);
+      radial-gradient(circle at 50% 18%, rgba(238, 90, 63, 0.14), transparent 48%),
+      linear-gradient(165deg, #162836 0%, #0e1b25 55%, #09131a 100%);
+    border: 1px solid rgba(220, 230, 238, 0.14);
+    box-shadow: 0 24px 64px rgba(6, 13, 19, 0.28);
     overflow: hidden;
   }
+
+  .transit-instrument {
+    margin-bottom: 18px;
+  }
+  .transit-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px; color: #849BAE;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(220, 230, 238, 0.1);
+  }
+  .transit-readout {
+    color: #DCE6EE;
+  }
+  .transit-svg {
+    width: 100%; height: auto; display: block;
+  }
+  .contour {
+    fill: none; stroke: rgba(220, 230, 238, 0.11); stroke-width: 1;
+  }
+  .contour.c2 { stroke-dasharray: 4 4; stroke: rgba(220, 230, 238, 0.15); }
+  .contour.c3 { stroke: rgba(220, 230, 238, 0.07); }
 
   .scene { display: none; }
   .scene.active { display: block; }
 
   .app-window {
     background: #0e161d; color: #e8eff4;
-    border-radius: 14px 14px 0 0; border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: none;
+    border-radius: 12px 12px 0 0; border: 1px solid rgba(255, 255, 255, 0.11); border-bottom: none;
     overflow: hidden; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.48);
   }
 
@@ -406,13 +510,13 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   .win-tab { font-size: 12px; color: #7f96a8; padding: 4px 10px; border-radius: 6px; }
   .win-tab.active-tab { background: rgba(255, 255, 255, 0.07); color: #e8eff4; font-weight: 700; }
   .win-search {
-    font-size: 11.5px; color: #6c8294; background: rgba(255, 255, 255, 0.04);
+    font-size: 12px; color: #6c8294; background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.07); padding: 4px 14px; border-radius: 6px;
   }
   .win-dots { display: flex; gap: 7px; }
   .win-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
 
-  .win-body { display: grid; grid-template-columns: 56px 210px 1fr; min-height: 410px; }
+  .win-body { display: grid; grid-template-columns: 56px 210px 1fr; min-height: 396px; }
   .win-rail {
     background: #091016; border-right: 1px solid rgba(255, 255, 255, 0.07);
     padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -425,11 +529,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   }
   .agent-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
   .agent-hero strong { font-size: 15px; }
-  .agent-sub { font-size: 10.5px; color: #7f96a8; }
+  .agent-sub { font-size: 11.5px; color: #7f96a8; }
   .side-nav { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #9ab0c1; }
   .side-item { padding: 6px 8px; border-radius: 6px; }
   .side-threads { display: flex; flex-direction: column; gap: 4px; }
-  .side-label { font-size: 10px; letter-spacing: 0.08em; color: #677d8f; padding: 0 8px 4px; }
+  .side-label { font-size: 11px; color: #677d8f; padding: 0 8px 4px; }
   .thread { font-size: 12.5px; color: #8da2b3; padding: 6px 8px; border-radius: 6px; }
   .thread.active-thread { background: rgba(255, 255, 255, 0.07); color: #e8eff4; }
 
@@ -441,7 +545,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   }
   .tool-fold {
     align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12px; color: #88a0b2; padding: 5px 11px; border-radius: 7px;
+    font-size: 12.5px; color: #88a0b2; padding: 5px 11px; border-radius: 7px;
     background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
   }
   .fold-dot { width: 6px; height: 6px; border-radius: 50%; background: #ee5a3f; }
@@ -454,14 +558,13 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     border-radius: 10px; background: #14212c; border: 1px solid rgba(255, 255, 255, 0.09);
     font-size: 13.5px; color: #718799;
   }
-  .comp-right { display: flex; align-items: center; gap: 10px; font-size: 11px; }
+  .comp-right { display: flex; align-items: center; gap: 10px; font-size: 12px; }
   .comp-mic { color: #ee5a3f; }
 
   .pair-stage, .voice-stage {
     padding: 40px 44px 44px; display: grid; grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px; align-items: center; min-height: 410px;
+    gap: 40px; align-items: center; min-height: 396px;
   }
-  .pair-eyebrow { display: block; font-size: 11px; letter-spacing: 0.08em; color: #ee5a3f; margin-bottom: 10px; }
   .pair-panel h3, .voice-left h3 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.03em; line-height: 1.15; }
   .pair-panel p, .voice-left p { margin: 0 0 24px; color: #95abb9; font-size: 15px; max-width: 46ch; }
   .pair-state-row {
@@ -469,17 +572,17 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     border-radius: 12px; background: #13212d; border: 1px solid rgba(255, 255, 255, 0.09);
   }
   .pair-state-row strong { display: block; font-size: 14px; }
-  .pair-state-row span { font-size: 11.5px; color: #7f96a8; }
+  .pair-state-row span { font-size: 12px; color: #7f96a8; }
 
   .phone-mock {
     max-width: 310px; width: 100%; justify-self: center;
     background: #111c26; border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 12px;
   }
-  .phone-top { display: flex; justify-content: space-between; font-size: 11.5px; color: #7f96a8; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .phone-top { display: flex; justify-content: space-between; font-size: 12px; color: #7f96a8; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.07); }
   .phone-ok { color: #ee5a3f; }
   .phone-msg-u { align-self: flex-end; background: #1a3a4e; padding: 9px 12px; border-radius: 12px 12px 3px 12px; font-size: 12.5px; }
-  .phone-tool { font-size: 11px; color: #7f96a8; }
+  .phone-tool { font-size: 11.5px; color: #7f96a8; }
   .phone-msg-a { font-size: 13px; color: #dce6ee; line-height: 1.5; }
   .phone-bar { margin-top: 8px; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: #0c151d; border: 1px solid rgba(255,255,255,0.08); font-size: 11.5px; color: #b5c7d4; }
 
@@ -496,11 +599,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   .v-bars span { width: 6px; height: var(--h); border-radius: 999px; background: #ee5a3f; animation: vbar 1.4s ease-in-out infinite; }
   .v-bars span:nth-child(even) { background: #dce6ee; animation-delay: -0.45s; }
   @keyframes vbar { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.1); } }
-  .voice-tag { font-size: 11.5px; color: #869cae; }
+  .voice-tag { font-size: 12px; color: #869cae; }
 
   .scene-tabs { margin-top: 18px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
   .scene-tab {
-    display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px;
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
     border-radius: var(--radius); background: transparent; border: 1px solid transparent;
     color: var(--muted); font-family: inherit; font-size: 13.5px; font-weight: 500;
     cursor: pointer; transition: all 150ms ease;
@@ -510,7 +613,38 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     background: var(--surface); border-color: var(--border); color: var(--text);
     font-weight: 700; box-shadow: var(--pill-shadow);
   }
-  .scene-tab span { font-size: 11.5px; color: var(--stone-2); }
+
+  /* Historical Origin Plate + Essay */
+  .origin-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .origin-plate {
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .plate-svg { width: 100%; height: auto; display: block; }
+  .origin-copy h2 {
+    margin: 0 0 18px;
+    font-size: clamp(32px, 3.8vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+  }
+  .origin-copy p {
+    margin: 0 0 16px;
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 58ch;
+  }
+  .origin-copy em {
+    color: var(--text);
+    font-style: italic;
+  }
 
   .band { padding: 104px 0; }
   .band-rule { border-top: 1px solid var(--border); }
@@ -521,10 +655,10 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
   .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; }
   .step { padding-top: 22px; border-top: 1px solid var(--border-strong); }
-  .step-idx { display: inline-block; font-size: 12px; font-weight: 700; color: var(--stone-2); margin-bottom: 14px; }
+  .step-idx { display: inline-block; font-size: 13px; font-weight: 700; color: var(--stone-2); margin-bottom: 12px; }
   .step h3 { margin: 0 0 10px; font-size: 19px; letter-spacing: -0.025em; }
   .step p { margin: 0 0 18px; font-size: 15px; color: var(--muted); }
-  .req { font-size: 12px; color: var(--muted); opacity: 0.9; }
+  .req { font-size: 13px; color: var(--muted); opacity: 0.9; }
 
   .clean-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 44px 64px; }
   .clean-item { padding-top: 22px; border-top: 1px solid var(--border); }
@@ -547,22 +681,24 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
   @media (prefers-reduced-motion: reduce) { .v-bars span { animation: none !important; } }
   @media (max-width: 900px) {
-    .showcase-backdrop { padding: 20px 20px 0; }
+    .chart-stage { padding: 20px 18px 0; }
     .win-body { grid-template-columns: 52px 1fr; }
     .win-sidebar, .win-search { display: none; }
-    .pair-stage, .voice-stage { grid-template-columns: 1fr; padding: 28px 24px; }
+    .pair-stage, .voice-stage, .origin-grid { grid-template-columns: 1fr; padding: 28px 20px; }
+    .origin-grid { padding: 0; gap: 32px; }
     .steps-row { grid-template-columns: 1fr; gap: 32px; }
   }
   @media (max-width: 680px) {
-    .hero { padding-top: 32px; }
+    .hero { padding-top: 28px; }
     .band { padding: 72px 0; }
     .clean-grid { grid-template-columns: 1fr; gap: 32px; }
   }
 </style>
 
 <script is:inline>
+  // Scene tabs
   const tabs = document.querySelectorAll('#sceneTabs .scene-tab');
-  const scenes = document.querySelectorAll('.showcase-backdrop .scene');
+  const scenes = document.querySelectorAll('.chart-stage .scene');
   tabs.forEach((btn) => {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-target');
@@ -575,13 +711,40 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     });
   });
 
+  // Interactive Wadden Sea Transit Sightline (Kenning) + mascot gaze
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const rear = document.getElementById('rearStone');
+    const front = document.getElementById('frontStone');
+    const ray = document.getElementById('sightRay');
+    const glow = document.getElementById('sightGlow');
+    const readout = document.getElementById('transitReadout');
+
     window.addEventListener('pointermove', (e) => {
-      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const nx = (e.clientX / window.innerWidth) * 2 - 1; // -1 .. +1
       const ny = (e.clientY / window.innerHeight) * 2 - 1;
+
+      // Mascot eye gaze
       document.querySelectorAll('.m-gaze').forEach((g) => {
         g.setAttribute('transform', `translate(${(nx * 12).toFixed(1)}, ${(ny * 9).toFixed(1)})`);
       });
+
+      // Parallax between rear shore stone (slow) and front buoy stone (faster)
+      if (rear && front && ray && glow && readout) {
+        const rearDx = nx * 7;
+        const frontDx = nx * 24;
+        rear.setAttribute('transform', `translate(${(468 + rearDx).toFixed(1)}, 2) scale(0.72)`);
+        front.setAttribute('transform', `translate(${(468 + frontDx).toFixed(1)}, 2) scale(0.72)`);
+        ray.setAttribute('x1', (540 + rearDx).toFixed(1));
+        ray.setAttribute('x2', (540 + frontDx * 1.35).toFixed(1));
+
+        const driftDeg = Math.abs(nx * 4.2);
+        const aligned = driftDeg < 0.8;
+        glow.setAttribute('opacity', aligned ? '1' : '0.35');
+        ray.setAttribute('stroke', aligned ? 'rgba(238,90,63,0.85)' : 'rgba(220,230,238,0.28)');
+        readout.textContent = aligned
+          ? `Bearing aligned · ${driftDeg.toFixed(1)}° drift · channel locked`
+          : `Sighting transit · ${driftDeg.toFixed(1)}° offset · bring marks in line`;
+      }
     });
   }
 </script>
