@@ -5,14 +5,17 @@ interface Props {
   uid: string;
   size?: number;
   state?: 'idle' | 'boot' | 'loading' | 'connecting' | 'ambient' | 'degraded' | 'success';
+  tight?: boolean;
   class?: string;
 }
 
-const { uid, size = 36, state = 'idle', class: className = '' } = Astro.props;
+const { uid, size = 36, state = 'idle', tight = false, class: className = '' } = Astro.props;
+const vb = tight ? '28 28 138 144' : '-12 -16 224 216';
+const w = tight ? Math.round(size * (138 / 144)) : size;
 ---
 
-<span class={`baken-mark-host ${className}`} data-state={state} style={`display:inline-flex;width:${size}px;height:${size}px;`}>
-  <svg class="baken-svg" width={size} height={size} viewBox="-12 -16 224 216" aria-hidden="true">
+<span class={`baken-mark-host ${className}`} data-state={state} style={`display:inline-flex;width:${w}px;height:${size}px;`}>
+  <svg class="baken-svg" width={w} height={size} viewBox={vb} aria-hidden="true">
     <defs>
       <radialGradient id={`seamGlow-${uid}`} cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#FF7A59" stop-opacity="0.72" />
