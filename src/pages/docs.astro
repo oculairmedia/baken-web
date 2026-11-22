@@ -1,0 +1,127 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LINKS } from '../lib/brand';
+---
+
+<Layout title="Docs — Baken" description="Install, pair, and understand Baken's local-first agent architecture and living Rive motion system.">
+  <section class="docs-wrap">
+    <div class="container docs-inner">
+      <span class="eyebrow mono">DOCUMENTATION · BAKEN.CA</span>
+      <h1>Getting started with Baken</h1>
+      <p class="docs-lead">
+        Baken is a native Android &amp; Desktop client for stateful AI agents, built on Kotlin Multiplatform, encrypted Iroh peer-to-peer pairing, and git-backed agent memory.
+      </p>
+
+      <div class="doc-block" id="install">
+        <h2>1. Download &amp; Install</h2>
+        <p>
+          All Android APKs and Desktop installers (Windows, macOS, Linux) publish to the single latest-release page:
+        </p>
+        <p>
+          <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer">
+            Open GitHub Releases →
+          </a>
+        </p>
+        <p class="note">
+          <strong>Note during the Meridian → Baken rename:</strong> release asset filenames are transitioning from <code>meridian-desktop-*</code> to <code>baken-*</code>. Bookmarking the <code>/releases/latest</code> link above always points to the newest build.
+        </p>
+      </div>
+
+      <div class="doc-block" id="pairing">
+        <h2>2. Pair your devices (QR over Iroh)</h2>
+        <p>
+          Baken connects directly to your agent host over Iroh QUIC — no public reverse proxy or hand-copied API tokens required.
+        </p>
+        <ol>
+          <li>Start the host wrapper on your server or workstation.</li>
+          <li>Generate a pairing invite QR code from the CLI or Desktop host.</li>
+          <li>Scan from Baken on Android to establish a mutually authenticated peer connection.</li>
+        </ol>
+      </div>
+
+      <div class="doc-block" id="motion">
+        <h2>3. Brand Mark &amp; Mascot Architecture</h2>
+        <p>
+          Nothing in Baken is static, and no two indicators compete. Both <code>baken-mark.riv</code> and <code>mascot.riv</code> compile through the same Rive ViewModel pipeline and honor system <code>reduceMotion</code>.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Role</th>
+              <th>States Owned</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>baken-mark.riv</code></td>
+              <td>App / Harbour / Connection</td>
+              <td><code>idle</code>, <code>boot</code>, <code>loading</code> (hydration only), <code>connecting</code>, <code>degraded</code>, <code>ambient</code>, <code>success</code> (peer lock)</td>
+            </tr>
+            <tr>
+              <td><code>mascot.riv</code></td>
+              <td>Per-agent presence &amp; turns</td>
+              <td><code>listening</code>, <code>thinking</code>, <code>working</code>, <code>waitingInput</code>, <code>speaking</code>, <code>dreaming</code>, <code>sleeping</code>, <code>error</code>, <code>dragged</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="doc-block" id="open-source">
+        <h2>4. Repositories</h2>
+        <ul>
+          <li><a href={LINKS.appRepo} target="_blank" rel="noreferrer"><strong>Client &amp; runtime</strong> — <code>oculairmedia/letta-mobile</code></a></li>
+          <li><a href={LINKS.webRepo} target="_blank" rel="noreferrer"><strong>Website</strong> — <code>oculairmedia/baken-web</code></a> (Astro on Cloudflare Workers)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .docs-wrap { padding: 56px 0 32px; }
+  .docs-inner { max-width: 780px; }
+  .eyebrow { display: block; font-size: 12px; letter-spacing: 0.08em; color: var(--stone-2); margin-bottom: 10px; }
+  h1 { margin: 0 0 14px; font-size: clamp(32px, 4.4vw, 46px); letter-spacing: -0.035em; }
+  .docs-lead { font-size: 17px; color: var(--muted); margin: 0 0 36px; }
+  .doc-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 26px 28px;
+    margin-bottom: 20px;
+  }
+  .doc-block h2 { margin: 0 0 12px; font-size: 20px; letter-spacing: -0.02em; }
+  .doc-block p, .doc-block li { color: var(--muted); font-size: 15px; }
+  .doc-block strong, .doc-block a { color: var(--text); }
+  .doc-block a:hover { color: var(--stone-2); }
+  .doc-block code {
+    font-size: 13px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 6px;
+    color: var(--text);
+  }
+  .note {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    font-size: 13.5px !important;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 13.5px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+  th { color: var(--text); font-weight: 700; }
+</style>

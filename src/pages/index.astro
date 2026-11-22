@@ -1,0 +1,613 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BakenMark from '../components/BakenMark.astro';
+import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
+---
+
+<Layout>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="pill">
+          <span class="pill-dot"></span>
+          Open source · Android &amp; Desktop · Local-first
+        </span>
+        <h1>Your companion,<br />on every screen.</h1>
+        <p class="lead">
+          Baken is an open-source, local-first client for stateful AI agents — persistent git-backed memory, direct peer-to-peer pairing, and living mascots that stay with you across Android and Desktop with zero vendor lock-in.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href={LINKS.releases} target="_blank" rel="noreferrer">
+            Download latest release
+          </a>
+          <a class="btn btn-lg" href="/docs">
+            Read the docs
+          </a>
+        </div>
+        <p class="platform-note mono">
+          Android APK · Windows · macOS · Linux &nbsp;·&nbsp; Apache-2.0
+        </p>
+      </div>
+
+      <!-- INTERACTIVE LIVING STAGE (grounded 03 Basalt + real Rive-spec mascots) -->
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="mono stage-status" id="stageStatus">baken = idle · meridian = idle</span>
+          <button type="button" class="mini-btn" id="btnLockDemo" style="display:none">Lock peer →</button>
+        </div>
+
+        <div class="stage-canvas" id="heroStage" data-state="idle">
+          <!-- Meridian (blue blob) -->
+          <div class="mascot-wrap" title="Meridian">
+            <svg width="84" height="84" viewBox="-190 -190 380 380" aria-hidden="true">
+              <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
+              <g transform="rotate(-8)">
+                <rect x="-56" y="-56" width="112" height="112" rx="26" fill="#F7F7F7" />
+                <g class="m-gaze"><g class="eye-blink" data-role="glyph" set:html={GLYPHS.idle} /></g>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Baken Living Basalt Mark -->
+          <BakenMark uid="hero" size={146} state="idle" class="hero-baken" />
+
+          <!-- Companion Mascots -->
+          <div class="mascot-stack">
+            <div class="mascot-wrap" style="animation-delay:-1.3s" title="Worker">
+              <svg width="60" height="60" viewBox="-190 -190 380 380" aria-hidden="true">
+                <path d={MASCOT_BODIES.triangle} fill="#FF6A1A" />
+                <g transform="translate(0,12) rotate(7)">
+                  <rect x="-50" y="-50" width="100" height="100" rx="24" fill="#F7F7F7" />
+                  <g class="m-gaze"><g class="eye-blink" data-role="glyph" set:html={GLYPHS.idle} /></g>
+                </g>
+              </svg>
+            </div>
+            <div class="mascot-wrap" style="animation-delay:-2.5s" title="PM">
+              <svg width="60" height="60" viewBox="-190 -190 380 380" aria-hidden="true">
+                <path d={MASCOT_BODIES.squircle} fill="#1DA34A" />
+                <g transform="rotate(-5)">
+                  <rect x="-54" y="-54" width="108" height="108" rx="25" fill="#F7F7F7" />
+                  <g class="m-gaze"><g class="eye-blink" data-role="glyph" set:html={GLYPHS.idle} /></g>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-controls" id="stateControls">
+          <div class="ctrl-row">
+            <span class="ctrl-label mono">App state</span>
+            <button type="button" class="chip active" data-app="idle">idle</button>
+            <button type="button" class="chip" data-app="boot">boot</button>
+            <button type="button" class="chip" data-app="loading">loading</button>
+            <button type="button" class="chip" data-app="connecting">connecting</button>
+            <button type="button" class="chip" data-app="ambient">ambient</button>
+            <button type="button" class="chip" data-app="degraded">degraded</button>
+          </div>
+          <div class="ctrl-row">
+            <span class="ctrl-label mono">Agent turn</span>
+            <button type="button" class="chip secondary" id="btnMascotTurn">mascot: idle</button>
+            <span class="ctrl-note">Baken owns connection &amp; harbour state · Mascots own turn activity</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE PILLARS -->
+  <section class="section" id="architecture">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow mono">PORTS &amp; ADAPTERS · ZERO LOCK-IN</span>
+        <h2>Built for people who keep their agents.</h2>
+      </div>
+      <div class="pillars">
+        <article class="pillar-card">
+          <h3>Memory that stays yours</h3>
+          <p>Git-tracked MemFS and persistent conversation continuity live on your own host — inspectable, portable, and never trapped in a proprietary SaaS silo.</p>
+        </article>
+        <article class="pillar-card">
+          <h3>Direct peer-to-peer pairing</h3>
+          <p>Scan one QR code to pair Android and Desktop directly to your agent server over encrypted Iroh QUIC — no reverse-proxy gymnastics or pasted tokens.</p>
+        </article>
+        <article class="pillar-card">
+          <h3>Open protocols all the way down</h3>
+          <p>MCP tools, A2UI structured surfaces, and bring-your-own models or harnesses. Swap runtimes without losing your companions or history.</p>
+        </article>
+        <article class="pillar-card">
+          <h3>Living presence, never static</h3>
+          <p>One Rive state-machine architecture drives both the grounded basalt brand mark and every agent mascot — honoring system <code class="mono">reduceMotion</code> everywhere.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- COEXISTENCE RAIL SHOWCASE -->
+  <section class="section" id="presence">
+    <div class="container">
+      <div class="split-showcase">
+        <div class="rail-frame">
+          <div class="rail-col">
+            <div class="rail-slot app-slot" id="railMarkSlot">
+              <BakenMark uid="rail" size={26} state="idle" />
+            </div>
+            <div class="rail-div"></div>
+            <div class="rail-slot active-agent">
+              <svg width="32" height="32" viewBox="-185 -185 370 370" aria-hidden="true">
+                <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
+                <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(-8)" />
+                <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+              </svg>
+            </div>
+            <div class="rail-slot">
+              <svg width="32" height="32" viewBox="-185 -185 370 370" aria-hidden="true">
+                <path d={MASCOT_BODIES.triangle} fill="#FF6A1A" />
+                <rect x="-58" y="-44" width="116" height="116" rx="28" fill="#F7F7F7" />
+                <g class="m-gaze" transform="translate(0,14)"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+              </svg>
+            </div>
+            <div class="rail-slot">
+              <svg width="32" height="32" viewBox="-185 -185 370 370" aria-hidden="true">
+                <path d={MASCOT_BODIES.squircle} fill="#1DA34A" />
+                <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(4)" />
+                <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+              </svg>
+            </div>
+            <div class="rail-slot">
+              <svg width="32" height="32" viewBox="-185 -185 370 370" aria-hidden="true">
+                <path d={MASCOT_BODIES.circle} fill="#E5484D" />
+                <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(-5)" />
+                <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="rail-body">
+            <div class="rail-header">
+              <strong>Meridian</strong>
+              <span class="mono badge">Iroh · connected</span>
+            </div>
+            <div class="rail-item">
+              <BakenMark uid="load-demo" size={26} state="loading" />
+              <div>
+                <div class="item-t">Grounded stone-cradle loaders</div>
+                <div class="item-s">Hydration uses weighted basalt motion — no generic spinning wheels.</div>
+              </div>
+            </div>
+            <div class="rail-item">
+              <BakenMark uid="conn-demo" size={26} state="connecting" />
+              <div>
+                <div class="item-t">Channel-seam pairing &amp; reconnect</div>
+                <div class="item-s">Stones part while seeking a peer and lock back together on connect.</div>
+              </div>
+            </div>
+            <div class="rail-toast">
+              <BakenMark uid="amb-demo" size={22} state="ambient" />
+              <span>Ambient harbour glow — quiet peripheral updates without stealing focus.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-copy">
+          <span class="eyebrow mono">TWO ROLES · ONE MOTION GRAMMAR</span>
+          <h2>The harbour stays calm so your agents can speak.</h2>
+          <p>
+            <strong>Baken</strong> is the Dutch word for a coastal landmark or seamark. In the interface, the two leaning basalt stones carry app-level state — boot, hydration, Iroh connection, degraded offline, and quiet ambient alerts.
+          </p>
+          <p>
+            Below it sit your <strong>agent mascots</strong> — each with its own chosen body shape, color, gaze, and expressive turn states. Because the two never animate for the same event, the interface feels alive without ever feeling noisy.
+          </p>
+          <a class="btn" href="/docs#motion">Read the motion &amp; Rive architecture →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-band">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <img src="/brand/baken-app-icon-lit.svg" alt="Baken app icon" width="76" height="76" class="cta-icon" />
+          <div>
+            <h2>Ready to run on your own stack.</h2>
+            <p class="cta-sub">Grab the latest Android APK and Desktop builds directly from GitHub Releases.</p>
+          </div>
+        </div>
+        <div class="hero-ctas" style="margin:0">
+          <a class="btn btn-primary btn-lg" href={LINKS.releases} target="_blank" rel="noreferrer">
+            Latest release
+          </a>
+          <a class="btn btn-lg" href={LINKS.appRepo} target="_blank" rel="noreferrer">
+            View source
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    padding: 68px 0 44px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+  .hero-copy h1 {
+    margin: 18px 0 18px;
+    font-size: clamp(40px, 5.2vw, 62px);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+  }
+  .lead {
+    margin: 0 0 28px;
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .platform-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .stage-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    padding: 18px;
+  }
+  .stage-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 30px;
+    margin-bottom: 10px;
+  }
+  .stage-status {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .mini-btn {
+    border: none;
+    border-radius: 999px;
+    background: var(--stone-2);
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  .stage-canvas {
+    height: 256px;
+    border-radius: 18px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .mascot-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .stage-controls {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ctrl-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  .ctrl-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .ctrl-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+  .chip {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 160ms ease;
+  }
+  .chip:hover { border-color: var(--stone-2); }
+  .chip.active { background: var(--stone-2); border-color: var(--stone-2); color: #fff; }
+  .chip.secondary.active { background: var(--stone-1); border-color: var(--stone-1); color: var(--bg); }
+
+  .section {
+    padding: 56px 0;
+  }
+  .section-head {
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--stone-2);
+    margin-bottom: 10px;
+  }
+  .section-head h2, .showcase-copy h2, .cta-band h2 {
+    margin: 0;
+    font-size: clamp(28px, 3.4vw, 38px);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .pillar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 22px;
+  }
+  .pillar-card h3 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+  }
+  .pillar-card p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .split-showcase {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+  .rail-frame {
+    display: flex;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    min-height: 336px;
+  }
+  .rail-col {
+    width: 64px;
+    background: var(--bg-deep);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 0;
+    gap: 10px;
+  }
+  .rail-div {
+    width: 26px;
+    height: 1px;
+    background: var(--border);
+  }
+  .rail-slot {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+  }
+  .rail-slot.app-slot {
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .rail-slot.active-agent {
+    background: rgba(238, 90, 63, 0.14);
+    box-shadow: inset 0 0 0 1.5px var(--stone-2);
+  }
+  .rail-body {
+    flex: 1;
+    background: var(--bg);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .badge {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .rail-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 15px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .item-t { font-size: 14px; font-weight: 700; }
+  .item-s { font-size: 12.5px; color: var(--muted); }
+  .rail-toast {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 12.5px;
+  }
+  .showcase-copy p {
+    color: var(--muted);
+    font-size: 15.5px;
+    margin: 14px 0;
+  }
+  .showcase-copy strong {
+    color: var(--text);
+  }
+  .showcase-copy .btn {
+    margin-top: 8px;
+  }
+
+  .cta-band {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 34px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .cta-icon {
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+  }
+  .cta-sub {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid, .split-showcase {
+      grid-template-columns: 1fr;
+    }
+    .pillars {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      padding-top: 40px;
+    }
+    .cta-band {
+      padding: 24px;
+    }
+  }
+</style>
+
+<script define:vars={{ GLYPHS }}>
+  const heroStage = document.getElementById('heroStage');
+  const heroMark = heroStage?.querySelector('.hero-baken');
+  const railMark = document.querySelector('#railMarkSlot .baken-mark-host');
+  const statusEl = document.getElementById('stageStatus');
+  const lockBtn = document.getElementById('btnLockDemo');
+  const mascotBtn = document.getElementById('btnMascotTurn');
+
+  let appState = 'idle';
+  let mascotState = 'idle';
+
+  function renderStatus() {
+    if (statusEl) statusEl.textContent = `baken = ${appState} · meridian = ${mascotState}`;
+    if (lockBtn) lockBtn.style.display = appState === 'connecting' ? 'inline-block' : 'none';
+  }
+
+  function setAppState(next) {
+    appState = next;
+    heroMark?.setAttribute('data-state', next);
+    railMark?.setAttribute('data-state', next);
+    document.querySelectorAll('#stateControls [data-app]').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-app') === next);
+    });
+    renderStatus();
+  }
+
+  function setMascotState(next) {
+    mascotState = next;
+    if (mascotBtn) {
+      mascotBtn.textContent = `mascot: ${next}`;
+      mascotBtn.classList.toggle('active', next !== 'idle');
+    }
+    // Strict ownership split: when a mascot enters a turn, Baken settles to calm idle
+    if (next !== 'idle' && appState !== 'idle') setAppState('idle');
+    document.querySelectorAll('#heroStage .mascot-wrap').forEach((m) => {
+      m.style.animation =
+        next === 'thinking'
+          ? 'mThink 2.8s ease-in-out infinite'
+          : next === 'working'
+            ? 'mWork 1.05s ease-in-out infinite'
+            : '';
+    });
+    const glyphKey = next === 'working' ? 'thinking' : next;
+    document.querySelectorAll('#heroStage [data-role="glyph"]').forEach((g) => {
+      g.innerHTML = GLYPHS[glyphKey] || GLYPHS.idle;
+    });
+    renderStatus();
+  }
+
+  document.getElementById('stateControls')?.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target instanceof HTMLElement && target.dataset.app) {
+      setAppState(target.dataset.app);
+    }
+  });
+
+  const MASCOT_CYCLE = ['idle', 'thinking', 'working'];
+  mascotBtn?.addEventListener('click', () => {
+    const idx = (MASCOT_CYCLE.indexOf(mascotState) + 1) % MASCOT_CYCLE.length;
+    setMascotState(MASCOT_CYCLE[idx]);
+  });
+
+  lockBtn?.addEventListener('click', () => {
+    setAppState('success');
+    setTimeout(() => setAppState('idle'), 1150);
+  });
+
+  // Live pointer gaze matching MASCOT.md normalized -1..1 lookX/lookY
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReduced) {
+    window.addEventListener('pointermove', (e) => {
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      document.querySelectorAll('.m-gaze').forEach((g) => {
+        g.setAttribute('transform', `translate(${(nx * 14).toFixed(1)}, ${(ny * 10).toFixed(1)})`);
+      });
+    });
+  }
+</script>

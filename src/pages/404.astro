@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BakenMark from '../components/BakenMark.astro';
+---
+
+<Layout title="404 — Baken">
+  <section class="nf-wrap">
+    <div class="container nf-inner">
+      <BakenMark uid="nf" size={120} state="degraded" />
+      <h1>Off the chart.</h1>
+      <p>That route doesn't exist on baken.ca.</p>
+      <a class="btn btn-primary" href="/">Back to harbour</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .nf-wrap { padding: 110px 0 80px; text-align: center; }
+  .nf-inner { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  h1 { margin: 8px 0 0; font-size: 40px; letter-spacing: -0.03em; }
+  p { margin: 0 0 12px; color: var(--muted); font-size: 16px; }
+</style>

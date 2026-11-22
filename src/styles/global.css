@@ -1,0 +1,377 @@
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/PlusJakartaSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #0D1821;
+  --bg-deep: #091118;
+  --surface: #13212D;
+  --surface-2: #192B3A;
+  --border: #223749;
+  --stone-1: #DCE6EE;
+  --stone-2: #EE5A3F;
+  --stone-2-warm: #FF7858;
+  --stone-2-dim: #7C5C59;
+  --text: #E8EFF4;
+  --muted: #7F96A8;
+  --btn-text: #FFFFFF;
+}
+
+[data-theme="light"] {
+  --bg: #EFF3F6;
+  --bg-deep: #E2EAEF;
+  --surface: #FFFFFF;
+  --surface-2: #E4ECF1;
+  --border: #CBD6DF;
+  --stone-1: #163044;
+  --stone-2: #E04A32;
+  --stone-2-warm: #F4664A;
+  --stone-2-dim: #8D7C7B;
+  --text: #10202C;
+  --muted: #586E7F;
+  --btn-text: #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-weight: 500;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  transition: background 240ms ease, color 240ms ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+code, pre, .mono {
+  font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: -0.038em;
+}
+
+.brand-link:hover .stone-p {
+  transform: rotate(3deg) translateY(-2px);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, background 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--stone-2);
+}
+
+.btn-primary {
+  background: var(--stone-2);
+  border-color: var(--stone-2);
+  color: var(--btn-text);
+}
+
+.btn-primary:hover {
+  background: var(--stone-2-warm);
+  border-color: var(--stone-2-warm);
+}
+
+.btn-ghost {
+  padding: 8px 13px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+}
+
+.btn-lg {
+  padding: 13px 24px;
+  font-size: 15px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--stone-2);
+}
+
+/* Grounded Basalt Motion System (matches BAKEN_MARK_RIVE_SPEC.md) */
+.baken-svg {
+  overflow: visible;
+  display: block;
+}
+
+.stone-a {
+  transform-origin: 65px 168px;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stone-p {
+  transform-origin: 134px 168px;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.baken-anchor {
+  fill: var(--stone-1);
+  transition: fill 280ms ease, opacity 280ms ease;
+}
+
+.baken-pebble {
+  fill: var(--stone-2);
+  transition: fill 280ms ease, opacity 280ms ease;
+}
+
+.seam-glow {
+  opacity: 0;
+  transition: opacity 300ms ease;
+  transform-origin: 96px 134px;
+}
+
+.anchor-bounce {
+  opacity: 0.14;
+  transition: opacity 300ms ease;
+}
+
+.basalt-sheen {
+  opacity: 0;
+}
+
+[data-state="idle"] .stone-a { animation: bIdleA 5.2s ease-in-out infinite; }
+[data-state="idle"] .stone-p { animation: bIdleP 5.2s ease-in-out infinite; }
+@keyframes bIdleA { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-0.85deg); } }
+@keyframes bIdleP { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(1.35deg) translateX(0.6px); } }
+
+[data-state="boot"] .stone-a { animation: bBootA 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+[data-state="boot"] .stone-p { animation: bBootP 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+@keyframes bBootA {
+  0% { transform: translateY(-28px) scaleX(0.97) scaleY(1.03); opacity: 0; }
+  18% { transform: translateY(1px) scaleX(1.04) scaleY(0.96); opacity: 1; }
+  30%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes bBootP {
+  0%, 18% { transform: translate(26px, -6px) rotate(18deg) scale(0.92); opacity: 0; }
+  38% { transform: translate(-2px, 1px) rotate(-3deg) scaleX(1.05) scaleY(0.95); opacity: 1; }
+  52%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+[data-state="loading"] .stone-a { animation: bLoadA 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+[data-state="loading"] .stone-p { animation: bLoadP 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+[data-state="loading"] .basalt-sheen { animation: bSheen 1.5s ease-in-out infinite; }
+@keyframes bLoadA {
+  0%, 100% { transform: rotate(0deg) scaleY(1); }
+  26% { transform: rotate(-4.2deg) translateX(-1.5px) scaleY(1.015); }
+  55% { transform: rotate(1.6deg) translateX(1px) scaleY(0.985); }
+}
+@keyframes bLoadP {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  22% { transform: rotate(-2deg) translateX(-1px) scaleX(1.03) scaleY(0.97); }
+  58% { transform: rotate(11deg) translate(4.5px, -3px); }
+}
+@keyframes bSheen {
+  0% { transform: translateX(-30px) rotate(18deg); opacity: 0; }
+  25% { opacity: 0.9; }
+  65%, 100% { transform: translateX(175px) rotate(18deg); opacity: 0; }
+}
+
+[data-state="connecting"] .stone-a { animation: bConnA 2.2s ease-in-out infinite; }
+[data-state="connecting"] .stone-p { animation: bConnP 2.2s ease-in-out infinite; }
+[data-state="connecting"] .seam-glow { animation: bSeamPulse 2.2s ease-in-out infinite; }
+[data-state="connecting"] .anchor-bounce { animation: bSeamBounce 2.2s ease-in-out infinite; }
+@keyframes bConnA { 0%, 100% { transform: translateX(-5.5px) rotate(-2.5deg); } 50% { transform: translateX(-1.5px) rotate(1.2deg); } }
+@keyframes bConnP { 0%, 100% { transform: translateX(8px) rotate(6deg); } 50% { transform: translateX(2px) rotate(-2.5deg); } }
+@keyframes bSeamPulse { 0%, 100% { opacity: 0.18; transform: scale(0.82); } 50% { opacity: 0.92; transform: scale(1.12); } }
+@keyframes bSeamBounce { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.68; } }
+
+[data-state="success"] .stone-a { animation: bSuccA 1.15s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+[data-state="success"] .stone-p { animation: bSuccP 1.15s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+[data-state="success"] .baken-pebble { animation: bSuccFlash 1.15s ease infinite; }
+@keyframes bSuccA {
+  0%, 100% { transform: translateY(0) scale(1); }
+  14% { transform: translateY(2px) scaleX(1.04) scaleY(0.95); }
+  38% { transform: translateY(-9px) rotate(-2.5deg) scaleX(0.98) scaleY(1.02); }
+  62% { transform: translateY(1px) scaleX(1.02) scaleY(0.98); }
+}
+@keyframes bSuccP {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  14% { transform: translateY(2.5px) scaleX(1.06) scaleY(0.93); }
+  42% { transform: translateY(-14px) rotate(-7deg) translateX(-1.5px); }
+  66% { transform: translateY(1px) rotate(1.5deg); }
+}
+@keyframes bSuccFlash { 0%, 100% { fill: var(--stone-2); } 40% { fill: var(--stone-2-warm); } }
+
+[data-state="ambient"] .stone-a { animation: bIdleA 5.2s ease-in-out infinite; }
+[data-state="ambient"] .stone-p { animation: bIdleP 5.2s ease-in-out infinite; }
+[data-state="ambient"] .baken-pebble { animation: bAmbWarm 3.4s ease-in-out infinite; }
+[data-state="ambient"] .anchor-bounce { animation: bAmbBounce 3.4s ease-in-out infinite; }
+[data-state="ambient"] .seam-glow { animation: bAmbSeam 3.4s ease-in-out infinite; }
+@keyframes bAmbWarm { 0%, 100% { fill: var(--stone-2); } 50% { fill: var(--stone-2-warm); } }
+@keyframes bAmbBounce { 0%, 100% { opacity: 0.18; } 50% { opacity: 0.85; } }
+@keyframes bAmbSeam { 0%, 100% { opacity: 0.08; transform: scale(0.92); } 50% { opacity: 0.55; transform: scale(1.08); } }
+
+[data-state="degraded"] .baken-anchor { opacity: 0.62; }
+[data-state="degraded"] .baken-pebble { fill: var(--stone-2-dim); opacity: 0.78; }
+[data-state="degraded"] .stone-p { animation: bDegP 3.2s ease-in-out infinite; }
+@keyframes bDegP { 0%, 100% { transform: translateX(10px) rotate(10deg); } 50% { transform: translateX(12px) rotate(12.5deg); } }
+
+/* Mascots */
+.mascot-wrap {
+  animation: mIdle 4.6s ease-in-out infinite;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mascot-wrap:hover { transform: translateY(-4px) scale(1.05); }
+@keyframes mIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@keyframes mThink { 0%, 100% { transform: translateX(-2.5px) rotate(-1.8deg); } 50% { transform: translateX(2.5px) rotate(1.8deg); } }
+@keyframes mWork { 0%, 100% { transform: translateY(0); } 45% { transform: translateY(-3.5px); } }
+
+.eye-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 4.8s infinite;
+}
+@keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .stone-a, .stone-p, .basalt-sheen, .mascot-wrap, .eye-blink {
+    animation: none !important;
+  }
+}
+
+.reduce-motion .stone-a,
+.reduce-motion .stone-p,
+.reduce-motion .basalt-sheen,
+.reduce-motion .mascot-wrap,
+.reduce-motion .eye-blink {
+  animation: none !important;
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 84px;
+  padding: 36px 0 48px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a:hover {
+  color: var(--text);
+}
+
+@media (max-width: 720px) {
+  .nav-links {
+    display: none;
+  }
+}

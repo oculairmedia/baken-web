@@ -1,0 +1,47 @@
+---
+import { BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
+
+interface Props {
+  uid: string;
+  size?: number;
+  state?: 'idle' | 'boot' | 'loading' | 'connecting' | 'ambient' | 'degraded' | 'success';
+  class?: string;
+}
+
+const { uid, size = 36, state = 'idle', class: className = '' } = Astro.props;
+---
+
+<span class={`baken-mark-host ${className}`} data-state={state} style={`display:inline-flex;width:${size}px;height:${size}px;`}>
+  <svg class="baken-svg" width={size} height={size} viewBox="-12 -16 224 216" aria-hidden="true">
+    <defs>
+      <radialGradient id={`seamGlow-${uid}`} cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#FF7A59" stop-opacity="0.72" />
+        <stop offset="55%" stop-color="#EE5A3F" stop-opacity="0.22" />
+        <stop offset="100%" stop-color="#EE5A3F" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id={`bounce-${uid}`} cx="100%" cy="70%" r="56%">
+        <stop offset="0%" stop-color="#FF7555" stop-opacity="0.45" />
+        <stop offset="100%" stop-color="#EE5A3F" stop-opacity="0" />
+      </radialGradient>
+      <linearGradient id={`sheen-${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+        <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.32" />
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+      </linearGradient>
+      <clipPath id={`clipA-${uid}`}>
+        <path d={BAKEN_ANCHOR} />
+      </clipPath>
+    </defs>
+    <ellipse class="seam-glow" cx="96" cy="134" rx="28" ry="38" fill={`url(#seamGlow-${uid})`} />
+    <g class="stone-a">
+      <path class="baken-anchor" d={BAKEN_ANCHOR} />
+      <path class="anchor-bounce" d={BAKEN_ANCHOR} fill={`url(#bounce-${uid})`} />
+      <g clip-path={`url(#clipA-${uid})`}>
+        <rect class="basalt-sheen" x="-80" y="0" width="60" height="220" transform="rotate(18 60 100)" fill={`url(#sheen-${uid})`} />
+      </g>
+    </g>
+    <g class="stone-p">
+      <path class="baken-pebble" d={BAKEN_PEBBLE} />
+    </g>
+  </svg>
+</span>
