@@ -9,19 +9,20 @@ interface Props {
 }
 
 const {
-  title = 'Baken — Own your AI. On every screen.',
-  description = 'Open-source, local-first client for stateful AI agents on Android, Windows, and Linux. Direct peer-to-peer pairing, persistent memory, and zero lock-in.',
+  title = 'Baken — Your agents, on your hardware',
+  description = 'Android, Windows, and Linux client for stateful agents running on your own machine. Direct Iroh pairing, git-tracked memory, and Rive mascots.',
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#EFF3F6" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EFF3F6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0D1821" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -45,15 +46,6 @@ const {
       src="https://metrics.oculair.ca/script.js"
       data-website-id="cabd3ab0-d34d-495b-baec-6808d1118e45"
     ></script>
-
-    <script is:inline>
-      try {
-        const saved = localStorage.getItem('baken-theme-v2');
-        if (saved === 'light' || saved === 'dark') {
-          document.documentElement.dataset.theme = saved;
-        }
-      } catch {}
-    </script>
   </head>
   <body>
     <header class="site-nav">
@@ -66,17 +58,14 @@ const {
 
           <nav class="nav-links" aria-label="Main navigation">
             <a href="/#pair">Pairing</a>
-            <a href="/#features">Features <span class="nav-tag">Beta</span></a>
-            <a href="/#privacy">Privacy</a>
+            <a href="/#ownership">Ownership</a>
+            <a href="/#details">How it works</a>
             <a href="/#faq">FAQ</a>
             <a href="/docs">Docs ↗</a>
           </nav>
         </div>
 
         <div class="nav-actions">
-          <button id="themeToggle" class="btn btn-icon" type="button" aria-label="Toggle light and dark theme">
-            Theme
-          </button>
           <a class="btn btn-nav" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-nav">
             Download
           </a>
@@ -92,7 +81,7 @@ const {
       <div class="container footer-inner">
         <div style="display:flex;align-items:center;gap:7px;">
           <BakenMark uid="ftr" size={17} state="idle" tight />
-          <span><strong style="color:var(--text)">baken</strong> · Own your AI.</span>
+          <span><strong style="color:var(--text)">baken</strong> · baken.ca</span>
         </div>
         <div class="footer-links">
           <a href="/docs">Docs</a>
@@ -103,14 +92,5 @@ const {
         </div>
       </div>
     </footer>
-
-    <script is:inline>
-      const btn = document.getElementById('themeToggle');
-      btn?.addEventListener('click', () => {
-        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-        document.documentElement.dataset.theme = next;
-        try { localStorage.setItem('baken-theme-v2', next); } catch {}
-      });
-    </script>
   </body>
 </html>

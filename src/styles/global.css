@@ -13,8 +13,9 @@
   font-display: swap;
 }
 
-/* Light-first North Sea Mist editorial canvas (mirrors Osaurus airy poise, zero cream) */
+/* Light-first North Sea Mist editorial canvas, follows OS color scheme automatically */
 :root {
+  color-scheme: light dark;
   --bg: #EFF3F6;
   --bg-subtle: #E5ECF1;
   --surface: #FFFFFF;
@@ -35,23 +36,25 @@
   --max-w: 1160px;
 }
 
-[data-theme="dark"] {
-  --bg: #0D1821;
-  --bg-subtle: #11202C;
-  --surface: #13212D;
-  --border: rgba(220, 230, 238, 0.11);
-  --border-strong: rgba(220, 230, 238, 0.22);
-  --stone-1: #DCE6EE;
-  --stone-2: #EE5A3F;
-  --stone-2-hover: #FF6E53;
-  --stone-2-warm: #FF7858;
-  --stone-2-dim: #7C5C59;
-  --text: #E8EFF4;
-  --muted: #869CAE;
-  --nav-btn-bg: #E8EFF4;
-  --nav-btn-text: #0D1821;
-  --pill-bg: #152533;
-  --pill-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0D1821;
+    --bg-subtle: #11202C;
+    --surface: #13212D;
+    --border: rgba(220, 230, 238, 0.11);
+    --border-strong: rgba(220, 230, 238, 0.22);
+    --stone-1: #DCE6EE;
+    --stone-2: #EE5A3F;
+    --stone-2-hover: #FF6E53;
+    --stone-2-warm: #FF7858;
+    --stone-2-dim: #7C5C59;
+    --text: #E8EFF4;
+    --muted: #869CAE;
+    --nav-btn-bg: #E8EFF4;
+    --nav-btn-text: #0D1821;
+    --pill-bg: #152533;
+    --pill-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  }
 }
 
 * {

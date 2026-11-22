@@ -1,24 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BakenMark from '../components/BakenMark.astro';
+import StringsCanvas from '../components/StringsCanvas.astro';
 import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 ---
 
 <Layout
-  title="Baken — Own your AI. On every screen."
-  description="AI agents that live on your own machine and travel with you to Android, Windows, and Linux. Direct peer-to-peer pairing, persistent memory, and zero vendor lock-in."
+  title="Baken — Your agents, on your hardware"
+  description="Baken is an Android, Windows, and Linux client for stateful agents running on your own machine. Direct Iroh pairing, git-backed memory, and no account."
 >
-  <!-- CENTERED EDITORIAL HERO (Osaurus pacing, spacing, and restraint) -->
+  <!-- CENTERED HERO -->
   <section class="hero">
     <div class="container hero-center">
       <a class="eyebrow-pill" href={LINKS.releases} target="_blank" rel="noreferrer">
-        Baken Public Beta &nbsp;·&nbsp; Free &amp; Open Source
+        Public Beta &nbsp;·&nbsp; Android, Windows &amp; Linux
       </a>
 
-      <h1>Own your AI.<br />On every screen.</h1>
+      <h1>Your agents,<br />on your hardware.</h1>
 
       <p class="hero-lead">
-        AI agents that live on hardware you control. They read your files, run tools, remember what matters, and stay reachable on Android, Windows, and Linux — with your own local or cloud models.
+        Baken is a native client for stateful agents running on a machine you control. Pair your phone and desktop straight to your host with one QR scan — no cloud relay, no login, and no model lock-in.
       </p>
 
       <div class="hero-cta-row">
@@ -32,16 +33,16 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
       <div class="trust-row" aria-label="Highlights">
         <span>No account</span>
-        <span>Android, Windows &amp; Linux</span>
-        <span>Direct P2P</span>
-        <span>End-to-end encrypted</span>
+        <span>Android 8+, Windows &amp; Linux</span>
+        <span>Iroh QUIC P2P</span>
+        <span>Git-tracked memory</span>
       </div>
     </div>
 
-    <!-- FULL-WIDTH ATMOSPHERIC PRODUCT FRAME PEEKING ABOVE THE FOLD -->
+    <!-- FULL-WIDTH FRAMED PRODUCT SHOWCASE -->
     <div class="container">
       <div class="showcase-backdrop dark-surface">
-        <!-- SCENE 01: DESKTOP WORKSPACE (default) -->
+        <!-- SCENE 01: DESKTOP WORKSPACE -->
         <div class="app-window scene active" data-scene="desktop">
           <div class="win-titlebar">
             <div class="win-left">
@@ -50,14 +51,13 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
               <span class="win-tab">PM</span>
               <span class="win-tab">+</span>
             </div>
-            <div class="win-search mono">Search agents, conversations, memory…</div>
+            <div class="win-search mono">Search agents, threads, memory…</div>
             <div class="win-dots" aria-hidden="true">
               <span></span><span></span><span></span>
             </div>
           </div>
 
           <div class="win-body">
-            <!-- Left Mascot Rail -->
             <aside class="win-rail" aria-label="Agent rail">
               <div class="rail-icon rail-selected" title="Meridian">
                 <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
@@ -89,7 +89,6 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
               </div>
             </aside>
 
-            <!-- Agent Info Column -->
             <aside class="win-sidebar">
               <div class="agent-hero">
                 <div class="mascot-wrap">
@@ -102,7 +101,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                   </svg>
                 </div>
                 <strong>Meridian</strong>
-                <span class="mono agent-sub">Iroh · encrypted · local host</span>
+                <span class="mono agent-sub">host · direct QUIC</span>
               </div>
 
               <div class="side-nav">
@@ -113,17 +112,16 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 
               <div class="side-threads">
                 <span class="mono side-label">PINNED</span>
-                <div class="thread active-thread">Brand &amp; site launch</div>
-                <div class="thread">Homelab stack audit</div>
-                <div class="thread">Release checklist</div>
+                <div class="thread active-thread">Server health check</div>
+                <div class="thread">Release prep</div>
+                <div class="thread">Notes</div>
               </div>
             </aside>
 
-            <!-- Conversation Pane -->
             <div class="win-chat">
               <div class="chat-feed">
                 <div class="msg-user">
-                  Check the site deploy and verify our tracking proxy isn't leaking anything.
+                  Why did the media server transcode cache fill up?
                 </div>
 
                 <div class="tool-fold mono">
@@ -132,10 +130,10 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                 </div>
 
                 <div class="msg-agent">
-                  <p>Both are live and verified.</p>
+                  <p>Four stale sessions were sitting on the 16 GB tmpfs mount, and segment deletion was off.</p>
                   <ul>
-                    <li><strong>baken.ca</strong> — HTTP 200 on Cloudflare Workers, assets cached at the edge.</li>
-                    <li><strong>First-party proxy</strong> — returns 200 with zero third-party domain mentions in the HTML.</li>
+                    <li>Remounted `/mnt/jellyfin-transcodes` to 24 GB and pruned files older than an hour.</li>
+                    <li>Turned on transcode throttling and segment cleanup — down to 21% used with no dropped streams.</li>
                   </ul>
                 </div>
               </div>
@@ -151,18 +149,18 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
           </div>
         </div>
 
-        <!-- SCENE 02: PAIRING & ANDROID -->
+        <!-- SCENE 02: QR PAIRING & ANDROID -->
         <div class="app-window scene" data-scene="pair">
           <div class="pair-stage">
             <div class="pair-panel">
               <span class="mono pair-eyebrow">HOST · QR INVITE</span>
-              <h3>Scan to pair directly.</h3>
-              <p>Mutual keys are negotiated between your device and your host over encrypted Iroh QUIC. No account, no cloud relay, nothing to paste.</p>
+              <h3>Scan once. No tokens to copy.</h3>
+              <p>The host prints a one-time QR invite. Scan it from Android and the two peers exchange keys over encrypted Iroh QUIC — works on your LAN or over cellular without opening firewall ports.</p>
               <div class="pair-state-row">
                 <BakenMark uid="sc-pair" size={44} state="connecting" />
                 <div>
-                  <strong>Channel seam connecting</strong>
-                  <span class="mono">Seeking peer on LAN &amp; relay…</span>
+                  <strong>Seeking peer</strong>
+                  <span class="mono">Channel seam closes when keys bind</span>
                 </div>
               </div>
             </div>
@@ -172,26 +170,26 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                 <span>baken</span>
                 <span class="phone-ok">● paired</span>
               </div>
-              <div class="phone-msg-u">Check what finished building while I was away.</div>
+              <div class="phone-msg-u">Kick off the release build and let me know when the APK lands.</div>
               <div class="phone-tool mono">Worked · 1 tool · 0.6s</div>
               <div class="phone-msg-a">
-                Release build passed on main. Android APK and Desktop installer are uploaded and ready.
+                Build finished clean on main. APK and Windows installer are posted to the latest release.
               </div>
               <div class="phone-bar">
                 <BakenMark uid="ph-amb" size={18} state="ambient" tight />
-                <span>Ambient · 1 update waiting</span>
+                <span>1 background run finished</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- SCENE 03: LIVING PRESENCE & VOICE -->
+        <!-- SCENE 03: VOICE & LIVING PRESENCE -->
         <div class="app-window scene" data-scene="voice">
           <div class="voice-stage">
             <div class="voice-left">
-              <span class="mono pair-eyebrow">VOICE &amp; LIVING PRESENCE</span>
-              <h3>Calm harbour. Expressive agents.</h3>
-              <p>Baken's grounded basalt mark carries app and connection states only — boot, hydration, pairing, degraded offline, and quiet ambient alerts. Your Rive mascots below own every turn, voice call, and tool call.</p>
+              <span class="mono pair-eyebrow">VOICE &amp; RIVE PRESENCE</span>
+              <h3>Two layers. Never fighting.</h3>
+              <p>The basalt mark owns app and connection state — boot, hydration, pairing, offline, and quiet background updates. The Rive mascots own agent turns, tool activity, and voice.</p>
               <div class="mini-states">
                 <div class="ms-pill"><BakenMark uid="ms-load" size={24} state="loading" /> <span>Hydrating</span></div>
                 <div class="ms-pill"><BakenMark uid="ms-conn" size={24} state="connecting" /> <span>Pairing</span></div>
@@ -215,168 +213,136 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
                 <span style="--h:94%"></span><span style="--h:62%"></span><span style="--h:82%"></span>
                 <span style="--h:44%"></span>
               </div>
-              <span class="mono voice-tag">Local voice endpoint · streaming reply</span>
+              <span class="mono voice-tag">Local Whisper + Kokoro endpoint · streaming</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Osaurus-style 01 / 02 / 03 clean switcher directly beneath the showcase frame -->
       <div class="scene-tabs" id="sceneTabs" role="tablist" aria-label="Product views">
         <button type="button" class="scene-tab active" data-target="desktop" role="tab" aria-selected="true">
-          <span class="mono">01</span> Desktop workspace
+          <span class="mono">01</span> Desktop
         </button>
         <button type="button" class="scene-tab" data-target="pair" role="tab" aria-selected="false">
           <span class="mono">02</span> QR pairing &amp; Android
         </button>
         <button type="button" class="scene-tab" data-target="voice" role="tab" aria-selected="false">
-          <span class="mono">03</span> Voice &amp; living presence
+          <span class="mono">03</span> Voice &amp; presence
         </button>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 1: PAIRED IN A MINUTE (open 3-column layout, hairline rules, zero box clutter) -->
+  <!-- INTERACTIVE DRAGGABLE STRINGS BAND (Mistral-inspired) -->
+  <StringsCanvas />
+
+  <!-- PAIRED IN A MINUTE -->
   <section class="band" id="pair">
     <div class="container">
       <div class="band-head centered">
         <h2>Paired in a minute.</h2>
-        <p>The phone and desktop apps talk directly to your own agent host. No account and no hosted relay in the middle.</p>
+        <p>Run the host where your files and GPUs already live. Pair every phone and laptop straight to it.</p>
       </div>
 
       <div class="steps-row">
         <div class="step">
           <span class="step-idx mono">01</span>
-          <h3>Run your agent host.</h3>
-          <p>Keep your agents, git-backed memory, and local or cloud models running on your own Linux box or workstation.</p>
-          <div class="req mono">Requires · Linux host + at least one configured agent</div>
+          <h3>Start the host.</h3>
+          <p>Run the agent backend and Iroh wrapper on a Linux box or desktop with your models, tools, and memory repo.</p>
+          <div class="req mono">Linux host · local or cloud model</div>
         </div>
 
         <div class="step">
           <span class="step-idx mono">02</span>
-          <h3>Install Baken.</h3>
-          <p>Download the free Android APK, Windows installer, or Linux AppImage directly from GitHub Releases.</p>
-          <div class="req mono">Requires · Android 8.0+, Windows x64, or Linux x64</div>
+          <h3>Install the client.</h3>
+          <p>Grab the Android APK, Windows installer, or Linux AppImage from GitHub Releases.</p>
+          <div class="req mono">Android 8.0+ · Windows x64 · Linux x64</div>
         </div>
 
         <div class="step">
           <span class="step-idx mono">03</span>
-          <h3>Scan the pairing QR.</h3>
-          <p>Generate a one-time invite on your host and scan it on your phone. Mutual keys bind automatically over encrypted Iroh QUIC.</p>
-          <div class="req mono">Requires · One scan — works on LAN or away from home</div>
+          <h3>Scan the QR code.</h3>
+          <p>Generate an invite on the host and scan it on the device. Peer keys bind once and reconnect automatically.</p>
+          <div class="req mono">Encrypted Iroh QUIC · no open ports</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 2: THE MODELS CHANGE. EVERYTHING ELSE STAYS YOURS. -->
-  <section class="band band-rule" id="features">
+  <!-- HOW IT WORKS (concrete, zero fluff) -->
+  <section class="band band-rule" id="details">
     <div class="container">
       <div class="band-head">
-        <h2>Your machine does the work.<br />Your phone goes with you.</h2>
-        <p>Everything you configure on your host is immediately ready on every screen — nothing to set up twice.</p>
+        <h2>Built for long-running work,<br />not disposable chat tabs.</h2>
       </div>
 
       <div class="clean-grid">
         <div class="clean-item">
-          <h3>Every agent from your host.</h3>
-          <p>Pick an agent and watch replies stream in with each tool folded cleanly underneath. Switch agents without losing context. Same agent, same memory.</p>
+          <h3>Turns survive closing the app.</h3>
+          <p>Lock your phone or switch apps mid-run. The host keeps executing tools and streams the result back as soon as you reconnect.</p>
         </div>
         <div class="clean-item">
-          <h3>Talk hands-free.</h3>
-          <p>Use on-device speech or your own self-hosted Whisper and Kokoro voice server. Replies stream out loud sentence by sentence with any model.</p>
+          <h3>Bring your own voice stack.</h3>
+          <p>Use Android's built-in recognizer or point Baken at any OpenAI-compatible speech endpoint — like faster-whisper and Kokoro on your own GPU.</p>
         </div>
         <div class="clean-item">
-          <h3>Replies keep going.</h3>
-          <p>Lock your phone or switch apps mid-turn. Your host finishes the work, and the completed answer and artifacts are waiting when you return.</p>
+          <h3>Plain files for memory.</h3>
+          <p>Agent memory is stored as markdown in a local git repo on your host. Read it, diff it, back it up, or swap models without losing context.</p>
         </div>
         <div class="clean-item">
-          <h3>Swap models without starting over.</h3>
-          <p>Your memory lives in plain git-tracked files on your own hardware. Move between local GPU models and cloud providers without losing history.</p>
+          <h3>Multi-agent rail, one transport.</h3>
+          <p>Jump between a personal companion, a coding worker, and a project manager in the same sidebar — each with its own mascot, memory, and model.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 3: PRIVATE BY DEFAULT -->
-  <section class="band band-rule" id="privacy">
-    <div class="container">
-      <div class="band-head">
-        <h2>Private by default.</h2>
-        <p>Your conversations, memory, tools, and keys never leave your own infrastructure unless you choose a cloud model.</p>
-      </div>
-
-      <div class="clean-grid">
-        <div class="clean-item">
-          <h3>End-to-end encrypted.</h3>
-          <p>QR pairing establishes device keys only your client and host know. Every frame travels encrypted over Iroh QUIC, even on your local network.</p>
-        </div>
-        <div class="clean-item">
-          <h3>Nothing runs in our cloud.</h3>
-          <p>No Baken backend, no hosted conversation store, and no account database. Local models answer directly from your own hardware.</p>
-        </div>
-        <div class="clean-item">
-          <h3>No account.</h3>
-          <p>Install, scan, and start. Nothing to sign up for and no subscription wall between you and your own agents.</p>
-        </div>
-        <div class="clean-item">
-          <h3>Open source &amp; open standards.</h3>
-          <p>Built on open protocols — MCP tools, A2UI structured cards, and OpenAI-compatible speech endpoints — with full source on GitHub.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 4: FAQ -->
+  <!-- FAQ -->
   <section class="band band-rule" id="faq">
     <div class="container faq-container">
       <div class="band-head centered">
-        <h2>Still have questions?</h2>
+        <h2>Questions</h2>
       </div>
 
       <div class="faq-list">
         <details open>
           <summary>Is Baken free?</summary>
-          <p>Yes. Baken is free and open source on Android, Windows, and Linux. You only pay a model provider if you choose to connect a paid cloud API on your own host.</p>
+          <p>Yes. The client and host wrapper are free and open source. You only pay if you configure a paid model API on your host.</p>
         </details>
         <details>
-          <summary>Do I need my own computer or server?</summary>
-          <p>Yes. Baken is a companion client to an agent host running on your own Linux server, homelab, or workstation. Your agents, memory, and tools stay there.</p>
+          <summary>Do I need my own machine to run the host?</summary>
+          <p>Yes. Your agents, memory, and tools run on a computer or home server you control. Baken connects your phone and desktop to it directly.</p>
         </details>
         <details>
-          <summary>What platforms are supported today?</summary>
-          <p>Android 8.0+ (APK), Windows x64 (.exe / .msi), and Linux x64 (AppImage), paired with the Linux Iroh host wrapper. All builds ship together on GitHub Releases.</p>
+          <summary>What platforms ship today?</summary>
+          <p>Android 8.0+ (APK), Windows x64 (.exe / .msi), and Linux x64 (AppImage), plus the Linux Iroh host wrapper. Everything publishes on GitHub Releases.</p>
         </details>
         <details>
-          <summary>Do models run on the phone?</summary>
-          <p>Replies come from your host, so your phone gets whatever local GPU or cloud models your host can run. On-device speech recognition can run locally on Android.</p>
+          <summary>How is the connection secured?</summary>
+          <p>QR pairing binds peer keys known only to your client and host. Traffic is end-to-end encrypted over Iroh QUIC — even on your local network.</p>
         </details>
         <details>
-          <summary>Is the connection secure?</summary>
-          <p>Yes. QR pairing sets up peer keys shared only between your client and your host, and every request after that is encrypted end to end over Iroh QUIC.</p>
-        </details>
-        <details>
-          <summary>It's a public beta — what should I expect?</summary>
-          <p>Frequent GitHub releases and active iteration as the Meridian → Baken brand transition wraps up. File bugs or feature requests directly on the GitHub repo.</p>
+          <summary>What breaks if I switch models?</summary>
+          <p>Nothing. Memory, skills, MCP tools, and conversation history live on your host independently of the model provider.</p>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- CLOSING BAND -->
-  <section class="band band-rule closing">
+  <!-- CLOSING -->
+  <section class="band band-rule">
     <div class="container hero-center">
-      <BakenMark uid="close" size={52} state="idle" />
-      <h2 class="closing-h2">Own your AI. On every screen.</h2>
+      <BakenMark uid="close" size={48} state="idle" />
+      <h2 class="closing-h2">Run it on your own box.</h2>
       <p class="hero-lead" style="margin-bottom:28px">
-        Free and open source. No account, no subscription. Pair with your host in a minute.
+        No account, no subscription. Latest Android and Desktop builds are on GitHub.
       </p>
       <div class="hero-cta-row">
         <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-footer">
           Download latest release
         </a>
         <a class="btn btn-outline" href={LINKS.appRepo} target="_blank" rel="noreferrer">
-          View on GitHub
+          Source on GitHub
         </a>
       </div>
     </div>
@@ -384,82 +350,32 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 </Layout>
 
 <style>
-  /* Hero */
-  .hero {
-    padding: 58px 0 40px;
-  }
-  .hero-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+  .hero { padding: 56px 0 88px; }
+  .hero-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
   .eyebrow-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 7px 16px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    background: var(--pill-bg);
-    border: 1px solid var(--border);
-    box-shadow: var(--pill-shadow);
-    margin-bottom: 30px;
+    display: inline-flex; align-items: center; padding: 7px 16px; border-radius: 999px;
+    font-size: 13px; font-weight: 500; color: var(--text); background: var(--pill-bg);
+    border: 1px solid var(--border); box-shadow: var(--pill-shadow); margin-bottom: 28px;
     transition: transform 160ms ease, border-color 160ms ease;
   }
-  .eyebrow-pill:hover {
-    transform: translateY(-1px);
-    border-color: var(--border-strong);
-  }
+  .eyebrow-pill:hover { transform: translateY(-1px); border-color: var(--border-strong); }
   .hero h1 {
-    margin: 0 0 22px;
-    font-size: clamp(44px, 6.2vw, 74px);
-    line-height: 1.03;
-    letter-spacing: -0.045em;
-    font-weight: 700;
-    max-width: 14ch;
+    margin: 0 0 22px; font-size: clamp(44px, 6.2vw, 74px);
+    line-height: 1.03; letter-spacing: -0.045em; font-weight: 700; max-width: 14ch;
   }
   .hero-lead {
-    margin: 0 0 32px;
-    font-size: 16.5px;
-    line-height: 1.62;
-    color: var(--muted);
-    max-width: 54ch;
+    margin: 0 0 32px; font-size: 16.5px; line-height: 1.62; color: var(--muted); max-width: 52ch;
   }
-  .hero-cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-  }
+  .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .trust-row {
-    margin-top: 24px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px 26px;
-    font-size: 13px;
-    color: var(--muted);
+    margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 10px 26px; font-size: 13px; color: var(--muted);
   }
-  .trust-row span {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .trust-row span::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--stone-2);
-  }
+  .trust-row span { display: inline-flex; align-items: center; gap: 7px; }
+  .trust-row span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-2); }
 
-  /* Atmospheric Product Frame (Osaurus signature below-the-fold peek) */
   .showcase-backdrop {
-    margin-top: 56px;
-    border-radius: 18px;
-    padding: 44px 44px 0;
+    margin-top: 56px; border-radius: 18px; padding: 44px 44px 0;
     background:
       radial-gradient(circle at 20% 0%, rgba(238, 90, 63, 0.16), transparent 46%),
       radial-gradient(circle at 82% 15%, rgba(62, 134, 178, 0.22), transparent 50%),
@@ -475,24 +391,15 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   .scene.active { display: block; }
 
   .app-window {
-    background: #0e161d;
-    color: #e8eff4;
-    border-radius: 14px 14px 0 0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: none;
-    overflow: hidden;
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.48);
+    background: #0e161d; color: #e8eff4;
+    border-radius: 14px 14px 0 0; border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: none;
+    overflow: hidden; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.48);
   }
 
   .win-titlebar {
-    height: 44px;
-    padding: 0 16px;
-    background: #0a1117;
+    height: 44px; padding: 0 16px; background: #0a1117;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
   }
   .win-left { display: flex; align-items: center; gap: 10px; }
   .win-tab { font-size: 12px; color: #7f96a8; padding: 4px 10px; border-radius: 6px; }
@@ -504,34 +411,16 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   .win-dots { display: flex; gap: 7px; }
   .win-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
 
-  .win-body {
-    display: grid;
-    grid-template-columns: 56px 210px 1fr;
-    min-height: 410px;
-  }
+  .win-body { display: grid; grid-template-columns: 56px 210px 1fr; min-height: 410px; }
   .win-rail {
-    background: #091016;
-    border-right: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 12px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    background: #091016; border-right: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
   }
-  .rail-icon {
-    width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center;
-  }
-  .rail-icon.rail-selected {
-    background: rgba(238, 90, 63, 0.16);
-    box-shadow: inset 0 0 0 1.5px #ee5a3f;
-  }
+  .rail-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; }
+  .rail-icon.rail-selected { background: rgba(238, 90, 63, 0.16); box-shadow: inset 0 0 0 1.5px #ee5a3f; }
   .win-sidebar {
-    background: #0c141b;
-    border-right: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 20px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    background: #0c141b; border-right: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 20px 14px; display: flex; flex-direction: column; gap: 18px;
   }
   .agent-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
   .agent-hero strong { font-size: 15px; }
@@ -543,62 +432,32 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   .thread { font-size: 12.5px; color: #8da2b3; padding: 6px 8px; border-radius: 6px; }
   .thread.active-thread { background: rgba(255, 255, 255, 0.07); color: #e8eff4; }
 
-  .win-chat {
-    padding: 24px 28px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 18px;
-  }
+  .win-chat { padding: 24px 28px 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
   .chat-feed { display: flex; flex-direction: column; gap: 16px; }
   .msg-user {
-    align-self: flex-end;
-    background: #173447;
-    color: #e8eff4;
-    padding: 11px 16px;
-    border-radius: 14px 14px 4px 14px;
-    font-size: 14px;
-    max-width: 78%;
+    align-self: flex-end; background: #173447; color: #e8eff4;
+    padding: 11px 16px; border-radius: 14px 14px 4px 14px; font-size: 14px; max-width: 78%;
   }
   .tool-fold {
-    align-self: flex-start;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: #88a0b2;
-    padding: 5px 11px;
-    border-radius: 7px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #88a0b2; padding: 5px 11px; border-radius: 7px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
   }
   .fold-dot { width: 6px; height: 6px; border-radius: 50%; background: #ee5a3f; }
   .msg-agent { font-size: 14.5px; color: #dce6ee; max-width: 60ch; }
   .msg-agent p { margin: 0 0 10px; }
   .msg-agent ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #b5c7d4; }
-  .msg-agent strong { color: #e8eff4; }
   .win-composer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-radius: 10px;
-    background: #14212c;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    font-size: 13.5px;
-    color: #718799;
+    display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
+    border-radius: 10px; background: #14212c; border: 1px solid rgba(255, 255, 255, 0.09);
+    font-size: 13.5px; color: #718799;
   }
   .comp-right { display: flex; align-items: center; gap: 10px; font-size: 11px; }
   .comp-mic { color: #ee5a3f; }
 
-  /* Scene 02: Pairing & Android */
   .pair-stage, .voice-stage {
-    padding: 40px 44px 44px;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px;
-    align-items: center;
-    min-height: 410px;
+    padding: 40px 44px 44px; display: grid; grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px; align-items: center; min-height: 410px;
   }
   .pair-eyebrow { display: block; font-size: 11px; letter-spacing: 0.08em; color: #ee5a3f; margin-bottom: 10px; }
   .pair-panel h3, .voice-left h3 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.03em; }
@@ -622,7 +481,6 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   .phone-msg-a { font-size: 13px; color: #dce6ee; line-height: 1.5; }
   .phone-bar { margin-top: 8px; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: #0c151d; border: 1px solid rgba(255,255,255,0.08); font-size: 11.5px; color: #b5c7d4; }
 
-  /* Scene 03: Voice & Living Presence */
   .mini-states { display: flex; flex-wrap: wrap; gap: 10px; }
   .ms-pill {
     display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px;
@@ -638,169 +496,54 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
   @keyframes vbar { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.1); } }
   .voice-tag { font-size: 11.5px; color: #869cae; }
 
-  /* Scene tabs right underneath frame */
-  .scene-tabs {
-    margin-top: 18px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+  .scene-tabs { margin-top: 18px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
   .scene-tab {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 15px;
-    border-radius: var(--radius);
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--muted);
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 150ms ease;
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px;
+    border-radius: var(--radius); background: transparent; border: 1px solid transparent;
+    color: var(--muted); font-family: inherit; font-size: 13.5px; font-weight: 500;
+    cursor: pointer; transition: all 150ms ease;
   }
   .scene-tab:hover { color: var(--text); }
   .scene-tab.active {
-    background: var(--surface);
-    border-color: var(--border);
-    color: var(--text);
-    font-weight: 700;
-    box-shadow: var(--pill-shadow);
+    background: var(--surface); border-color: var(--border); color: var(--text);
+    font-weight: 700; box-shadow: var(--pill-shadow);
   }
   .scene-tab span { font-size: 11.5px; color: var(--stone-2); }
 
-  /* Editorial Bands — generous breathing room, zero heavy card soup */
-  .band {
-    padding: 108px 0;
-  }
-  .band-rule {
-    border-top: 1px solid var(--border);
-  }
-  .band-head {
-    max-width: 640px;
-    margin-bottom: 52px;
-  }
-  .band-head.centered {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
-  .band-head h2 {
-    margin: 0 0 14px;
-    font-size: clamp(32px, 4vw, 46px);
-    line-height: 1.08;
-    letter-spacing: -0.04em;
-    font-weight: 700;
-  }
-  .band-head p {
-    margin: 0;
-    font-size: 16.5px;
-    color: var(--muted);
-  }
+  .band { padding: 104px 0; }
+  .band-rule { border-top: 1px solid var(--border); }
+  .band-head { max-width: 640px; margin-bottom: 52px; }
+  .band-head.centered { margin-left: auto; margin-right: auto; text-align: center; }
+  .band-head h2 { margin: 0 0 14px; font-size: clamp(32px, 4vw, 46px); line-height: 1.08; letter-spacing: -0.04em; font-weight: 700; }
+  .band-head p { margin: 0; font-size: 16.5px; color: var(--muted); }
 
-  .steps-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 44px;
-  }
-  .step {
-    padding-top: 22px;
-    border-top: 1px solid var(--border-strong);
-  }
-  .step-idx {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--stone-2);
-    margin-bottom: 14px;
-  }
-  .step h3 {
-    margin: 0 0 10px;
-    font-size: 19px;
-    letter-spacing: -0.025em;
-  }
-  .step p {
-    margin: 0 0 18px;
-    font-size: 15px;
-    color: var(--muted);
-  }
-  .req {
-    font-size: 12px;
-    color: var(--muted);
-    opacity: 0.9;
-  }
+  .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; }
+  .step { padding-top: 22px; border-top: 1px solid var(--border-strong); }
+  .step-idx { display: inline-block; font-size: 12px; font-weight: 700; color: var(--stone-2); margin-bottom: 14px; }
+  .step h3 { margin: 0 0 10px; font-size: 19px; letter-spacing: -0.025em; }
+  .step p { margin: 0 0 18px; font-size: 15px; color: var(--muted); }
+  .req { font-size: 12px; color: var(--muted); opacity: 0.9; }
 
-  .clean-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 44px 64px;
-  }
-  .clean-item {
-    padding-top: 22px;
-    border-top: 1px solid var(--border);
-  }
-  .clean-item h3 {
-    margin: 0 0 10px;
-    font-size: 19px;
-    letter-spacing: -0.025em;
-  }
-  .clean-item p {
-    margin: 0;
-    font-size: 15px;
-    color: var(--muted);
-    max-width: 48ch;
-  }
+  .clean-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 44px 64px; }
+  .clean-item { padding-top: 22px; border-top: 1px solid var(--border); }
+  .clean-item h3 { margin: 0 0 10px; font-size: 19px; letter-spacing: -0.025em; }
+  .clean-item p { margin: 0; font-size: 15px; color: var(--muted); max-width: 48ch; }
 
-  /* FAQ */
-  .faq-container {
-    max-width: 760px;
-  }
-  .faq-list {
-    border-top: 1px solid var(--border);
-  }
-  .faq-list details {
-    border-bottom: 1px solid var(--border);
-    padding: 22px 0;
-  }
+  .faq-container { max-width: 760px; }
+  .faq-list { border-top: 1px solid var(--border); }
+  .faq-list details { border-bottom: 1px solid var(--border); padding: 22px 0; }
   .faq-list summary {
-    cursor: pointer;
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    cursor: pointer; font-size: 17px; font-weight: 700; letter-spacing: -0.02em;
+    list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px;
   }
   .faq-list summary::-webkit-details-marker { display: none; }
-  .faq-list summary::after {
-    content: "+";
-    color: var(--muted);
-    font-size: 22px;
-    font-weight: 500;
-    line-height: 1;
-  }
+  .faq-list summary::after { content: "+"; color: var(--muted); font-size: 22px; font-weight: 500; line-height: 1; }
   .faq-list details[open] summary::after { content: "−"; color: var(--stone-2); }
-  .faq-list details p {
-    margin: 12px 0 0;
-    font-size: 15px;
-    color: var(--muted);
-    max-width: 62ch;
-  }
+  .faq-list details p { margin: 12px 0 0; font-size: 15px; color: var(--muted); max-width: 62ch; }
 
-  .closing-h2 {
-    margin: 22px 0 14px;
-    font-size: clamp(34px, 4.5vw, 52px);
-    line-height: 1.06;
-    letter-spacing: -0.04em;
-  }
+  .closing-h2 { margin: 22px 0 14px; font-size: clamp(34px, 4.5vw, 52px); line-height: 1.06; letter-spacing: -0.04em; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .v-bars span { animation: none !important; }
-  }
+  @media (prefers-reduced-motion: reduce) { .v-bars span { animation: none !important; } }
   @media (max-width: 900px) {
     .showcase-backdrop { padding: 20px 20px 0; }
     .win-body { grid-template-columns: 52px 1fr; }
@@ -816,7 +559,6 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
 </style>
 
 <script is:inline>
-  // Scene switcher (01 Desktop / 02 QR Pairing / 03 Voice)
   const tabs = document.querySelectorAll('#sceneTabs .scene-tab');
   const scenes = document.querySelectorAll('.showcase-backdrop .scene');
   tabs.forEach((btn) => {
@@ -831,7 +573,6 @@ import { LINKS, MASCOT_BODIES, GLYPHS } from '../lib/brand';
     });
   });
 
-  // Subtle mascot pointer gaze matching MASCOT.md normalized -1..1
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     window.addEventListener('pointermove', (e) => {
       const nx = (e.clientX / window.innerWidth) * 2 - 1;

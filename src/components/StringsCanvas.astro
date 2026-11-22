@@ -1,0 +1,377 @@
+---
+// Interactive draggable-nodes + live-repositioning tension strings component
+// Inspired by Mistral's tactile string board, tailored to Baken's North Sea Buoy identity.
+---
+
+<section class="strings-band dark-surface" id="ownership" aria-label="Interactive ownership map">
+  <div class="strings-head container">
+    <h2>No one else should hold<br />the strings to your</h2>
+    <p class="strings-hint mono">drag any block — the lines stay tethered to your side</p>
+  </div>
+
+  <div class="strings-stage" id="stringsStage">
+    <svg class="strings-svg" id="stringsSvg" aria-hidden="true"></svg>
+
+    <!-- Row 1 -->
+    <div class="s-node muted" data-id="r1-0" data-row="0" data-col="0" style="--x:26%;--y:22%">
+      <span class="dot l"></span>
+      <span>Prompt history</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node primary" data-id="r1-1" data-row="0" data-col="1" style="--x:50%;--y:22%">
+      <span class="dot l"></span>
+      <span class="n-ico" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      </span>
+      <span>Git-backed memory</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node muted" data-id="r1-2" data-row="0" data-col="2" style="--x:74%;--y:22%">
+      <span class="dot l"></span>
+      <span>Schedules</span>
+      <span class="dot r"></span>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="s-node primary" data-id="r2-0" data-row="1" data-col="0" style="--x:29%;--y:42%">
+      <span class="dot l"></span>
+      <span class="n-ico" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      <span>Local files</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node primary" data-id="r2-1" data-row="1" data-col="1" style="--x:52%;--y:42%">
+      <span class="dot l"></span>
+      <span class="n-ico" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      </span>
+      <span>MCP tools &amp; skills</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node muted" data-id="r2-2" data-row="1" data-col="2" style="--x:75%;--y:42%">
+      <span class="dot l"></span>
+      <span>Voice pipeline</span>
+      <span class="dot r"></span>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="s-node muted" data-id="r3-0" data-row="2" data-col="0" style="--x:23%;--y:62%">
+      <span class="dot l"></span>
+      <span>Subagents</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node primary" data-id="r3-1" data-row="2" data-col="1" style="--x:45%;--y:62%">
+      <span class="dot l"></span>
+      <span class="n-ico" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+      </span>
+      <span>Device keys</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node primary" data-id="r3-2" data-row="2" data-col="2" style="--x:67%;--y:62%">
+      <span class="dot l"></span>
+      <span class="n-ico" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </span>
+      <span>Model choice</span>
+      <span class="dot r"></span>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="s-node muted" data-id="r4-0" data-row="3" data-col="0" style="--x:33%;--y:82%">
+      <span class="dot l"></span>
+      <span>Threads &amp; transcripts</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node muted" data-id="r4-1" data-row="3" data-col="1" style="--x:55%;--y:82%">
+      <span class="dot l"></span>
+      <span>A2UI surfaces</span>
+      <span class="dot r"></span>
+    </div>
+    <div class="s-node muted" data-id="r4-2" data-row="3" data-col="2" style="--x:74%;--y:82%">
+      <span class="dot l"></span>
+      <span>Agent identity</span>
+      <span class="dot r"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .strings-band {
+    position: relative;
+    background: #0B151D;
+    color: #E8EFF4;
+    padding: 96px 0 72px;
+    overflow: hidden;
+    border-top: 1px solid rgba(220, 230, 238, 0.08);
+    border-bottom: 1px solid rgba(220, 230, 238, 0.08);
+  }
+
+  .strings-head {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 24px;
+  }
+
+  .strings-head h2 {
+    margin: 0;
+    font-size: clamp(32px, 4.4vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    color: #EFF5F9;
+  }
+
+  .strings-hint {
+    margin: 14px 0 0;
+    font-size: 12px;
+    color: #6B8294;
+  }
+
+  .strings-stage {
+    position: relative;
+    width: 100%;
+    height: 410px;
+    max-width: 1440px;
+    margin: 0 auto;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .strings-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .s-node {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 15px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: grab;
+    z-index: 2;
+    transition: border-color 140ms ease, box-shadow 140ms ease;
+  }
+
+  .s-node.primary {
+    background: #0F1D28;
+    border: 1px solid rgba(220, 230, 238, 0.16);
+    color: #EFF5F9;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .s-node.muted {
+    background: rgba(17, 30, 41, 0.85);
+    border: 1px solid rgba(220, 230, 238, 0.08);
+    color: #8CA2B3;
+    font-weight: 500;
+  }
+
+  .s-node:hover {
+    border-color: rgba(238, 90, 63, 0.55);
+    z-index: 5;
+  }
+
+  .s-node.dragging {
+    cursor: grabbing;
+    border-color: #EE5A3F;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(238, 90, 63, 0.35);
+    z-index: 10;
+  }
+
+  .n-ico {
+    display: inline-flex;
+    color: #EE5A3F;
+  }
+
+  .dot {
+    position: absolute;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    background: #DCE6EE;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .s-node.muted .dot { background: #63798B; }
+  .s-node.dragging .dot { background: #EE5A3F; }
+  .dot.l { left: -3px; }
+  .dot.r { right: -3px; }
+
+  @media (max-width: 820px) {
+    .strings-stage { height: 470px; }
+    .s-node { font-size: 13px; padding: 8px 12px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const stage = document.getElementById('stringsStage');
+    const svg = document.getElementById('stringsSvg');
+    if (!stage || !svg) return;
+
+    const nodes = Array.from(stage.querySelectorAll('.s-node'));
+    const byId = Object.fromEntries(nodes.map((n) => [n.dataset.id, n]));
+
+    // Group rows so each row forms a continuous string across the viewport:
+    // left viewport anchor -> node0 -> node1 -> node2 -> right viewport anchor
+    const rows = [
+      { ids: ['r1-0', 'r1-1', 'r1-2'], leftY: 0.06, rightY: 0.14 },
+      { ids: ['r2-0', 'r2-1', 'r2-2'], leftY: 0.32, rightY: 0.48 },
+      { ids: ['r3-0', 'r3-1', 'r3-2'], leftY: 0.68, rightY: 0.56 },
+      { ids: ['r4-0', 'r4-1', 'r4-2'], leftY: 0.94, rightY: 0.88 },
+    ];
+
+    // Extra diagonal cross-strings for that subtle puppet-string depth
+    const crossEdges = [
+      { from: 'left', y: 0.16, to: 'r2-0', side: 'l' },
+      { from: 'left', y: 0.78, to: 'r3-0', side: 'l' },
+      { from: 'r1-2', side: 'r', to: 'right', y: 0.34 },
+      { from: 'r3-2', side: 'r', to: 'right', y: 0.78 },
+    ];
+
+    // Convert initial % styles to concrete px on layout so dragging is exact
+    const state = new Map();
+    function initPositions() {
+      const rect = stage.getBoundingClientRect();
+      const compact = rect.width < 820;
+      const colX = compact ? [0.22, 0.52, 0.80] : null;
+      nodes.forEach((el) => {
+        const cur = state.get(el);
+        if (cur && cur.moved) return;
+        const pctX = colX ? colX[Number(el.dataset.col)] : parseFloat(el.style.getPropertyValue('--x')) / 100;
+        const pctY = parseFloat(el.style.getPropertyValue('--y')) / 100;
+        const x = pctX * rect.width;
+        const y = pctY * rect.height;
+        state.set(el, { x, y, moved: false });
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+      });
+      draw();
+    }
+
+    function anchorPoint(el, side) {
+      const rect = stage.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      const y = r.top - rect.top + r.height / 2;
+      const x = side === 'l' ? r.left - rect.left : r.right - rect.left;
+      return { x, y };
+    }
+
+    let activeEl = null;
+
+    function draw() {
+      const rect = stage.getBoundingClientRect();
+      const W = rect.width;
+      const H = rect.height;
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+      const lines = [];
+      const addLine = (x1, y1, x2, y2, hot) => {
+        const stroke = hot ? 'rgba(238, 90, 63, 0.72)' : 'rgba(220, 230, 238, 0.16)';
+        const sw = hot ? 1.5 : 1;
+        lines.push(`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${stroke}" stroke-width="${sw}" />`);
+      };
+
+      rows.forEach((row) => {
+        const els = row.ids.map((id) => byId[id]).filter(Boolean);
+        if (!els.length) return;
+        // Left edge -> first node
+        const firstL = anchorPoint(els[0], 'l');
+        addLine(0, row.leftY * H, firstL.x, firstL.y, activeEl === els[0]);
+        // Between consecutive nodes
+        for (let i = 0; i < els.length - 1; i++) {
+          const p1 = anchorPoint(els[i], 'r');
+          const p2 = anchorPoint(els[i + 1], 'l');
+          addLine(p1.x, p1.y, p2.x, p2.y, activeEl === els[i] || activeEl === els[i + 1]);
+        }
+        // Last node -> right edge
+        const lastR = anchorPoint(els[els.length - 1], 'r');
+        addLine(lastR.x, lastR.y, W, row.rightY * H, activeEl === els[els.length - 1]);
+      });
+
+      crossEdges.forEach((ce) => {
+        if (ce.from === 'left') {
+          const target = byId[ce.to];
+          if (!target) return;
+          const p = anchorPoint(target, ce.side);
+          addLine(0, ce.y * H, p.x, p.y, activeEl === target);
+        } else {
+          const src = byId[ce.from];
+          if (!src) return;
+          const p = anchorPoint(src, ce.side);
+          addLine(p.x, p.y, W, ce.y * H, activeEl === src);
+        }
+      });
+
+      svg.innerHTML = lines.join('');
+    }
+
+    // Pointer dragging
+    nodes.forEach((el) => {
+      let startX = 0, startY = 0, origX = 0, origY = 0, pointerId = null;
+
+      el.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        pointerId = e.pointerId;
+        el.setPointerCapture(pointerId);
+        activeEl = el;
+        el.classList.add('dragging');
+        const s = state.get(el);
+        startX = e.clientX;
+        startY = e.clientY;
+        origX = s.x;
+        origY = s.y;
+        draw();
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (pointerId !== e.pointerId || activeEl !== el) return;
+        const rect = stage.getBoundingClientRect();
+        const halfW = el.offsetWidth / 2 + 8;
+        const halfH = el.offsetHeight / 2 + 8;
+        const nx = Math.max(halfW, Math.min(rect.width - halfW, origX + (e.clientX - startX)));
+        const ny = Math.max(halfH, Math.min(rect.height - halfH, origY + (e.clientY - startY)));
+        state.set(el, { x: nx, y: ny, moved: true });
+        el.style.left = nx + 'px';
+        el.style.top = ny + 'px';
+        draw();
+      });
+
+      const endDrag = (e) => {
+        if (pointerId !== e.pointerId) return;
+        try { el.releasePointerCapture(pointerId); } catch {}
+        pointerId = null;
+        el.classList.remove('dragging');
+        if (activeEl === el) activeEl = null;
+        draw();
+      };
+      el.addEventListener('pointerup', endDrag);
+      el.addEventListener('pointercancel', endDrag);
+    });
+
+    window.addEventListener('resize', () => {
+      nodes.forEach((el) => {
+        const s = state.get(el);
+        if (s) s.moved = false;
+      });
+      initPositions();
+    });
+
+    initPositions();
+  })();
+</script>
