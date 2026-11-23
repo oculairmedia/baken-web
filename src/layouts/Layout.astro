@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import BakenMark from '../components/BakenMark.astro';
+import BeaconFooter from '../components/BeaconFooter.astro';
 import { LINKS } from '../lib/brand';
 
 interface Props {
@@ -21,8 +22,8 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EFF3F6" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0D1821" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FAFAFA" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#09090B" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -77,20 +78,6 @@ const {
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div style="display:flex;align-items:center;gap:7px;">
-          <BakenMark uid="ftr" size={17} state="idle" tight />
-          <span><strong style="color:var(--text)">baken</strong> — a fixed mark on water that shifts</span>
-        </div>
-        <div class="footer-links">
-          <a href="/docs">Docs</a>
-          <a href="/llms.txt">llms.txt</a>
-          <a href={LINKS.releases} target="_blank" rel="noreferrer">Releases</a>
-          <a href={LINKS.appRepo} target="_blank" rel="noreferrer">GitHub</a>
-          <a href={LINKS.webRepo} target="_blank" rel="noreferrer">Site Repo</a>
-        </div>
-      </div>
-    </footer>
+    <BeaconFooter />
   </body>
 </html>

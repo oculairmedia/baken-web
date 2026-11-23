@@ -1,0 +1,581 @@
+---
+import BakenMark from './BakenMark.astro';
+import { LINKS } from '../lib/brand';
+---
+
+<footer class="beacon-footer dark-surface" id="beaconFooter">
+  <canvas class="beacon-canvas" id="beaconCanvas" aria-hidden="true"></canvas>
+
+  <div class="container beacon-top">
+    <div class="beacon-brand">
+      <BakenMark uid="ftr" size={17} state="idle" tight />
+      <span><strong>baken</strong> — a fixed mark on water that shifts</span>
+    </div>
+    <nav class="beacon-links" aria-label="Footer links">
+      <a href="/docs">Docs</a>
+      <a href="/llms.txt">llms.txt</a>
+      <a href={LINKS.releases} target="_blank" rel="noreferrer">Releases</a>
+      <a href={LINKS.appRepo} target="_blank" rel="noreferrer">GitHub</a>
+      <a href={LINKS.webRepo} target="_blank" rel="noreferrer">Site Repo</a>
+    </nav>
+  </div>
+
+  <!-- Monumental bottom-cropped wordmark sitting in the lower mist -->
+  <div class="beacon-wordmark" id="beaconWordmark" aria-hidden="true">baken</div>
+
+  <div class="beacon-caption container" aria-hidden="true">
+    <span>53°11′N 4°51′E · WADDEN SEA VUURBAKEN</span>
+    <span>FL (2) 10S · 360° FRESNEL OPTIC</span>
+  </div>
+</footer>
+
+<style>
+  .beacon-footer {
+    position: relative;
+    width: 100%;
+    height: 460px;
+    background: #070709;
+    color: #F4F4F6;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .beacon-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+
+  .beacon-top {
+    position: relative;
+    z-index: 3;
+    padding-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13.5px;
+    color: #8E8E98;
+  }
+
+  .beacon-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .beacon-brand strong {
+    color: #F4F4F6;
+    font-weight: 700;
+  }
+
+  .beacon-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .beacon-links a {
+    color: #8E8E98;
+    transition: color 150ms ease;
+  }
+  .beacon-links a:hover {
+    color: #FFFFFF;
+  }
+
+  .beacon-wordmark {
+    position: absolute;
+    left: 58%;
+    bottom: -0.22em;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(110px, 21vw, 290px);
+    line-height: 0.85;
+    letter-spacing: -0.045em;
+    color: rgba(255, 255, 255, 0.04);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.065);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .beacon-caption {
+    position: relative;
+    z-index: 3;
+    padding-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.28);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 680px) {
+    .beacon-footer {
+      height: 360px;
+    }
+    .beacon-top {
+      padding-top: 22px;
+      font-size: 13px;
+    }
+    .beacon-caption {
+      font-size: 9.5px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const footer = document.getElementById('beaconFooter');
+    const canvas = document.getElementById('beaconCanvas');
+    if (!footer || !canvas) return;
+
+    const gl = canvas.getContext('webgl', { alpha: false, antialias: false, depth: false, preserveDrawingBuffer: false });
+    if (!gl) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const VERT = `
+      attribute vec2 aPos;
+      void main() {
+        gl_Position = vec4(aPos, 0.0, 1.0);
+      }
+    `;
+
+    // Real-time 3D volumetric raymarched Fresnel lighthouse + foggy Wadden Sea shore
+    // rendered through a native-retina VARIABLE-DENSITY square-dot dither shader:
+    // - Sparse Bayer-thinned micro-dots in deep shadow & drifting fog
+    // - Dots dynamically swell in radius & fill density as the 3D beam sweeps across them
+    // - Tight fused luminous white & Buoy Vermilion blocks at the beam core & lantern flash
+    const FRAG = `
+      precision highp float;
+      uniform vec2 uRes;      // native DPR pixel resolution
+      uniform float uDpr;
+      uniform float uTime;
+      uniform vec2 uMouse;
+
+      float hash21(vec2 p) {
+        p = fract(p * vec2(123.34, 456.21));
+        p += dot(p, p + 45.32);
+        return fract(p.x * p.y);
+      }
+
+      float vnoise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        float a = hash21(i);
+        float b = hash21(i + vec2(1.0, 0.0));
+        float c = hash21(i + vec2(0.0, 1.0));
+        float d = hash21(i + vec2(1.0, 1.0));
+        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+      }
+
+      float fbm(vec2 p) {
+        float v = 0.0;
+        float a = 0.52;
+        for (int i = 0; i < 4; i++) {
+          v += a * vnoise(p);
+          p = p * 2.03 + vec2(17.1, 9.7);
+          a *= 0.5;
+        }
+        return v;
+      }
+
+      // Bit-free 8x8 ordered Bayer threshold (WebGL1-safe)
+      float bayer2(vec2 a) { a = floor(a); return fract(dot(a, vec2(0.5, a.y * 0.75))); }
+      float bayer4(vec2 a) { return bayer2(0.5 * a) * 0.25 + bayer2(a); }
+      float bayer8(vec2 a) { return bayer4(0.5 * a) * 0.25 + bayer2(a); }
+
+      // Rocky headland + architectural lighthouse silhouette
+      vec3 sceneGeometry(vec2 p, vec2 lPos, float horizonY) {
+        float dxShore = p.x - lPos.x;
+        float cliffBase = horizonY - 0.02 + 0.068 * exp(-pow(max(0.0, dxShore + 0.14) * 2.3, 2.0));
+        float rocks = 0.016 * sin(p.x * 16.0 + 1.2) + 0.008 * sin(p.x * 37.0);
+        float shoreY = cliffBase + rocks * smoothstep(0.32, -0.1, dxShore);
+        float shoreMask = step(p.y, shoreY) * step(horizonY - 0.035, p.y) * smoothstep(0.46, 0.22, dxShore);
+        float landLeft = step(p.y, shoreY) * step(p.x, lPos.x + 0.28 - (horizonY - p.y) * 1.4);
+        float cliff = max(shoreMask, landLeft * step(horizonY - 0.045, p.y));
+
+        float lx = p.x - lPos.x;
+        float baseY = horizonY + 0.02;
+        float deckY = lPos.y - 0.048;
+        float tTower = clamp((p.y - baseY) / max(0.001, deckY - baseY), 0.0, 1.0);
+        float halfW = mix(0.042, 0.024, tTower);
+        float inTower = step(abs(lx), halfW) * step(baseY, p.y) * step(p.y, deckY);
+
+        float inDeck = step(abs(lx), 0.039) * step(deckY, p.y) * step(p.y, deckY + 0.015);
+        float inRail = step(abs(lx), 0.038) * step(0.032, abs(lx)) * step(deckY + 0.015, p.y) * step(p.y, deckY + 0.032);
+
+        float lanBot = deckY + 0.015;
+        float lanTop = deckY + 0.068;
+        float inLanternBox = step(abs(lx), 0.022) * step(lanBot, p.y) * step(p.y, lanTop);
+        float mullion = step(abs(abs(lx) - 0.008), 0.0022) * inLanternBox;
+        float lanternGlass = inLanternBox * (1.0 - mullion);
+
+        float cupH = 0.036;
+        float cupT = clamp((p.y - lanTop) / cupH, 0.0, 1.0);
+        float cupW = 0.028 * sqrt(max(0.0, 1.0 - cupT * cupT));
+        float inCupola = step(abs(lx), cupW) * step(lanTop, p.y) * step(p.y, lanTop + cupH);
+        float inSpire = step(abs(lx), 0.0032) * step(lanTop + cupH, p.y) * step(p.y, lanTop + cupH + 0.032);
+
+        float solid = clamp(cliff + inTower + inDeck + inRail + mullion + inCupola + inSpire, 0.0, 1.0);
+        return vec3(solid, lanternGlass, inTower);
+      }
+
+      // True 3D volumetric scattering along camera ray through a 360° rotating 3D Fresnel cone
+      vec2 march3DBeam(vec3 ro, vec3 rd, vec3 lantern3D, vec3 bDir, float stopAtTower, float tShift) {
+        float energy = 0.0;
+        float warm = 0.0;
+        float tMax = stopAtTower > 0.5 ? 1.54 : 3.05;
+        const int STEPS = 18;
+        float dt = (tMax - 0.16) / float(STEPS);
+
+        for (int i = 0; i < STEPS; i++) {
+          float t = 0.16 + (float(i) + 0.5) * dt;
+          vec3 q = ro + rd * t;
+          vec3 v = q - lantern3D;
+          float proj = dot(v, bDir);
+          if (proj > 0.0) {
+            vec3 perpV = v - bDir * proj;
+            float perpD = length(perpV);
+            float coneR = 0.018 + proj * 0.115;
+            float radial = exp(-pow(perpD / coneR, 2.0) * 1.9);
+            if (radial > 0.01) {
+              float fog = 0.55 + 0.65 * fbm(vec2(q.x * 2.2 - tShift * 0.12, q.y * 3.6 + q.z * 0.8));
+              float ext = exp(-proj * 0.90) * exp(-max(0.0, -q.z) * 0.48);
+              float contrib = radial * fog * ext * dt * 1.55;
+              energy += contrib;
+              warm += contrib * exp(-proj * 1.3);
+            }
+          }
+        }
+        return vec2(energy, warm);
+      }
+
+      void main() {
+        // Variable-density cell grid: crisp 5.0 CSS px pitch at native Retina DPR
+        float cellPx = 5.0 * uDpr;
+        vec2 cellId = floor(gl_FragCoord.xy / cellPx);
+        vec2 local = fract(gl_FragCoord.xy / cellPx) - 0.5; // -0.5..0.5 inside cell
+        vec2 cellCenterPx = (cellId + 0.5) * cellPx;
+
+        // Evaluate lighting at cell center so each square dot is razor-sharp and uniform
+        vec2 uv = cellCenterPx / uRes;
+        // Also evaluate exact fragment geometry for crisp lighthouse silhouette edges!
+        vec2 uvExact = gl_FragCoord.xy / uRes;
+        float aspect = uRes.x / max(1.0, uRes.y);
+
+        vec2 p = vec2((uv.x - 0.5) * aspect, uv.y - 0.5);
+        vec2 pExact = vec2((uvExact.x - 0.5) * aspect, uvExact.y - 0.5);
+        float horizonY = -0.16;
+
+        float lhX = mix(-0.5 * aspect, 0.5 * aspect, 0.23);
+        vec2 lPos = vec2(lhX, horizonY + 0.35);
+        vec3 lantern3D = vec3(lPos.x, lPos.y, 0.0);
+
+        vec3 ro = vec3(0.0, 0.0, 1.55);
+        vec3 rd = normalize(vec3(p, -1.55));
+
+        float theta = -uTime * 0.6283185 + 1.05;
+        float tilt = -0.055 + (uMouse.y - 0.5) * 0.025;
+        vec3 b1 = normalize(vec3(sin(theta), tilt, cos(theta)));
+        vec3 b2 = normalize(vec3(-sin(theta), tilt, -cos(theta)));
+
+        vec3 geomCell = sceneGeometry(p, lPos, horizonY);
+        vec3 geomExact = sceneGeometry(pExact, lPos, horizonY);
+        float solid = geomExact.x;
+        float glass = geomExact.y;
+        float tower = geomExact.z;
+
+        float flare1 = pow(max(0.0, b1.z), 12.0);
+        float flare2 = pow(max(0.0, b2.z), 12.0) * 0.72;
+        float flare = clamp(flare1 + flare2, 0.0, 1.0);
+
+        // Sky & coastal fog field
+        float skyGrad = smoothstep(0.5, horizonY, p.y);
+        float lum = 0.015 + skyGrad * 0.06;
+        float warm = 0.0;
+
+        // Subtle sparse pinpoint stars
+        if (p.y > horizonY + 0.14 && solid < 0.5) {
+          float starCell = hash21(cellId);
+          if (starCell > 0.992) {
+            float tw = 0.5 + 0.5 * sin(uTime * 1.4 + starCell * 90.0);
+            lum += 0.26 * tw * smoothstep(horizonY + 0.14, 0.46, p.y);
+          }
+        }
+
+        // Layered drifting fog banks
+        float fogBand = exp(-pow((p.y - (horizonY + 0.06)) * 4.2, 2.0));
+        float fogTex = fbm(vec2(p.x * 2.1 - uTime * 0.055, p.y * 5.5 + 2.3));
+        float fogTex2 = fbm(vec2(p.x * 3.8 + uTime * 0.032, p.y * 7.0 - 1.1));
+        lum += fogBand * (fogTex * 0.20 + fogTex2 * 0.09);
+
+        // Perspective water plane below horizon
+        if (p.y < horizonY && solid < 0.5) {
+          float dy = max(0.006, horizonY - p.y);
+          float wz = 0.14 / dy;
+          float wx = p.x * (0.55 + wz * 0.35);
+          float wave = fbm(vec2(wx * 4.2 + uTime * 0.14, wz * 3.4 - uTime * 0.35));
+          float crest = smoothstep(0.46, 0.76, wave);
+          lum = 0.02 + crest * 0.13 * smoothstep(0.0, 0.22, dy);
+
+          for (int k = 0; k < 2; k++) {
+            vec3 bk = (k == 0) ? b1 : b2;
+            float scaleK = (k == 0) ? 1.0 : 0.75;
+            if (bk.z > -0.25) {
+              float front = clamp((bk.z + 0.25) / 1.25, 0.0, 1.0);
+              float hitX = lPos.x + bk.x * (0.35 + 0.58 * (1.0 - smoothstep(0.0, 0.35, dy)));
+              float spread = 0.24 + 0.26 * max(0.0, bk.z);
+              float spec = front * scaleK * exp(-pow((p.x - hitX) / spread, 2.0) * 1.7);
+              float glint = spec * (0.24 + 0.65 * crest);
+              lum += glint * 0.75;
+              warm += glint * 0.58;
+            }
+          }
+
+          float colD = abs(p.x - lPos.x) / (0.05 + dy * 0.28);
+          float col = exp(-colD * colD * 1.7) * (0.24 + flare * 0.72) * (0.45 + 0.55 * crest);
+          lum += col * 0.55;
+          warm += col * 0.62;
+        }
+
+        // Horizon shimmer line
+        lum += exp(-abs(p.y - horizonY) * 200.0) * 0.14;
+
+        // 3D Volumetric Fresnel Beams (depth-occluded behind tower when z <= 0, shining in front when z > 0!)
+        vec2 m1 = march3DBeam(ro, rd, lantern3D, b1, geomCell.x, uTime);
+        vec2 m2 = march3DBeam(ro, rd, lantern3D, b2, geomCell.x, uTime) * 0.76;
+        float beamLum = (m1.x + m2.x) * 1.55;
+        float beamWarm = (m1.y + m2.y) * 1.65;
+
+        // If on solid lighthouse/shore silhouette, keep it deep obsidian + crisp directional rim
+        if (solid > 0.5) {
+          lum = 0.015;
+          warm = 0.0;
+          if (tower > 0.5) {
+            float side = sign(pExact.x - lPos.x);
+            float rimDir = max(0.0, side * b1.x * max(0.0, b1.z + 0.3)) +
+                           max(0.0, side * b2.x * max(0.0, b2.z + 0.3)) * 0.7;
+            float edge = smoothstep(0.014, 0.032, abs(pExact.x - lPos.x));
+            lum += edge * (0.08 + rimDir * 0.22 + flare * 0.14);
+            warm += edge * (rimDir * 0.22 + flare * 0.16);
+          }
+          // Foreground beam wrapping in front of the tower still casts light across it!
+          lum += beamLum * 0.55;
+          warm += beamWarm * 0.6;
+        } else {
+          lum += beamLum;
+          warm += beamWarm;
+        }
+
+        // Lantern room glass glow
+        if (glass > 0.5) {
+          lum = 0.88 + flare * 0.12;
+          warm = 0.95;
+        }
+
+        // Radial lantern core halo + anamorphic dead-on flash streak
+        vec2 dL = p - lPos;
+        float distL = length(dL);
+        float coreHalo = exp(-distL * (13.5 - flare * 5.0)) * (0.55 + flare * 0.9);
+        lum += coreHalo * 0.72;
+        warm += coreHalo * 0.95;
+
+        if (flare > 0.04) {
+          float hStreak = exp(-abs(dL.y) * 130.0) * exp(-abs(dL.x) * (4.8 - flare * 1.8)) * flare;
+          float vStreak = exp(-abs(dL.x) * 140.0) * exp(-abs(dL.y) * 15.0) * flare * 0.65;
+          lum += (hStreak + vStreak) * 0.9;
+          warm += (hStreak + vStreak) * 0.65;
+        }
+
+        float vig = smoothstep(1.08, 0.2, length(vec2((uv.x - 0.45) * 1.1, (uv.y - 0.5) * 1.35)));
+        lum *= (0.72 + 0.28 * vig);
+
+        // ============================================================
+        // VARIABLE-DENSITY SQUARE-DOT DITHER
+        // 1. Spatial density (Bayer thinning): in dark/foggy zones only a fraction
+        //    of grid cells populate; as intensity rises, every cell fills in.
+        // 2. Dot scale (halftone radius): each populated cell's crisp square dot grows
+        //    from a tiny 1px pinprick (0.14) in shadow to a tight full pixel (0.48) in bright beam!
+        // ============================================================
+        float lClamped = clamp(lum, 0.0, 1.0);
+        float wRatio = clamp(warm / max(0.08, lum + 0.08), 0.0, 1.0);
+        float bayer = bayer8(cellId); // 0.0 .. 0.984
+
+        // Spatial activation probability rises smoothly with luminance:
+        // dark sky/fog = sparse airy stipple; mid-fog & beam = 100% populated variable-size grid
+        float cellActive = step(bayer * 0.26, lClamped - 0.008);
+
+        // Variable dot half-size inside the cell (0.14 -> 0.485), driven smoothly by luminance
+        float fillFrac = clamp(pow(lClamped, 0.56) * 0.96 + (bayer - 0.5) * 0.06, 0.0, 1.0);
+        float halfSize = mix(0.15, 0.485, fillFrac);
+
+        // Crisp square dot mask (Chebyshev distance -> sharp pixel squares)
+        float distSq = max(abs(local.x), abs(local.y));
+        float inDot = step(distSq, halfSize) * cellActive;
+
+        // Background canvas base (#070709; slightly darker #050507 on solid cliff/tower silhouette)
+        vec3 bgCol = solid > 0.5 ? vec3(0.020, 0.020, 0.026) : vec3(0.027, 0.027, 0.035);
+
+        // Dot color: clean neutral mist/silver/white, shifting to Buoy Vermilion where beam/lantern is warm
+        vec3 neutralDot = mix(
+          vec3(0.38, 0.39, 0.45),
+          vec3(0.96, 0.96, 0.98),
+          smoothstep(0.06, 0.72, lClamped)
+        );
+
+        vec3 vermilionDot = mix(
+          vec3(0.933, 0.353, 0.247), // #EE5A3F Buoy Vermilion
+          vec3(1.000, 0.935, 0.900), // hot white-vermilion core
+          smoothstep(0.58, 0.98, lClamped)
+        );
+
+        // Dithered warm/neutral dot choice so the beam breaks into crisp intermixed vermilion & white squares
+        float useWarm = step(0.30, wRatio + (bayer - 0.5) * 0.44) * step(0.12, lClamped);
+        vec3 dotCol = mix(neutralDot, vermilionDot, useWarm);
+
+        // Keep the physical lantern glass room crisp & luminous inside the mullions
+        if (glass > 0.5) {
+          vec3 lanCol = mix(vec3(0.933, 0.353, 0.247), vec3(1.0, 0.95, 0.92), 0.35 + flare * 0.65);
+          gl_FragColor = vec4(lanCol, 1.0);
+          return;
+        }
+
+        vec3 finalCol = mix(bgCol, dotCol, inDot);
+        gl_FragColor = vec4(finalCol, 1.0);
+      }
+    `;
+
+    function compile(type, src) {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+        console.error('Beacon shader compile error:', gl.getShaderInfoLog(sh));
+        return null;
+      }
+      return sh;
+    }
+
+    const vs = compile(gl.VERTEX_SHADER, VERT);
+    const fs = compile(gl.FRAGMENT_SHADER, FRAG);
+    if (!vs || !fs) return;
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      console.error('Beacon shader link error:', gl.getProgramInfoLog(prog));
+      return;
+    }
+
+    gl.useProgram(prog);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+    const aPos = gl.getAttribLocation(prog, 'aPos');
+    gl.enableVertexAttribArray(aPos);
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes = gl.getUniformLocation(prog, 'uRes');
+    const uDpr = gl.getUniformLocation(prog, 'uDpr');
+    const uTime = gl.getUniformLocation(prog, 'uTime');
+    const uMouse = gl.getUniformLocation(prog, 'uMouse');
+
+    let visible = true;
+    let rafId = null;
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+
+    function resize() {
+      const rect = footer.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.max(320, Math.round(rect.width * dpr));
+      const h = Math.max(240, Math.round(rect.height * dpr));
+      canvas.width = w;
+      canvas.height = h;
+      gl.viewport(0, 0, w, h);
+      gl.uniform2f(uRes, w, h);
+      gl.uniform1f(uDpr, dpr);
+    }
+
+    const wordmark = document.getElementById('beaconWordmark');
+
+    function draw(nowMs) {
+      const t = reducedMotion ? 1.8 : nowMs * 0.001;
+      gl.uniform1f(uTime, t);
+      gl.uniform2f(uMouse, mouseX, mouseY);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+      if (wordmark) {
+        const th = -t * 0.6283185 + 1.05;
+        const frontRight = Math.max(0, Math.sin(th) * Math.max(0, Math.cos(th) + 0.3)) +
+                           Math.max(0, Math.sin(th + Math.PI) * Math.max(0, Math.cos(th + Math.PI) + 0.3)) * 0.7;
+        const alpha = 0.035 + Math.min(0.14, frontRight * 0.14);
+        wordmark.style.color = `rgba(255, 236, 228, ${alpha.toFixed(3)})`;
+      }
+
+      if (!reducedMotion && visible) {
+        rafId = requestAnimationFrame(draw);
+      }
+    }
+
+    function start() {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(draw);
+    }
+
+    resize();
+    if (reducedMotion) {
+      draw(0);
+    } else {
+      start();
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      if (reducedMotion) draw(0);
+    });
+
+    footer.addEventListener('pointermove', (e) => {
+      const r = footer.getBoundingClientRect();
+      mouseX = (e.clientX - r.left) / Math.max(1, r.width);
+      mouseY = (e.clientY - r.top) / Math.max(1, r.height);
+    });
+    footer.addEventListener('pointerleave', () => {
+      mouseX = 0.5;
+      mouseY = 0.5;
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          visible = entries[0]?.isIntersecting ?? true;
+          if (visible && !reducedMotion) start();
+          if (!visible && rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        },
+        { threshold: 0.02 }
+      );
+      io.observe(footer);
+    }
+  })();
+</script>

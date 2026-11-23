@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import BakenMark from '../components/BakenMark.astro';
 import StringsCanvas from '../components/StringsCanvas.astro';
+import PixelStageShader from '../components/PixelStageShader.astro';
 import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 ---
 
@@ -11,14 +12,14 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     <div class="container hero-center">
       <!-- Mascot Cast Row (Grok Bot / Muse visual warmth up top) -->
       <div class="mascot-lineup" aria-hidden="true">
-        <div class="mascot-wrap m-chip" title="Meridian">
+        <div class="mascot-wrap m-chip m-cobalt" title="Meridian">
           <svg width="46" height="46" viewBox="-185 -185 370 370">
             <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
             <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(-8)" />
             <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
           </svg>
         </div>
-        <div class="mascot-wrap m-chip" style="animation-delay:-1.1s" title="Builder">
+        <div class="mascot-wrap m-chip m-orange" style="animation-delay:-1.1s" title="Builder">
           <svg width="44" height="44" viewBox="-185 -185 370 370">
             <path d={MASCOT_BODIES.triangle} fill="#FF6A1A" />
             <rect x="-56" y="-42" width="112" height="112" rx="26" fill="#F7F7F7" />
@@ -28,14 +29,14 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
         <div class="baken-hero-badge">
           <BakenMark uid="hero-mark" size={42} state="idle" />
         </div>
-        <div class="mascot-wrap m-chip" style="animation-delay:-2.2s" title="Planner">
+        <div class="mascot-wrap m-chip m-green" style="animation-delay:-2.2s" title="Planner">
           <svg width="44" height="44" viewBox="-185 -185 370 370">
             <path d={MASCOT_BODIES.squircle} fill="#1DA34A" />
             <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(5)" />
             <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
           </svg>
         </div>
-        <div class="mascot-wrap m-chip" style="animation-delay:-3.1s" title="Archivist">
+        <div class="mascot-wrap m-chip m-crimson" style="animation-delay:-3.1s" title="Archivist">
           <svg width="44" height="44" viewBox="-185 -185 370 370">
             <path d={MASCOT_BODIES.circle} fill="#E5484D" />
             <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(-5)" />
@@ -66,6 +67,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     <!-- HERO PRODUCT SHOWCASE: FULL DESKTOP + PHONE CONTINUITY -->
     <div class="container">
       <div class="showcase-stage dark-surface">
+        <PixelStageShader />
         <div class="app-window">
           <div class="win-titlebar">
             <div class="win-left">
@@ -165,8 +167,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
               <div class="win-composer">
                 <span>Ask for the next thing — composer stays open while tasks run…</span>
                 <div class="comp-right">
-                  <span>Synced to phone</span>
-                  <span class="comp-mic">●</span>
+                  <span class="comp-sync">Synced to phone</span>
+                  <span class="comp-send" aria-hidden="true">↑</span>
                 </div>
               </div>
             </div>
@@ -186,7 +188,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
 
       <div class="bento-grid">
         <!-- Card 1: Remembers what you teach it -->
-        <article class="bento-card">
+        <article class="bento-card" data-tone="vermilion">
           <div class="bento-copy">
             <h3>Gets smarter every week you use it.</h3>
             <p>Tell your agent a preference or a rule once. It writes it to its own memory on your machine and follows it from then on — no repeating yourself every session.</p>
@@ -205,7 +207,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
         </article>
 
         <!-- Card 2: Every agent has its own computer (yours) -->
-        <article class="bento-card">
+        <article class="bento-card" data-tone="emerald">
           <div class="bento-copy">
             <h3>Works directly on your computer.</h3>
             <p>Your agents use your real files, terminal, browser, and local apps. You stay in control — auto-approve routine steps or have it ask before touching anything sensitive.</p>
@@ -228,7 +230,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
         </article>
 
         <!-- Card 3: Keeps working when you walk away (Fork & Relay) -->
-        <article class="bento-card">
+        <article class="bento-card" data-tone="amber">
           <div class="bento-copy">
             <h3>Keeps working while you walk away.</h3>
             <p>Hand off a 20-minute job and keep chatting, or lock your phone and leave. Background workers finish the heavy lifting and bring the result back into the conversation.</p>
@@ -249,7 +251,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
         </article>
 
         <!-- Card 4: Agents work with each other -->
-        <article class="bento-card">
+        <article class="bento-card" data-tone="cobalt">
           <div class="bento-copy">
             <h3>Agents delegate to each other.</h3>
             <p>Your main companion stays fast and conversational while delegating code, reviews, or research to specialized workers — and you see every handoff in one place.</p>
@@ -258,25 +260,25 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <div class="ui-handoff">
               <div class="ho-row">
                 <span class="ho-dot blue"></span>
-                <div><strong>Meridian</strong> → <strong>Builder</strong><p>Handing over the app icon update with the new artwork attached.</p></div>
+                <div><strong class="ho-name blue">Meridian</strong> → <strong class="ho-name orange">Builder</strong><p>Handing over the app icon update with the new artwork attached.</p></div>
               </div>
               <div class="ho-row">
-                <span class="ho-dot green"></span>
-                <div><strong>Builder</strong><p>Swapped in the new icon. Running the checks now.</p></div>
+                <span class="ho-dot orange"></span>
+                <div><strong class="ho-name orange">Builder</strong><p>Swapped in the new icon. Running the checks now.</p></div>
               </div>
             </div>
           </div>
         </article>
 
         <!-- Card 5: Hands-free voice -->
-        <article class="bento-card">
+        <article class="bento-card" data-tone="voice">
           <div class="bento-copy">
             <h3>Talk to it out loud, hands-free.</h3>
             <p>Start a voice session from your phone or desktop. Speech is recognized locally and your agent answers out loud sentence by sentence from your own GPU or model.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-voice-box">
-              <div class="mascot-wrap">
+              <div class="mascot-wrap voice-halo">
                 <svg width="56" height="56" viewBox="-190 -190 380 380" aria-hidden="true">
                   <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
                   <g transform="rotate(-6)">
@@ -296,7 +298,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
         </article>
 
         <!-- Card 6: Phone + Desktop paired directly -->
-        <article class="bento-card">
+        <article class="bento-card" data-tone="teal">
           <div class="bento-copy">
             <h3>Your computer's power, in your pocket.</h3>
             <p>Scan one code to pair your Android phone straight to your computer. Every agent, file, and conversation is there instantly — encrypted end to end with zero cloud middleman.</p>
@@ -316,7 +318,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   </section>
 
   <!-- 3. GIVE EACH AGENT A JOB (Interactive Role Switcher — x.ai/bot's signature section adapted to Baken) -->
-  <section class="band band-rule" id="jobs">
+  <section class="band band-rule band-tinted" id="jobs">
     <div class="container">
       <div class="band-head">
         <h2>Give each agent a job.</h2>
@@ -332,7 +334,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
         <button type="button" class="job-pill" data-job="research" role="tab" aria-selected="false">Deep Research</button>
       </div>
 
-      <div class="job-stage dark-surface" id="jobStage">
+      <div class="job-stage dark-surface" id="jobStage" data-active-job="companion">
         <!-- Job 1: Daily Companion -->
         <div class="job-panel active" data-panel="companion">
           <div class="job-desc">
@@ -503,7 +505,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   </section>
 
   <!-- 7. THE "WHY BAKEN" ORIGIN & INTERACTIVE TRANSIT (MOVED TO THE END AS THE SIGNATURE CODA) -->
-  <section class="band band-rule" id="why-baken">
+  <section class="band band-rule band-tinted" id="why-baken">
     <div class="container">
       <div class="origin-grid">
         <div class="origin-copy">
@@ -529,8 +531,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
           <svg class="transit-svg" id="transitSvg" viewBox="0 0 560 220" aria-label="Interactive seamark alignment">
             <defs>
               <radialGradient id="transitGlow" cx="50%" cy="52%" r="48%">
-                <stop offset="0%" stop-color="#EE5A3F" stop-opacity="0.48" />
-                <stop offset="60%" stop-color="#EE5A3F" stop-opacity="0.12" />
+                <stop offset="0%" stop-color="#EE5A3F" stop-opacity="0.46" />
+                <stop offset="60%" stop-color="#EE5A3F" stop-opacity="0.11" />
                 <stop offset="100%" stop-color="#EE5A3F" stop-opacity="0" />
               </radialGradient>
             </defs>
@@ -539,17 +541,17 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <path class="contour c2" d="M -20 142 C 120 92, 310 166, 470 112 C 520 96, 555 118, 580 104" />
             <path class="contour c3" d="M -20 106 C 150 58, 330 132, 480 80 C 530 64, 560 88, 580 74" />
 
-            <line id="sightRay" x1="280" y1="12" x2="280" y2="208" stroke="rgba(238,90,63,0.7)" stroke-width="1.5" stroke-dasharray="4 4" />
+            <line id="sightRay" x1="280" y1="12" x2="280" y2="208" stroke="rgba(238,90,63,0.75)" stroke-width="1.5" stroke-dasharray="4 4" />
             <circle id="sightGlow" cx="280" cy="112" r="76" fill="url(#transitGlow)" />
 
             <g id="rearStone" transform="translate(202, 24) scale(0.78)">
-              <path d={BAKEN_ANCHOR} fill="#DCE6EE" />
+              <path d={BAKEN_ANCHOR} fill="#F2F2F5" />
             </g>
             <g id="frontStone" transform="translate(202, 24) scale(0.78)">
               <path d={BAKEN_PEBBLE} fill="#EE5A3F" />
             </g>
 
-            <text x="18" y="204" fill="#7D93A5" font-size="10.5" font-family="ui-monospace, monospace">REAR · YOUR COMPUTER</text>
+            <text x="18" y="204" fill="#7A7A84" font-size="10.5" font-family="ui-monospace, monospace">REAR · YOUR COMPUTER</text>
             <text x="392" y="204" fill="#EE5A3F" font-size="10.5" font-family="ui-monospace, monospace">FRONT · YOUR PHONE</text>
           </svg>
         </div>
@@ -558,9 +560,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   </section>
 
   <!-- 8. CLOSING -->
-  <section class="band band-rule">
+  <section class="band band-rule closing-band">
     <div class="container hero-center">
-      <BakenMark uid="close" size={48} state="idle" />
+      <div class="closing-mark-wrap">
+        <BakenMark uid="close" size={48} state="idle" />
+      </div>
       <h2 class="closing-h2">Keep what you build together.</h2>
       <p class="hero-lead" style="margin-bottom:28px">
         Free and open source on Android, Windows, and Linux. No account, no lock-in.
@@ -578,19 +582,21 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
 </Layout>
 
 <style>
-  /* 1. Hero */
-  .hero { padding: 48px 0 88px; }
+  /* 1. Hero — crisp neutral canvas, color reserved for mascots and the single beacon accent */
+  .hero {
+    padding: 56px 0 88px;
+  }
   .hero-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
 
   .mascot-lineup {
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 26px;
+    margin-bottom: 28px;
   }
   .m-chip {
-    width: 54px; height: 54px;
-    border-radius: 16px;
+    width: 52px; height: 52px;
+    border-radius: 15px;
     background: var(--surface);
     border: 1px solid var(--border);
     box-shadow: var(--pill-shadow);
@@ -598,11 +604,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     place-items: center;
   }
   .baken-hero-badge {
-    width: 62px; height: 62px;
-    border-radius: 18px;
-    background: #0D1821;
-    border: 1px solid rgba(220, 230, 238, 0.16);
-    box-shadow: 0 10px 26px rgba(13, 24, 33, 0.22);
+    width: 60px; height: 60px;
+    border-radius: 17px;
+    background: #111114;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
     display: grid;
     place-items: center;
   }
@@ -617,86 +623,93 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 
   .showcase-stage {
-    margin-top: 52px; border-radius: 16px; padding: 36px 36px 0;
-    background:
-      radial-gradient(circle at 22% 0%, rgba(238, 90, 63, 0.16), transparent 46%),
-      radial-gradient(circle at 80% 15%, rgba(62, 134, 178, 0.22), transparent 50%),
-      radial-gradient(rgba(220, 230, 238, 0.15) 1px, transparent 1px),
-      linear-gradient(160deg, #1b2f3d 0%, #0f1d28 55%, #0a141c 100%);
-    background-size: auto, auto, 24px 24px, auto;
-    border: 1px solid rgba(16, 32, 44, 0.12);
-    box-shadow: 0 24px 64px rgba(10, 20, 28, 0.18);
+    position: relative;
+    margin-top: 56px; border-radius: 16px; padding: 28px 28px 0;
+    background: #0A0A0C;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.42);
     overflow: hidden;
   }
 
   .app-window {
-    background: #0e161d; color: #e8eff4;
-    border-radius: 12px 12px 0 0; border: 1px solid rgba(255, 255, 255, 0.11); border-bottom: none;
-    overflow: hidden; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.48);
+    position: relative;
+    z-index: 1;
+    background: #0F0F12; color: #F4F4F6;
+    border-radius: 12px 12px 0 0; border: 1px solid rgba(255, 255, 255, 0.09); border-bottom: none;
+    overflow: hidden; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
   }
   .win-titlebar {
-    height: 44px; padding: 0 16px; background: #0a1117;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    height: 44px; padding: 0 16px; background: #0B0B0D;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     display: flex; align-items: center; justify-content: space-between; gap: 14px;
   }
   .win-left { display: flex; align-items: center; gap: 10px; }
-  .win-tab { font-size: 12px; color: #7f96a8; padding: 4px 10px; border-radius: 6px; }
-  .win-tab.active-tab { background: rgba(255, 255, 255, 0.07); color: #e8eff4; font-weight: 700; }
+  .win-tab { font-size: 12px; color: #7C7C86; padding: 4px 10px; border-radius: 6px; }
+  .win-tab.active-tab { background: rgba(255, 255, 255, 0.07); color: #F4F4F6; font-weight: 700; }
   .win-search {
-    font-size: 12px; color: #6c8294; background: rgba(255, 255, 255, 0.04);
+    font-size: 12px; color: #6F6F78; background: rgba(255, 255, 255, 0.035);
     border: 1px solid rgba(255, 255, 255, 0.07); padding: 4px 14px; border-radius: 6px;
   }
   .win-dots { display: flex; gap: 7px; }
-  .win-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
+  .win-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
 
   .win-body { display: grid; grid-template-columns: 56px 210px 1fr; min-height: 390px; }
   .win-rail {
-    background: #091016; border-right: 1px solid rgba(255, 255, 255, 0.07);
+    background: #0B0B0D; border-right: 1px solid rgba(255, 255, 255, 0.07);
     padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
   }
   .rail-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; }
-  .rail-icon.rail-selected { background: rgba(238, 90, 63, 0.16); box-shadow: inset 0 0 0 1.5px #ee5a3f; }
+  .rail-icon.rail-selected { background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
   .win-sidebar {
-    background: #0c141b; border-right: 1px solid rgba(255, 255, 255, 0.07);
+    background: #0E0E11; border-right: 1px solid rgba(255, 255, 255, 0.07);
     padding: 20px 14px; display: flex; flex-direction: column; gap: 18px;
   }
   .agent-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
   .agent-hero strong { font-size: 15px; }
-  .agent-sub { font-size: 11.5px; color: #7f96a8; }
-  .side-nav { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #9ab0c1; }
+  .agent-sub { font-size: 11.5px; color: #7C7C86; }
+  .side-nav { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #9A9AA4; }
   .side-item { padding: 6px 8px; border-radius: 6px; }
   .side-threads { display: flex; flex-direction: column; gap: 4px; }
-  .side-label { font-size: 11px; color: #677d8f; padding: 0 8px 4px; }
-  .thread { font-size: 12.5px; color: #8da2b3; padding: 6px 8px; border-radius: 6px; }
-  .thread.active-thread { background: rgba(255, 255, 255, 0.07); color: #e8eff4; }
+  .side-label { font-size: 11px; color: #686872; padding: 0 8px 4px; }
+  .thread { font-size: 12.5px; color: #8A8A94; padding: 6px 8px; border-radius: 6px; }
+  .thread.active-thread { background: rgba(255, 255, 255, 0.07); color: #F4F4F6; }
 
-  .win-chat { padding: 24px 28px 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
+  .win-chat { padding: 24px 28px 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; background: #101013; }
   .chat-feed { display: flex; flex-direction: column; gap: 16px; }
   .msg-user {
-    align-self: flex-end; background: #173447; color: #e8eff4;
+    align-self: flex-end; background: #1E1E24; color: #F4F4F6;
+    border: 1px solid rgba(255, 255, 255, 0.07);
     padding: 11px 16px; border-radius: 14px 14px 4px 14px; font-size: 14px; max-width: 78%;
   }
   .tool-fold {
     align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12.5px; color: #88a0b2; padding: 5px 11px; border-radius: 7px;
-    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12.5px; color: #8E8E98; padding: 5px 11px; border-radius: 7px;
+    background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .fold-dot { width: 6px; height: 6px; border-radius: 50%; background: #ee5a3f; }
-  .msg-agent { font-size: 14.5px; color: #dce6ee; max-width: 60ch; }
+  .fold-dot { width: 6px; height: 6px; border-radius: 50%; background: #EE5A3F; }
+  .msg-agent { font-size: 14.5px; color: #E2E2E8; max-width: 60ch; }
   .msg-agent p { margin: 0 0 10px; }
-  .msg-agent ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #b5c7d4; }
-  .msg-agent strong { color: #e8eff4; }
+  .msg-agent ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #B4B4BE; }
+  .msg-agent strong { color: #FFFFFF; }
   .win-composer {
-    display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
-    border-radius: 10px; background: #14212c; border: 1px solid rgba(255, 255, 255, 0.09);
-    font-size: 13.5px; color: #718799;
+    display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 10px 16px;
+    border-radius: 12px; background: #141418;
+    border: 1px solid rgba(238, 90, 63, 0.65);
+    box-shadow: 0 0 0 1px rgba(238, 90, 63, 0.14);
+    font-size: 13.5px; color: #7C7C86;
   }
   .comp-right { display: flex; align-items: center; gap: 10px; font-size: 12px; }
-  .comp-mic { color: #ee5a3f; }
+  .comp-sync { color: #8E8E98; }
+  .comp-send {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #EE5A3F; color: #FFFFFF;
+    display: grid; place-items: center; font-size: 14px; font-weight: 700; line-height: 1;
+  }
 
-  /* 2. Bento Capability Grid (x.ai/bot style: each card has copy + miniature live UI artifact) */
+  /* 2. Bento Capability Grid — neutral obsidian/white surfaces, surgical color only in semantic signals */
   .band { padding: 100px 0; }
   .band-rule { border-top: 1px solid var(--border); }
+  .band-tinted { background: var(--band-tinted); }
   .band-head { max-width: 660px; margin-bottom: 48px; }
   .band-head.centered { margin-left: auto; margin-right: auto; text-align: center; }
   .band-head h2 { margin: 0 0 14px; font-size: clamp(32px, 4vw, 46px); line-height: 1.08; letter-spacing: -0.04em; font-weight: 700; }
@@ -716,6 +729,10 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     flex-direction: column;
     justify-content: space-between;
     gap: 22px;
+    transition: border-color 160ms ease;
+  }
+  .bento-card:hover {
+    border-color: var(--border-strong);
   }
   .bento-copy h3 {
     margin: 0 0 8px;
@@ -728,11 +745,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     color: var(--muted);
   }
   .bento-ui {
-    background: #0D1821;
-    color: #E8EFF4;
+    background: #0B0B0D;
+    color: #F2F2F5;
     border-radius: 10px;
     padding: 16px 18px;
-    border: 1px solid rgba(220, 230, 238, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     font-size: 13px;
     display: flex;
     flex-direction: column;
@@ -740,14 +757,16 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   }
   .ui-msg-u {
     align-self: flex-end;
-    background: #173447;
+    background: #1C1C22;
+    border: 1px solid rgba(255, 255, 255, 0.07);
     padding: 7px 12px;
     border-radius: 10px 10px 3px 10px;
     font-size: 12.5px;
   }
   .ui-memory-toast {
-    background: #13222E;
-    border: 1px solid rgba(238, 90, 63, 0.35);
+    background: #121216;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-left: 2px solid #EE5A3F;
     border-radius: 8px;
     padding: 10px 12px;
   }
@@ -755,76 +774,85 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     display: flex; align-items: center; gap: 7px; font-size: 12px; margin-bottom: 4px;
   }
   .mem-dot { width: 7px; height: 7px; border-radius: 50%; background: #EE5A3F; }
-  .mem-file { margin-left: auto; font-family: ui-monospace, monospace; font-size: 11px; color: #7F96A8; }
-  .ui-memory-toast p { margin: 0; font-size: 12px; color: #B8C9D6; }
+  .mem-file { margin-left: auto; font-family: ui-monospace, monospace; font-size: 11px; color: #7C7C86; }
+  .ui-memory-toast p { margin: 0; font-size: 12px; color: #B4B4BE; }
 
   .ui-term-head {
-    display: flex; justify-content: space-between; font-size: 11.5px; color: #849BAE;
+    display: flex; justify-content: space-between; font-size: 11.5px; color: #7C7C86;
   }
   .ui-badge-live { color: #EE5A3F; font-weight: 700; }
   .ui-diff {
-    background: #091118; border-radius: 7px; padding: 10px 12px;
+    background: #070709; border-radius: 7px; padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     font-family: ui-monospace, monospace; font-size: 11.5px; line-height: 1.55;
   }
-  .diff-file { color: #7F96A8; margin-bottom: 3px; }
+  .diff-file { color: #7C7C86; margin-bottom: 4px; }
   .diff-del { color: #F07167; }
-  .diff-add { color: #57CC99; }
+  .diff-add { color: #4ADE80; }
   .ui-approve-bar {
-    display: flex; justify-content: space-between; font-size: 12px; color: #9BB0C1;
+    display: flex; justify-content: space-between; font-size: 12px; color: #9A9AA4;
   }
-  .ui-ok { color: #57CC99; font-weight: 700; }
+  .ui-ok { color: #4ADE80; font-weight: 700; }
 
   .ui-run-row {
     display: flex; align-items: center; gap: 12px;
-    padding: 8px 10px; border-radius: 8px; background: #13222E;
+    padding: 9px 11px; border-radius: 8px;
+    background: #131317;
+    border: 1px solid rgba(255, 255, 255, 0.07);
   }
   .run-meta { display: flex; flex-direction: column; font-size: 12px; }
-  .run-meta span { font-size: 11px; color: #7F96A8; }
+  .run-meta span { font-size: 11px; color: #7C7C86; }
   .ui-relay {
-    font-size: 12.5px; color: #C5D4E0; padding: 8px 10px;
-    border-left: 2px solid #EE5A3F; background: rgba(255,255,255,0.02);
+    font-size: 12.5px; color: #D4D4DC; padding: 8px 11px;
+    border-left: 2px solid #EE5A3F; background: rgba(255, 255, 255, 0.02);
   }
 
-  .ui-handoff { display: flex; flex-direction: column; gap: 10px; }
-  .ho-row { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; }
-  .ho-row p { margin: 2px 0 0; color: #95ABB9; font-size: 12px; }
+  .ui-handoff { display: flex; flex-direction: column; gap: 12px; }
+  .ho-row { display: flex; align-items: flex-start; gap: 10px; font-size: 12.5px; }
+  .ho-row p { margin: 2px 0 0; color: #8E8E98; font-size: 12px; }
   .ho-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
   .ho-dot.blue { background: #1E7BF0; }
-  .ho-dot.green { background: #1DA34A; }
+  .ho-dot.orange { background: #FF6A1A; }
+  .ho-name.blue { color: #F4F4F6; }
+  .ho-name.orange { color: #F4F4F6; }
 
   .ui-voice-box {
     display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 6px 8px;
   }
   .v-bars { height: 42px; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; }
-  .v-bars span { width: 5px; height: var(--h); border-radius: 999px; background: #EE5A3F; animation: vbar 1.4s ease-in-out infinite; }
-  .v-bars span:nth-child(even) { background: #DCE6EE; animation-delay: -0.45s; }
+  .v-bars span { width: 4px; height: var(--h); border-radius: 999px; background: #EE5A3F; animation: vbar 1.4s ease-in-out infinite; }
+  .v-bars span:nth-child(even) { background: rgba(255, 255, 255, 0.45); animation-delay: -0.45s; }
   @keyframes vbar { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.1); } }
-  .v-live { font-family: ui-monospace, monospace; font-size: 11.5px; color: #849BAE; }
+  .v-live { font-family: ui-monospace, monospace; font-size: 11.5px; color: #8E8E98; }
 
   .ui-pair-box {
     display: flex; align-items: center; gap: 14px; padding: 10px 8px;
   }
   .pair-text { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
-  .pair-text span { font-size: 11.5px; color: #849BAE; }
+  .pair-text span { font-size: 11.5px; color: #7C7C86; }
 
-  /* 3. Give Each Agent a Job (Role Switcher) */
+  /* 3. Give Each Agent a Job — crisp neutral tab bar (orca.dev restraint) */
   .jobs-pills {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px;
+    display: inline-flex; flex-wrap: wrap; gap: 4px; margin-bottom: 20px;
+    padding: 4px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--border);
   }
   .job-pill {
-    padding: 9px 16px; border-radius: var(--radius);
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--muted); font-family: inherit; font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: all 150ms ease;
+    padding: 8px 15px; border-radius: 7px;
+    background: transparent; border: 1px solid transparent;
+    color: var(--muted); font-family: inherit; font-size: 13.5px; font-weight: 600;
+    cursor: pointer; transition: all 140ms ease;
   }
-  .job-pill:hover { color: var(--text); border-color: var(--border-strong); }
+  .job-pill:hover { color: var(--text); }
   .job-pill.active {
-    background: var(--stone-2); border-color: var(--stone-2); color: #FFFFFF;
+    background: var(--primary-btn-bg); color: var(--primary-btn-text);
   }
 
   .job-stage {
-    background: #0D1821; color: #E8EFF4;
-    border-radius: 14px; border: 1px solid rgba(220, 230, 238, 0.12);
+    background: #0C0C0F;
+    color: #F4F4F6;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
     padding: 34px 36px;
   }
   .job-panel {
@@ -834,19 +862,24 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     align-items: center;
   }
   .job-panel.active { display: grid; }
-  .job-desc h3 { margin: 0 0 10px; font-size: 24px; letter-spacing: -0.03em; color: #F2F7FA; }
-  .job-desc p { margin: 0 0 16px; font-size: 15px; color: #9BB0C1; }
-  .job-desc ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px; color: #DCE6EE; }
+  .job-desc h3 { margin: 0 0 10px; font-size: 24px; letter-spacing: -0.03em; color: #FFFFFF; }
+  .job-desc p { margin: 0 0 16px; font-size: 15px; color: #8E8E98; }
+  .job-desc ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px; color: #D4D4DC; }
+  .job-desc li::marker { color: #EE5A3F; }
   .job-chat {
-    background: #13222E; border: 1px solid rgba(220, 230, 238, 0.1);
+    background: #121216;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px;
   }
   .jc-u {
-    align-self: flex-end; background: #1B3B50; padding: 9px 14px;
-    border-radius: 12px 12px 3px 12px; font-size: 13.5px; color: #F2F7FA;
+    align-self: flex-end;
+    background: #1E1E24;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 9px 14px;
+    border-radius: 12px 12px 3px 12px; font-size: 13.5px; color: #F4F4F6;
   }
   .jc-a {
-    font-size: 13.5px; color: #C9D8E4; line-height: 1.55;
+    font-size: 13.5px; color: #C6C6D0; line-height: 1.55;
   }
 
   /* 5. Clean 2x2 Grid */
@@ -891,8 +924,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   .origin-copy em { color: var(--text); font-style: italic; }
 
   .origin-instrument {
-    background: #0D1821;
-    border: 1px solid rgba(220, 230, 238, 0.14);
+    background: #0B0B0D;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 18px 20px 14px;
   }
@@ -900,17 +933,18 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 8px;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px; color: #849BAE;
+    font-size: 11px; color: #7C7C86;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(220, 230, 238, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .transit-readout { color: #DCE6EE; }
+  .transit-readout { color: #E2E2E8; }
   .transit-svg { width: 100%; height: auto; display: block; }
-  .contour { fill: none; stroke: rgba(220, 230, 238, 0.12); stroke-width: 1; }
-  .contour.c2 { stroke-dasharray: 4 4; stroke: rgba(220, 230, 238, 0.16); }
-  .contour.c3 { stroke: rgba(220, 230, 238, 0.08); }
+  .contour { fill: none; stroke: rgba(255, 255, 255, 0.09); stroke-width: 1; }
+  .contour.c2 { stroke-dasharray: 4 4; stroke: rgba(255, 255, 255, 0.13); }
+  .contour.c3 { stroke: rgba(255, 255, 255, 0.06); }
 
-  .closing-h2 { margin: 22px 0 14px; font-size: clamp(34px, 4.5vw, 52px); line-height: 1.06; letter-spacing: -0.04em; }
+  .closing-mark-wrap { display: inline-flex; }
+  .closing-h2 { margin: 20px 0 14px; font-size: clamp(34px, 4.5vw, 52px); line-height: 1.06; letter-spacing: -0.04em; }
 
   @media (prefers-reduced-motion: reduce) { .v-bars span { animation: none !important; } }
   @media (max-width: 900px) {
@@ -931,9 +965,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   // Role Switcher ("Give each agent a job")
   const jobPills = document.querySelectorAll('#jobPills .job-pill');
   const jobPanels = document.querySelectorAll('#jobStage .job-panel');
+  const jobStage = document.getElementById('jobStage');
   jobPills.forEach((btn) => {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-job');
+      if (jobStage && target) jobStage.setAttribute('data-active-job', target);
       jobPills.forEach((b) => {
         const active = b === btn;
         b.classList.toggle('active', active);

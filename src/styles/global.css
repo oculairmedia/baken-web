@@ -13,47 +13,55 @@
   font-display: swap;
 }
 
-/* Light-first North Sea Mist editorial canvas, follows OS color scheme automatically */
+/* Neutral-first editorial canvas (matches Baken GUI), follows OS color scheme automatically */
 :root {
   color-scheme: light dark;
-  --bg: #EFF3F6;
-  --bg-subtle: #E5ECF1;
+  --bg: #FAFAFA;
+  --bg-subtle: #F2F2F4;
   --surface: #FFFFFF;
-  --border: rgba(16, 32, 44, 0.11);
-  --border-strong: rgba(16, 32, 44, 0.2);
-  --stone-1: #163044;
+  --surface-2: #F5F5F7;
+  --border: rgba(9, 9, 11, 0.09);
+  --border-strong: rgba(9, 9, 11, 0.18);
+  --stone-1: #111114;
   --stone-2: #E04A32;
   --stone-2-hover: #C93D26;
   --stone-2-warm: #F4664A;
-  --stone-2-dim: #8D7C7B;
-  --text: #10202C;
-  --muted: #526778;
-  --nav-btn-bg: #10202C;
+  --stone-2-dim: #7C6E6C;
+  --band-tinted: #F3F3F5;
+  --text: #09090B;
+  --muted: #63636B;
+  --nav-btn-bg: #09090B;
   --nav-btn-text: #FFFFFF;
+  --primary-btn-bg: #09090B;
+  --primary-btn-text: #FFFFFF;
   --pill-bg: #FFFFFF;
-  --pill-shadow: 0 2px 10px rgba(16, 32, 44, 0.08), 0 1px 2px rgba(16, 32, 44, 0.05);
+  --pill-shadow: 0 2px 10px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --radius: 8px;
   --max-w: 1160px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0D1821;
-    --bg-subtle: #11202C;
-    --surface: #13212D;
-    --border: rgba(220, 230, 238, 0.11);
-    --border-strong: rgba(220, 230, 238, 0.22);
-    --stone-1: #DCE6EE;
+    --bg: #09090B;
+    --bg-subtle: #0E0E11;
+    --surface: #111114;
+    --surface-2: #17171B;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --stone-1: #F2F2F5;
     --stone-2: #EE5A3F;
     --stone-2-hover: #FF6E53;
     --stone-2-warm: #FF7858;
-    --stone-2-dim: #7C5C59;
-    --text: #E8EFF4;
-    --muted: #869CAE;
-    --nav-btn-bg: #E8EFF4;
-    --nav-btn-text: #0D1821;
-    --pill-bg: #152533;
-    --pill-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    --stone-2-dim: #6E5855;
+    --band-tinted: #0D0D10;
+    --text: #F4F4F6;
+    --muted: #8E8E98;
+    --nav-btn-bg: #F4F4F6;
+    --nav-btn-text: #09090B;
+    --primary-btn-bg: #FFFFFF;
+    --primary-btn-text: #09090B;
+    --pill-bg: #141418;
+    --pill-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -194,14 +202,14 @@ code, pre, .mono {
 }
 
 .btn-primary {
-  background: var(--stone-2);
-  color: #FFFFFF;
+  background: var(--primary-btn-bg);
+  color: var(--primary-btn-text);
   padding: 14px 24px;
   font-size: 15px;
 }
 
 .btn-primary:hover {
-  background: var(--stone-2-hover);
+  opacity: 0.9;
 }
 
 .btn-outline {
@@ -256,12 +264,12 @@ code, pre, .mono {
   transition: fill 260ms ease, opacity 260ms ease;
 }
 
-/* Inside dark product frames, force the dark-surface stone colors even when page is light */
+/* Inside dark product frames, force neutral white + vermilion stone colors even when page is light */
 .dark-surface {
-  --stone-1: #DCE6EE;
+  --stone-1: #F2F2F5;
   --stone-2: #EE5A3F;
   --stone-2-warm: #FF7858;
-  --stone-2-dim: #7C5C59;
+  --stone-2-dim: #6E5855;
 }
 
 .seam-glow {
