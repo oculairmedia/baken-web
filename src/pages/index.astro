@@ -145,7 +145,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <div class="win-chat">
               <div class="chat-feed">
                 <div class="msg-user">
-                  Wire the new store domain to Shopify, move support@ off my personal email, and verify nothing leaks on the live pages.
+                  Point the new shop domain at the storefront, set up a support@ address, and make sure my personal email isn't on any public page.
                 </div>
 
                 <div class="tool-fold">
@@ -156,8 +156,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
                 <div class="msg-agent">
                   <p>Done and verified live across the homepage, contact page, privacy policy, and terms:</p>
                   <ul>
-                    <li><strong>redactedattire.com</strong> is primary with SSL active.</li>
-                    <li><strong>support@redactedattire.com</strong> is live and verified; your personal address appears <strong>0</strong> times on the site.</li>
+                    <li><strong>northwindgoods.com</strong> is the primary domain with SSL active.</li>
+                    <li><strong>support@northwindgoods.com</strong> is live and verified; your personal address appears <strong>0</strong> times on the site.</li>
                   </ul>
                 </div>
               </div>
@@ -197,7 +197,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
               <div class="mem-head">
                 <span class="mem-dot"></span>
                 <strong>Saved to memory</strong>
-                <span class="mem-file">projects/store-opsec.md</span>
+                <span class="mem-file">projects/shop.md</span>
               </div>
               <p>Keep personal email off all public storefronts and policies; always use the domain support@ address.</p>
             </div>
@@ -258,11 +258,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <div class="ui-handoff">
               <div class="ho-row">
                 <span class="ho-dot blue"></span>
-                <div><strong>Meridian</strong> → <strong>PM-baken</strong><p>Handing over the 24dp notification icon and Rive state split.</p></div>
+                <div><strong>Meridian</strong> → <strong>Builder</strong><p>Handing over the app icon update with the new artwork attached.</p></div>
               </div>
               <div class="ho-row">
                 <span class="ho-dot green"></span>
-                <div><strong>PM-baken</strong><p>Wired into Android adaptive icon layers. Running check suite now.</p></div>
+                <div><strong>Builder</strong><p>Swapped in the new icon. Running the checks now.</p></div>
               </div>
             </div>
           </div>
@@ -305,7 +305,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <div class="ui-pair-box">
               <BakenMark uid="b-pair" size={38} state="connecting" />
               <div class="pair-text">
-                <strong>Pixel 9 Pro ⇄ Home Workstation</strong>
+                <strong>Your phone ⇄ Home computer</strong>
                 <span>Direct encrypted tunnel · 0 cloud relays · instant resume</span>
               </div>
             </div>
@@ -346,7 +346,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
           </div>
           <div class="job-chat">
             <div class="jc-u">Did we ever fix that slow search on the media box?</div>
-            <div class="jc-a">Yes — back on Nov 20 we moved DrunkenSlug direct into Sonarr and Radarr and scoped Nyaa to anime-only. Search dropped from 815ms to 370ms.</div>
+            <div class="jc-a">Yes — a couple of weeks ago we cut out the slow middle step between your search sources. Searches got about twice as fast.</div>
           </div>
         </div>
 
@@ -371,7 +371,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
         <div class="job-panel" data-panel="homelab">
           <div class="job-desc">
             <h3>Runs your home servers, TV, and smart home.</h3>
-            <p>Connects to Proxmox, Docker, Home Assistant, Jellyfin, and your TV over ADB. Diagnoses why a stream buffered, expands a full RAM disk live, or puts on a movie from chat.</p>
+            <p>Works with your home server, smart home, and TV. Figures out why a stream keeps buffering, frees up space before a disk fills, or puts on a movie from chat.</p>
             <ul>
               <li>Controls lights, speakers, and Google TV directly</li>
               <li>Watches container health and disk pressure before things crash</li>
@@ -379,8 +379,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             </ul>
           </div>
           <div class="job-chat">
-            <div class="jc-u">Play I, Robot on the family room TV and set the transcode cleanup to 4 hours.</div>
-            <div class="jc-a">Playing I, Robot (2004) on Family Room TV via DirectPlay, and updated Jellyfin's Clean Transcode Directory task to run every 4 hours.</div>
+            <div class="jc-u">Put on the movie we talked about on the living room TV, and clear out the media server's temp files more often.</div>
+            <div class="jc-a">It's playing on the living room TV now, and the temp-file cleanup runs every 4 hours instead of once a day.</div>
           </div>
         </div>
 
@@ -390,14 +390,14 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <h3>Launch pages, domains, print files, and store ops.</h3>
             <p>Registers and wires Cloudflare DNS, sets up email routing, audits public pages for personal data leaks, generates print-ready vector artwork, and wires self-hosted analytics.</p>
             <ul>
-              <li>End-to-end Cloudflare Workers, DNS, and Shopify API automation</li>
+              <li>Sets up domains, DNS, and storefront settings end to end</li>
               <li>Generates exact 300 DPI print files and SVG brand kits</li>
               <li>First-party analytics proxies so third-party domains never leak</li>
             </ul>
           </div>
           <div class="job-chat">
             <div class="jc-u">Check what personal info is exposed on our live store policies.</div>
-            <div class="jc-a">Verified all 4 live pages: 0 occurrences of your personal Gmail, name, or city. Only support@redactedattire.com is shown.</div>
+            <div class="jc-a">Checked all 4 live pages: your personal email, name, and city don't appear anywhere. Only the support@ address is shown.</div>
           </div>
         </div>
 
@@ -407,14 +407,14 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             <h3>Keeps your household numbers and inbox clean.</h3>
             <p>Bridges bank imports into your self-hosted finance tracker, categorizes transactions with your household rules, and sweeps thousands of promo emails out of your inbox with a review brake before mutating.</p>
             <ul>
-              <li>Works with self-hosted SureFinance, Invoice Ninja, and IMAP</li>
+              <li>Works with your own finance tracker, invoicing, and email</li>
               <li>Proposes bulk changes with exact counts before touching data</li>
               <li>Respects hard privacy boundaries on work vs. personal data</li>
             </ul>
           </div>
           <div class="job-chat">
-            <div class="jc-u">How much did we spend on dining out this month compared to last?</div>
-            <div class="jc-a">Pulled from SureFinance: $342 across 9 transactions so far this month, down $118 from the same point last month.</div>
+            <div class="jc-u">Are we on track with this month's grocery budget?</div>
+            <div class="jc-a">Mostly — you're a little under where you were at this point last month. Want me to flag any big purchases before the 30th?</div>
           </div>
         </div>
 
@@ -430,8 +430,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
             </ul>
           </div>
           <div class="job-chat">
-            <div class="jc-u">Pull verbatim quotes from the 2019 court order PDF and verify every page number.</div>
-            <div class="jc-a">Extracted 8 complete-sentence quotes directly from the Document 435 text layer, verified each page number, and saved the manifest to SOURCES.md.</div>
+            <div class="jc-u">Pull the key quotes from this 80-page report and check every page reference.</div>
+            <div class="jc-a">Pulled 8 direct quotes, checked each page number against the PDF, and saved them with sources to your notes.</div>
           </div>
         </div>
       </div>
