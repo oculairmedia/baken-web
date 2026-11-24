@@ -80,6 +80,7 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -413,7 +414,7 @@ main > section > .container { align-self: center; }
    one or two whole screens tall, its content centred vertically in the tile. Desktop only: on small
    screens sections take their natural height. */
 @media (min-width: 900px) and (min-height: 700px) {
-  main > section {
+  main > section:not(.legal-wrap):not(.docs-wrap) {
     min-height: 100vh;
     box-sizing: border-box;
     display: flex;

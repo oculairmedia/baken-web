@@ -8,28 +8,51 @@ interface Props {
   updated?: string;
 }
 const { title, description, updated = LEGAL.updated } = Astro.props;
+
 const nav = [
-  { href: '/privacy', label: 'Privacy' },
-  { href: '/terms', label: 'Terms' },
-  { href: '/security', label: 'Security' },
-  { href: '/licenses', label: 'Licences' },
-  { href: '/brand', label: 'Brand' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/privacy',  label: 'Privacy',  tone: 'indigo',    plate: 'I',   art: '/art/cards/memory.png',             credit: 'Sea chart west of Ireland · 1658 · NG-501-31' },
+  { href: '/terms',    label: 'Terms',    tone: 'ochre',     plate: 'II',  art: '/art/cards/permissions.png',        credit: 'Kompas · I. Weissenbruch · 1836 · RP-P-OB-30.364' },
+  { href: '/security', label: 'Security', tone: 'vermilion', plate: 'III', art: '/art/ownership.png',                credit: 'Schip in nood bij storm · J. Hilverdink · 1861' },
+  { href: '/licenses', label: 'Licences', tone: 'verdigris', plate: 'IV',  art: '/art/waghenaer-vlie-marsdiep-1583.png', credit: 'Paskaart Vlie & Marsdiep · Waghenaer · 1583 · NG-43' },
+  { href: '/brand',    label: 'Brand',    tone: 'vermilion', plate: 'V',   art: '/art/cards/pairing.png',            credit: 'Molen en een baken · J. van de Velde II · 1627' },
+  { href: '/contact',  label: 'Contact',  tone: 'indigo',    plate: 'VI',  art: '/art/cards/handoff.png',            credit: 'Haven met een vuurtoren · R. Zeeman · 1656' },
 ];
+
 const here = Astro.url.pathname.replace(/\/$/, '');
+const active = nav.find((n) => n.href === here) || nav[0];
 ---
 
 <Layout title={`${title} · Baken`} description={description}>
-  <section class="legal-wrap">
-    <div class="container legal-grid">
-      <nav class="legal-nav" aria-label="Legal and company pages">
+  <section class="legal-wrap" data-tone={active.tone}>
+    <div class="container wrap legal-grid">
+      <nav class="legal-nav" aria-label="Legal and company pages" transition:animate="none">
+        <span class="legal-nav-head">SHIP'S PAPERS</span>
         {nav.map((n) => (
-          <a href={n.href} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>
+          <a
+            href={n.href}
+            data-nav-tone={n.tone}
+            aria-current={here === n.href ? 'page' : undefined}
+          >
+            <span class="nav-pip" aria-hidden="true"></span>
+            <span>{n.label}</span>
+          </a>
         ))}
       </nav>
+
       <article class="legal-body">
-        <h1>{title}</h1>
-        <p class="legal-updated">Last updated {updated}</p>
+        <header class="legal-plate">
+          <div class="legal-plate-art" style={`--plate-art:url('${active.art}')`} aria-hidden="true"></div>
+          <div class="legal-plate-meta">
+            <span>PLATE {active.plate} · {active.label.toUpperCase()}</span>
+            <span>{active.credit}</span>
+          </div>
+        </header>
+
+        <div class="legal-title-block">
+          <h1>{title}</h1>
+          <p class="legal-updated">Last updated {updated}</p>
+        </div>
+
         <slot />
       </article>
     </div>
@@ -37,28 +60,159 @@ const here = Astro.url.pathname.replace(/\/$/, '');
 </Layout>
 
 <style>
-  .legal-wrap { padding: 56px 0 120px; position: relative; z-index: 3; }
-  .legal-grid { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 56px; align-items: start; }
-  .legal-nav { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 4px; }
-  .legal-nav a { font-size: 14px; color: var(--muted); padding: 6px 10px; border-radius: 6px; }
+  .legal-wrap {
+    --page-tone: var(--tone-indigo);
+    padding: 44px 0 112px;
+    position: relative;
+    z-index: 3;
+    min-height: 70vh;
+  }
+  .legal-wrap[data-tone="vermilion"] { --page-tone: var(--tone-vermilion); }
+  .legal-wrap[data-tone="verdigris"] { --page-tone: var(--tone-verdigris); }
+  .legal-wrap[data-tone="indigo"]    { --page-tone: var(--tone-indigo); }
+  .legal-wrap[data-tone="ochre"]     { --page-tone: var(--tone-ochre); }
+
+  .legal-grid {
+    display: grid;
+    grid-template-columns: 196px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  .legal-nav {
+    position: sticky;
+    top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .legal-nav-head {
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+    padding: 0 10px 10px;
+  }
+  .legal-nav a {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 14px;
+    color: var(--muted);
+    padding: 7px 10px;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease;
+  }
   .legal-nav a:hover { color: var(--text); }
-  .legal-nav a[aria-current='page'] { color: var(--text); background: var(--surface); border: 1px solid var(--border); }
-  .legal-body { max-width: 68ch; }
-  .legal-body :global(h1) { margin: 0 0 6px; font-size: clamp(32px, 4vw, 44px); letter-spacing: -0.04em; line-height: 1.08; }
-  .legal-updated { margin: 0 0 40px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); }
-  .legal-body :global(h2) { margin: 40px 0 12px; font-size: 20px; letter-spacing: -0.02em; }
+  .nav-pip {
+    width: 6px;
+    height: 6px;
+    border-radius: 1px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    flex-shrink: 0;
+  }
+  .legal-nav a[aria-current='page'] {
+    color: var(--text);
+    background: var(--surface);
+    border-color: var(--border);
+    font-weight: 600;
+  }
+  .legal-nav a[aria-current='page'] .nav-pip {
+    background: var(--page-tone);
+    border-color: var(--page-tone);
+  }
+
+  .legal-body { max-width: 72ch; }
+
+  .legal-plate {
+    position: relative;
+    margin: 0 0 32px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .legal-plate-art {
+    height: 156px;
+    width: 100%;
+    background-color: var(--page-tone);
+    -webkit-mask-image: var(--plate-art), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
+            mask-image: var(--plate-art), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
+    -webkit-mask-size: cover, 100% 100%;
+            mask-size: cover, 100% 100%;
+    -webkit-mask-position: center 42%, 0 0;
+            mask-position: center 42%, 0 0;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+  }
+  .legal-plate-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 9px 14px;
+    border-top: 1px solid var(--border);
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+  }
+
+  .legal-title-block {
+    margin: 0 0 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .legal-body :global(h1) {
+    margin: 0 0 8px;
+    font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+  }
+  .legal-updated {
+    margin: 0;
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .legal-body :global(h2) {
+    margin: 38px 0 12px;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .legal-body :global(h2)::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: var(--page-tone);
+    flex-shrink: 0;
+  }
   .legal-body :global(h3) { margin: 24px 0 8px; font-size: 16px; }
-  .legal-body :global(p), .legal-body :global(li) { font-size: 15.5px; line-height: 1.7; color: var(--text); opacity: 0.86; }
+  .legal-body :global(p), .legal-body :global(li) { font-size: 15.5px; line-height: 1.7; color: var(--text); opacity: 0.88; }
   .legal-body :global(ul) { padding-left: 20px; }
   .legal-body :global(li) { margin: 4px 0; }
-  .legal-body :global(a) { color: var(--stone-2); text-decoration: underline; text-underline-offset: 3px; }
+  .legal-body :global(a) { color: var(--page-tone); text-decoration: underline; text-underline-offset: 3px; }
   .legal-body :global(code) { font-size: 0.9em; padding: 1px 5px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); }
   .legal-body :global(table) { width: 100%; border-collapse: collapse; margin: 12px 0 8px; font-size: 14px; }
   .legal-body :global(th), .legal-body :global(td) { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
   .legal-body :global(th) { font-weight: 700; color: var(--muted); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
   .legal-body :global(.callout) { margin: 20px 0; padding: 14px 16px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+
   @media (max-width: 820px) {
+    .legal-wrap { padding: 28px 0 88px; }
     .legal-grid { grid-template-columns: 1fr; gap: 24px; }
-    .legal-nav { position: static; flex-direction: row; flex-wrap: wrap; }
+    .legal-nav { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .legal-nav-head { width: 100%; padding: 0 0 4px; }
+    .legal-plate-art { height: 118px; }
   }
 </style>

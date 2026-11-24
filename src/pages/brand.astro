@@ -1,5 +1,6 @@
 ---
 import LegalLayout from '../layouts/LegalLayout.astro';
+import RiveBakenMark from '../components/RiveBakenMark.astro';
 ---
 
 <LegalLayout title="Brand" description="How to refer to Baken and use the Baken name and mark.">
@@ -7,6 +8,50 @@ import LegalLayout from '../layouts/LegalLayout.astro';
     "Baken" and the Baken mark (two leaning basalt stones) identify the Baken apps. You are welcome to use them to refer to
     Baken accurately, for example in articles, tutorials, reviews, or a "works with Baken" note.
   </p>
+
+  <h2>The mark</h2>
+  <p>
+    The mark is two stones grounded on a single horizon: a tall anchor stone (your computer) and a leaning pebble (your phone).
+    Click either specimen below to trigger the peer-lock settle.
+  </p>
+  <div class="brand-specimens">
+    <div class="specimen specimen-dark">
+      <RiveBakenMark size={74} state="ambient" theme="dark" title="Baken mark on dark" />
+      <span>Dark surface · default</span>
+    </div>
+    <div class="specimen specimen-light">
+      <RiveBakenMark size={74} state="ambient" theme="light" title="Baken mark on light" />
+      <span>Light surface</span>
+    </div>
+  </div>
+
+  <h2>Chart palette</h2>
+  <p>
+    Surfaces stay neutral black and off-white. Colour comes from hand-coloured Dutch sea charts: Buoy Vermilion is the live
+    signal; Verdigris, Prussian Indigo and Dune Ochre carry sea, depth and sand.
+  </p>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <span class="swatch-chip" style="background: var(--tone-vermilion)"></span>
+      <strong>Buoy Vermilion</strong>
+      <code>#EE5A3F / #C2412B</code>
+    </div>
+    <div class="swatch">
+      <span class="swatch-chip" style="background: var(--tone-verdigris)"></span>
+      <strong>Wadden Verdigris</strong>
+      <code>#5FB8A3 / #2E7A6A</code>
+    </div>
+    <div class="swatch">
+      <span class="swatch-chip" style="background: var(--tone-indigo)"></span>
+      <strong>Prussian Indigo</strong>
+      <code>#7E9CD6 / #2F4A7A</code>
+    </div>
+    <div class="swatch">
+      <span class="swatch-chip" style="background: var(--tone-ochre)"></span>
+      <strong>Dune Ochre</strong>
+      <code>#D8A84A / #8A6418</code>
+    </div>
+  </div>
 
   <h2>Please do</h2>
   <ul>
@@ -28,3 +73,68 @@ import LegalLayout from '../layouts/LegalLayout.astro';
     downloadable press kit is prepared.
   </p>
 </LegalLayout>
+
+<style>
+  .brand-specimens {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 18px 0 8px;
+  }
+  .specimen {
+    border-radius: 12px;
+    padding: 28px 20px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid var(--border);
+  }
+  .specimen-dark {
+    background: #0B0B0D;
+    color: #A6A6B0;
+  }
+  .specimen-light {
+    background: #F6F6F8;
+    color: #4A4A52;
+  }
+  .specimen span {
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0 8px;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .swatch-chip {
+    display: block;
+    height: 22px;
+    border-radius: 5px;
+    margin-bottom: 6px;
+  }
+  .swatch strong {
+    font-size: 13.5px;
+    color: var(--text);
+  }
+  .swatch code {
+    font-size: 11px;
+    align-self: flex-start;
+  }
+
+  @media (max-width: 560px) {
+    .brand-specimens, .swatch-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -5,8 +5,14 @@ import { LINKS } from '../lib/brand';
 
 <Layout title="Docs · Baken" description="Install, pair, and understand Baken's local-first agent architecture and living Rive motion system.">
   <section class="docs-wrap">
-    <div class="container docs-inner">
-      <span class="eyebrow mono">DOCUMENTATION · BAKEN.CA</span>
+    <div class="container wrap docs-inner">
+      <header class="docs-plate">
+        <div class="docs-plate-art" aria-hidden="true"></div>
+        <div class="docs-plate-meta">
+          <span>HARBOUR MANUAL · DOCUMENTATION</span>
+          <span>Duinen met vuurtoren · after C. Decker · c. 1685</span>
+        </div>
+      </header>
       <h1>Getting started with Baken</h1>
       <p class="docs-lead">
         Baken is a client for persistent AI agents. Your agents run on a host machine you control, and the Android and desktop apps pair with it over an encrypted peer-to-peer connection.
@@ -79,9 +85,43 @@ import { LINKS } from '../lib/brand';
 </Layout>
 
 <style>
-  .docs-wrap { padding: 64px 0 40px; }
-  .docs-inner { max-width: 740px; }
-  .eyebrow { display: block; font-size: 12px; letter-spacing: 0.08em; color: var(--stone-2); margin-bottom: 12px; }
+  .docs-wrap { padding: 44px 0 96px; position: relative; z-index: 3; }
+  .docs-inner { max-width: 760px; }
+  .docs-plate {
+    margin: 0 0 32px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .docs-plate-art {
+    height: 156px;
+    width: 100%;
+    background-color: var(--tone-verdigris);
+    -webkit-mask-image: url('/art/cards/background.png'), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
+            mask-image: url('/art/cards/background.png'), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
+    -webkit-mask-size: cover, 100% 100%;
+            mask-size: cover, 100% 100%;
+    -webkit-mask-position: center 44%, 0 0;
+            mask-position: center 44%, 0 0;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+  }
+  .docs-plate-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 9px 14px;
+    border-top: 1px solid var(--border);
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+  }
   h1 { margin: 0 0 16px; font-size: clamp(36px, 4.8vw, 52px); letter-spacing: -0.04em; line-height: 1.06; }
   .docs-lead { font-size: 17px; color: var(--muted); margin: 0 0 48px; }
   .doc-block {
