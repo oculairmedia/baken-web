@@ -531,16 +531,9 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   </section>
 
   <!-- 7. THE "WHY BAKEN" ORIGIN & INTERACTIVE TRANSIT (MOVED TO THE END AS THE SIGNATURE CODA) -->
-  <section class="band band-rule band-tinted" id="why-baken">
-    <div class="container">
-      <figure class="chart-plate" id="chartPlate">
-        <div class="chart-plate-art" role="img" aria-label="Paskaart van het Vlie en de Marsdiep, 1583, by Lucas Jansz. Waghenaer, engraved by Joannes van Doetechum: the Wadden Sea channels between Texel, Vlieland and Terschelling, with sandbanks and soundings."></div>
-        <figcaption class="chart-plate-cap">
-          <span>PLATE I — PASKAART VAN HET VLIE EN DE MARSDIEP · 1583</span>
-          <span>L. J. WAGHENAER · ENGR. J. VAN DOETECHUM · RIJKSMUSEUM NG-43</span>
-        </figcaption>
-      </figure>
-
+  <section class="band band-rule band-tinted why-chart" id="why-baken">
+    <div class="why-chart-bg" id="chartPlate" role="img" aria-label="Background: Paskaart van het Vlie en de Marsdiep, 1583, by Lucas Jansz. Waghenaer, engraved by Joannes van Doetechum, showing the Wadden Sea channels between Texel, Vlieland and Terschelling."></div>
+    <div class="container why-chart-inner">
       <div class="origin-grid">
         <div class="origin-copy">
           <h2>Why it's called Baken.</h2>
@@ -590,6 +583,9 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
           </svg>
         </div>
       </div>
+      <p class="why-chart-cap">
+        Chart: <em>Paskaart van het Vlie en de Marsdiep</em>, 1583 · L. J. Waghenaer, engr. J. van Doetechum · Rijksmuseum NG-43
+      </p>
     </div>
   </section>
 
@@ -1006,61 +1002,61 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .faq-list details p { margin: 12px 0 0; font-size: 15px; color: var(--muted); max-width: 62ch; }
 
   /* 7. Why Baken Origin Coda at the Bottom */
-  /* Waghenaer chart plate: dithered engraving drawn as a CSS mask so it takes the theme ink colour */
-  .chart-plate {
-    margin: 0 0 64px;
+  /* Waghenaer chart as the section's ground: full-bleed engraving behind the copy,
+     faded under the text column, brighter at the open right side, with slow scroll parallax. */
+  .why-chart {
     position: relative;
+    overflow: hidden;
+    isolation: isolate;
   }
-  .chart-plate-art {
-    width: 100%;
-    aspect-ratio: 2320 / 1713;
+  .why-chart-bg {
+    position: absolute;
+    z-index: 0;
+    /* oversize vertically so the parallax drift never reveals an edge */
+    left: 0; right: 0; top: -12%; bottom: -12%;
     background-color: var(--text);
-    opacity: 0.86;
-    -webkit-mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
-            mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
-    -webkit-mask-size: 100% 100%;
-            mask-size: 100% 100%;
+    /* Dots drawn at native size (1 mask px = 1 CSS px, 2320px wide) so the dither stays crisp
+       instead of being downscaled into grey mush; the section shows a crop of the channels. */
+    -webkit-mask-image:
+      url('/art/waghenaer-vlie-marsdiep-1583.png'),
+      linear-gradient(90deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.50) 40%, rgba(0,0,0,0.92) 64%, rgba(0,0,0,1) 100%);
+            mask-image:
+      url('/art/waghenaer-vlie-marsdiep-1583.png'),
+      linear-gradient(90deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.50) 40%, rgba(0,0,0,0.92) 64%, rgba(0,0,0,1) 100%);
+    -webkit-mask-size: 2320px auto, 100% 100%;
+            mask-size: 2320px auto, 100% 100%;
+    -webkit-mask-position: 50% 42%, 0 0;
+            mask-position: 50% 42%, 0 0;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-    /* reveal sweep: a soft lantern band crosses the plate once on scroll-in */
-    transition: opacity 600ms ease;
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+    opacity: 0.62;
+    transform: translate3d(0, var(--chart-shift, 0px), 0);
+    will-change: transform;
+    pointer-events: none;
   }
-  .chart-plate::after {
+  /* soft top/bottom fade into neighbouring sections */
+  .why-chart::before,
+  .why-chart::after {
     content: "";
     position: absolute;
-    left: 0; right: 0; top: 0;
-    aspect-ratio: 2320 / 1713;
+    left: 0; right: 0;
+    height: 120px;
+    z-index: 1;
     pointer-events: none;
-    background: linear-gradient(100deg, transparent 0%, transparent 42%, rgba(238, 90, 63, 0.55) 50%, transparent 58%, transparent 100%);
-    background-size: 260% 100%;
-    background-position: 120% 0;
-    -webkit-mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
-            mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
-    -webkit-mask-size: 100% 100%;
-            mask-size: 100% 100%;
-    opacity: 0;
   }
-  .chart-plate.lit::after {
-    animation: plateSweep 2600ms ease-out 1 forwards;
-  }
-  @keyframes plateSweep {
-    0%   { opacity: 1; background-position: 120% 0; }
-    100% { opacity: 0.0; background-position: -20% 0; }
-  }
-  .chart-plate-cap {
-    margin-top: 14px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
+  .why-chart::before { top: 0;    background: linear-gradient(var(--band-tinted), transparent); }
+  .why-chart::after  { bottom: 0; background: linear-gradient(transparent, var(--band-tinted)); }
+  .why-chart-inner { position: relative; z-index: 2; }
+  .why-chart-cap {
+    margin: 56px 0 0;
     font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
     font-size: 10.5px;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.05em;
     color: var(--muted);
   }
-  @media (prefers-reduced-motion: reduce) {
-    .chart-plate.lit::after { animation: none; }
-  }
+  .why-chart-cap em { font-style: italic; color: var(--text); }
 
   .origin-grid {
     display: grid;
@@ -1138,13 +1134,24 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     });
   });
 
-  // Waghenaer plate: one lantern sweep the first time it scrolls into view
+  // Waghenaer chart background: slow scroll parallax (moves at ~22% of scroll, opposite direction)
   const plate = document.getElementById('chartPlate');
-  if (plate && 'IntersectionObserver' in window) {
-    const po = new IntersectionObserver((entries) => {
-      if (entries[0]?.isIntersecting) { plate.classList.add('lit'); po.disconnect(); }
-    }, { threshold: 0.35 });
-    po.observe(plate);
+  const whySection = document.getElementById('why-baken');
+  if (plate && whySection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    const updateChart = () => {
+      ticking = false;
+      const r = whySection.getBoundingClientRect();
+      const vh = window.innerHeight;
+      if (r.bottom < 0 || r.top > vh) return;
+      // -1 when section enters at bottom, +1 when it leaves at top
+      const progress = ((vh - r.top) / (vh + r.height)) * 2 - 1;
+      plate.style.setProperty('--chart-shift', `${(-progress * r.height * 0.10).toFixed(1)}px`);
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateChart); }
+    }, { passive: true });
+    updateChart();
   }
 
   // Bottom Wadden Sea Transit Sightline
