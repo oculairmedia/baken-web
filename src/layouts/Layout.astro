@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import BakenMark from '../components/BakenMark.astro';
 import BeaconFooter from '../components/BeaconFooter.astro';
+import MarginFogShader from '../components/MarginFogShader.astro';
 import { LINKS } from '../lib/brand';
 
 interface Props {
@@ -49,6 +50,7 @@ const {
     ></script>
   </head>
   <body>
+    <MarginFogShader />
     <header class="site-nav">
       <div class="container nav-inner">
         <div class="nav-left">
