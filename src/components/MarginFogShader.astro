@@ -173,7 +173,7 @@
           float wy = yCss + uScrollY * par + mShift.y;
 
           // Feature scale: broad, soft banks (lower frequency = billows, not shreds)
-          float sc = mix(0.0015, 0.0028, d);
+          float sc = mix(0.0019, 0.0034, d);
           vec2 lOff = sideOff + vec2(19.7, 7.3) * float(L);
           vec2 base = vec2(lx * sc, wy * sc * 0.7) + lOff;
           float lt = tt * mix(0.5, 1.2, d);
@@ -208,7 +208,7 @@
           dens = clamp(dens + mouseGlow * 0.24 * d, 0.0, 1.0);
 
           // Per-layer dither grid: far = fine & dim, near = coarser & brighter (atmospheric perspective)
-          vec2 cPx = mix(vec2(2.0, 2.0), vec2(4.0, 3.0), d) * uDpr;
+          vec2 cPx = mix(vec2(1.5, 1.5), vec2(2.5, 2.0), d) * uDpr;
           vec2 cId = floor(gl_FragCoord.xy / cPx) + vec2(float(L) * 37.0, float(L) * 11.0);
           vec2 loc = fract(gl_FragCoord.xy / cPx) - 0.5;
           // Mostly ordered Bayer for smooth tonal gradients; only a touch of hash to hide tiling
@@ -236,7 +236,7 @@
           vec3 warmCol = mix(vec3(0.878, 0.290, 0.196), vec3(0.933, 0.353, 0.247), uDark);
           vec3 col = mix(neutralCol, warmCol, useWarm);
 
-          float a = mix(0.20, 0.50, uDark) * mix(0.55, 1.0, d) * (0.35 + 0.65 * dens);
+          float a = mix(0.12, 0.30, uDark) * mix(0.55, 1.0, d) * (0.35 + 0.65 * dens);
           if (useWarm > 0.5) a = min(0.75, a * 1.3);
 
           // Premultiplied over: this (nearer) plane on top of what is already accumulated

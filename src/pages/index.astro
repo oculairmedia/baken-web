@@ -14,20 +14,20 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     <div class="container wrap hero-center">
       <!-- Real mascot.riv + baken_mark.riv cast row (same binaries shipped in the app) -->
       <div class="mascot-lineup">
-        <div class="m-chip" title="Meridian — hover or poke">
-          <RiveMascot size={48} shape="blob" color="#1E7BF0" state="idle" title="Meridian" />
+        <div class="m-chip" title="Meridian: hover or poke">
+          <RiveMascot size={84} shape="blob" color="#1E7BF0" state="idle" title="Meridian" />
         </div>
-        <div class="m-chip" title="Builder — hover or poke">
-          <RiveMascot size={46} shape="triangle" color="#FF6A1A" state="working" title="Builder" />
+        <div class="m-chip" title="Builder: hover or poke">
+          <RiveMascot size={84} shape="triangle" color="#FF6A1A" state="working" title="Builder" />
         </div>
-        <div class="baken-hero-badge" title="Baken — click to lock">
-          <RiveBakenMark size={46} state="ambient" theme="dark" boot={true} title="Baken mark" />
+        <div class="m-chip m-mark" title="Baken: click to lock">
+          <RiveBakenMark size={64} state="ambient" theme="auto" boot={true} title="Baken mark" />
         </div>
-        <div class="m-chip" title="Planner — hover or poke">
-          <RiveMascot size={46} shape="roundedSquare" color="#1DA34A" state="thinking" title="Planner" />
+        <div class="m-chip" title="Planner: hover or poke">
+          <RiveMascot size={84} shape="roundedSquare" color="#1DA34A" state="thinking" title="Planner" />
         </div>
-        <div class="m-chip" title="Archivist — hover or poke">
-          <RiveMascot size={46} shape="circle" color="#E5484D" state="idle" title="Archivist" />
+        <div class="m-chip" title="Archivist: hover or poke">
+          <RiveMascot size={84} shape="circle" color="#E5484D" state="idle" title="Archivist" />
         </div>
       </div>
 
@@ -634,14 +634,15 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .mascot-lineup {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 28px;
+    gap: 0;
+    margin-bottom: 18px;
   }
   .m-chip {
-    width: 52px; height: 52px;
+    width: 72px; height: 72px;
     display: grid;
     place-items: center;
   }
+  .m-mark { margin: 0 6px; }
   .baken-hero-badge {
     width: 60px; height: 60px;
     border-radius: 17px;
