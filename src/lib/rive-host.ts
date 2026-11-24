@@ -99,135 +99,218 @@ export function initRiveHost() {
       )
     : null;
 
-  // Mount every real mascot.riv instance
+  // Fisher-Yates shuffle so visible mascots enter in an organic, non-mechanical order
+  function shuffle<T>(arr: T[]): T[] {
+    const out = arr.slice();
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
+  }
+
+  function mountMascot(canvas: HTMLCanvasElement, buf: ArrayBuffer) {
+    const shape = canvas.dataset.shape || 'blob';
+    const color = canvas.dataset.color || '#1E7BF0';
+    const state = canvas.dataset.state || 'idle';
+    const talk = canvas.dataset.talk === 'true';
+    const interactive = canvas.dataset.interactive !== 'false';
+    const rot = Number(canvas.dataset.rotation || '0');
+
+    const rive = new Rive({
+      buffer: buf.slice(0),
+      canvas,
+      artboard: 'Mascot',
+      stateMachine: 'Avatar',
+      autoplay: false,
+      autoBind: true,
+      layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
+      onLoad: () => {
+        rive.resizeDrawingSurfaceToCanvas();
+        const vmi = rive.viewModelInstance;
+        if (vmi) {
+          setEnumCaseInsensitive(vmi, 'shape', shape);
+          setEnumCaseInsensitive(vmi, 'state', state);
+
+          const [r, g, b] = parseHexRgb(color);
+          try { vmi.color('color')?.rgb(r, g, b); } catch {}
+          try {
+            const rm = vmi.boolean('reduceMotion');
+            if (rm) rm.value = reduceMotionQuery.matches;
+          } catch {}
+          if (rot) {
+            try {
+              const sr = vmi.number('shapeRotation');
+              if (sr) sr.value = rot;
+            } catch {}
+          }
+        }
+
+        rive.play();
+        requestAnimationFrame(() => canvas.classList.add('rive-ready'));
+
+        const rec: ActiveMascot = { canvas, rive, vmi, talk, visible: true };
+        mascots.push(rec);
+        io?.observe(canvas);
+
+        if (interactive && vmi) {
+          const hit = canvas.parentElement || canvas;
+          hit.addEventListener('pointerenter', () => {
+            try { const h = vmi.boolean('hovered'); if (h) h.value = true; } catch {}
+          });
+          hit.addEventListener('pointerleave', () => {
+            try { const h = vmi.boolean('hovered'); if (h) h.value = false; } catch {}
+          });
+          hit.addEventListener('click', () => {
+            try {
+              const poke = vmi.trigger('poke');
+              if (poke) poke.trigger();
+            } catch {}
+          });
+        }
+      },
+    });
+  }
+
+  function mountMark(canvas: HTMLCanvasElement, buf: ArrayBuffer) {
+    const state = canvas.dataset.state || 'idle';
+    const themeMode = canvas.dataset.theme || 'auto';
+    const fireBoot = canvas.dataset.boot === 'true';
+
+    const resolveTheme = () => {
+      if (themeMode === 'dark' || themeMode === 'light' || themeMode === 'monoDark' || themeMode === 'monoLight') {
+        return themeMode;
+      }
+      return darkSchemeQuery.matches ? 'dark' : 'light';
+    };
+
+    const rive = new Rive({
+      buffer: buf.slice(0),
+      canvas,
+      artboard: 'BakenMark',
+      stateMachine: 'BrandMark',
+      autoplay: false,
+      autoBind: true,
+      layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
+      onLoad: () => {
+        rive.resizeDrawingSurfaceToCanvas();
+        const vmi = rive.viewModelInstance;
+        if (vmi) {
+          setEnumCaseInsensitive(vmi, 'theme', resolveTheme());
+          setEnumCaseInsensitive(vmi, 'state', state);
+          try {
+            const rm = vmi.boolean('reduceMotion');
+            if (rm) rm.value = reduceMotionQuery.matches;
+          } catch {}
+          if (fireBoot && !reduceMotionQuery.matches) {
+            try { vmi.trigger('boot')?.trigger(); } catch {}
+          }
+        }
+
+        rive.play();
+        const rec: ActiveMark = { canvas, rive, vmi, themeMode, visible: true };
+        marks.push(rec);
+        io?.observe(canvas);
+
+        const hit = canvas.parentElement || canvas;
+        hit.addEventListener('pointerenter', () => {
+          try { const h = vmi?.boolean('hovered'); if (h) h.value = true; } catch {}
+        });
+        hit.addEventListener('pointerleave', () => {
+          try { const h = vmi?.boolean('hovered'); if (h) h.value = false; } catch {}
+        });
+        hit.addEventListener('click', () => {
+          try { vmi?.trigger('success')?.trigger(); } catch {}
+        });
+      },
+    });
+  }
+
+  // Lazy-mount mascots as they approach the viewport, with randomized staggered entrances
   const mascotEls = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-rive-mascot]'));
-  if (mascotEls.length > 0) {
+  const mountedMascots = new WeakSet<HTMLCanvasElement>();
+
+  function scheduleMascotBatch(batch: HTMLCanvasElement[]) {
+    const pending = batch.filter((c) => !mountedMascots.has(c));
+    if (pending.length === 0) return;
+    pending.forEach((c) => mountedMascots.add(c));
+
     fetchRivBuffer('/rive/mascot.riv')
       .then((buf) => {
-        mascotEls.forEach((canvas) => {
-          const shape = canvas.dataset.shape || 'blob';
-          const color = canvas.dataset.color || '#1E7BF0';
-          const state = canvas.dataset.state || 'idle';
-          const talk = canvas.dataset.talk === 'true';
-          const interactive = canvas.dataset.interactive !== 'false';
-          const rot = Number(canvas.dataset.rotation || '0');
-
-          const rive = new Rive({
-            buffer: buf.slice(0),
-            canvas,
-            artboard: 'Mascot',
-            stateMachine: 'Avatar',
-            autoplay: false,
-            autoBind: true,
-            layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
-            onLoad: () => {
-              rive.resizeDrawingSurfaceToCanvas();
-              const vmi = rive.viewModelInstance;
-              if (vmi) {
-                setEnumCaseInsensitive(vmi, 'shape', shape);
-                setEnumCaseInsensitive(vmi, 'state', state);
-
-                const [r, g, b] = parseHexRgb(color);
-                try { vmi.color('color')?.rgb(r, g, b); } catch {}
-                try {
-                  const rm = vmi.boolean('reduceMotion');
-                  if (rm) rm.value = reduceMotionQuery.matches;
-                } catch {}
-                if (rot) {
-                  try {
-                    const sr = vmi.number('shapeRotation');
-                    if (sr) sr.value = rot;
-                  } catch {}
-                }
-              }
-
-              rive.play();
-              const rec: ActiveMascot = { canvas, rive, vmi, talk, visible: true };
-              mascots.push(rec);
-              io?.observe(canvas);
-
-              if (interactive && vmi) {
-                const hit = canvas.parentElement || canvas;
-                hit.addEventListener('pointerenter', () => {
-                  try { const h = vmi.boolean('hovered'); if (h) h.value = true; } catch {}
-                });
-                hit.addEventListener('pointerleave', () => {
-                  try { const h = vmi.boolean('hovered'); if (h) h.value = false; } catch {}
-                });
-                hit.addEventListener('click', () => {
-                  try {
-                    const poke = vmi.trigger('poke');
-                    if (poke) poke.trigger();
-                  } catch {}
-                });
-              }
-            },
-          });
+        const order = reduceMotionQuery.matches ? pending : shuffle(pending);
+        const maxSpread = Math.min(720, order.length * 135);
+        const step = order.length > 1 ? maxSpread / (order.length - 1) : 0;
+        order.forEach((canvas, idx) => {
+          const jitter = Math.round((Math.random() - 0.5) * Math.min(70, step * 0.6));
+          const wait = reduceMotionQuery.matches
+            ? 0
+            : Math.max(40, Math.round(60 + idx * step + jitter));
+          if (wait === 0 && idx === 0) {
+            mountMascot(canvas, buf);
+          } else {
+            window.setTimeout(() => mountMascot(canvas, buf), wait);
+          }
         });
       })
       .catch((err) => console.error('mascot.riv load error:', err));
   }
 
-  // Mount every real baken_mark.riv instance
+  if (mascotEls.length > 0) {
+    if ('IntersectionObserver' in window) {
+      const lazyMascotIo = new IntersectionObserver(
+        (entries) => {
+          const entering: HTMLCanvasElement[] = [];
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLCanvasElement;
+            lazyMascotIo.unobserve(el);
+            entering.push(el);
+          }
+          if (entering.length > 0) scheduleMascotBatch(entering);
+        },
+        { rootMargin: '160px 0px', threshold: 0.01 }
+      );
+      mascotEls.forEach((c) => lazyMascotIo.observe(c));
+    } else {
+      scheduleMascotBatch(mascotEls);
+    }
+  }
+
+  // Mount baken_mark.riv instances (boot mark immediately; off-screen marks lazily on approach)
   const markEls = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-rive-mark]'));
-  if (markEls.length > 0) {
+  const mountedMarks = new WeakSet<HTMLCanvasElement>();
+
+  function mountMarkSoon(canvas: HTMLCanvasElement) {
+    if (mountedMarks.has(canvas)) return;
+    mountedMarks.add(canvas);
     fetchRivBuffer('/rive/baken_mark.riv')
-      .then((buf) => {
-        markEls.forEach((canvas) => {
-          const state = canvas.dataset.state || 'idle';
-          const themeMode = canvas.dataset.theme || 'auto';
-          const fireBoot = canvas.dataset.boot === 'true';
-
-          const resolveTheme = () => {
-            if (themeMode === 'dark' || themeMode === 'light' || themeMode === 'monoDark' || themeMode === 'monoLight') {
-              return themeMode;
-            }
-            return darkSchemeQuery.matches ? 'dark' : 'light';
-          };
-
-          const rive = new Rive({
-            buffer: buf.slice(0),
-            canvas,
-            artboard: 'BakenMark',
-            stateMachine: 'BrandMark',
-            autoplay: false,
-            autoBind: true,
-            layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
-            onLoad: () => {
-              rive.resizeDrawingSurfaceToCanvas();
-              const vmi = rive.viewModelInstance;
-              if (vmi) {
-                setEnumCaseInsensitive(vmi, 'theme', resolveTheme());
-                setEnumCaseInsensitive(vmi, 'state', state);
-                try {
-                  const rm = vmi.boolean('reduceMotion');
-                  if (rm) rm.value = reduceMotionQuery.matches;
-                } catch {}
-                if (fireBoot && !reduceMotionQuery.matches) {
-                  try { vmi.trigger('boot')?.trigger(); } catch {}
-                }
-              }
-
-              rive.play();
-              const rec: ActiveMark = { canvas, rive, vmi, themeMode, visible: true };
-              marks.push(rec);
-              io?.observe(canvas);
-
-              const hit = canvas.parentElement || canvas;
-              hit.addEventListener('pointerenter', () => {
-                try { const h = vmi?.boolean('hovered'); if (h) h.value = true; } catch {}
-              });
-              hit.addEventListener('pointerleave', () => {
-                try { const h = vmi?.boolean('hovered'); if (h) h.value = false; } catch {}
-              });
-              hit.addEventListener('click', () => {
-                try { vmi?.trigger('success')?.trigger(); } catch {}
-              });
-            },
-          });
-        });
-      })
+      .then((buf) => mountMark(canvas, buf))
       .catch((err) => console.error('baken_mark.riv load error:', err));
+  }
+
+  if (markEls.length > 0) {
+    const eagerMarks = markEls.filter((c) => c.dataset.boot === 'true');
+    const lazyMarks = markEls.filter((c) => c.dataset.boot !== 'true');
+    eagerMarks.forEach(mountMarkSoon);
+
+    if (lazyMarks.length > 0) {
+      if ('IntersectionObserver' in window) {
+        const lazyMarkIo = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const el = entry.target as HTMLCanvasElement;
+              lazyMarkIo.unobserve(el);
+              mountMarkSoon(el);
+            }
+          },
+          { rootMargin: '180px 0px', threshold: 0.01 }
+        );
+        lazyMarks.forEach((c) => lazyMarkIo.observe(c));
+      } else {
+        lazyMarks.forEach(mountMarkSoon);
+      }
+    }
   }
 
   // Live pointer gaze + subtle head turn across all visible mascots

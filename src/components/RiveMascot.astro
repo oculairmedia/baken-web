@@ -42,8 +42,24 @@ const {
   .rive-mascot-canvas {
     display: block;
     flex-shrink: 0;
+    opacity: 0;
+    transform: scale(0.84) translateY(5px);
+    transition:
+      opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .rive-mascot-canvas.rive-ready {
+    opacity: 1;
+    transform: none;
   }
   .rive-interactive {
     cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rive-mascot-canvas {
+      transform: none;
+      transition: opacity 150ms ease;
+    }
   }
 </style>
