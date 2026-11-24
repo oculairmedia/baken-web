@@ -422,11 +422,13 @@ main > section > .container { align-self: center; }
   }
   main > section.screens-2 { min-height: 200vh; }
   main > section.hero {
-    height: calc(100vh - 84px);
-    min-height: calc(100vh - 84px);
-    overflow: hidden;
-    justify-content: flex-start;
+    height: auto;
+    min-height: calc(100vh - 84px - clamp(150px, 22vh, 230px));
+    overflow: visible;
+    justify-content: flex-end;
   }
+  /* the product window rises into the first screen: a 170px peek of the app above the fold */
+  main > section.showcase-band { min-height: auto; justify-content: flex-start; }
 }
 
 /* Keyboard focus: one ring for every control, shown at once */
