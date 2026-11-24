@@ -1019,10 +1019,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
        instead of being downscaled into grey mush; the section shows a crop of the channels. */
     -webkit-mask-image:
       url('/art/waghenaer-vlie-marsdiep-1583.png'),
-      linear-gradient(90deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.50) 40%, rgba(0,0,0,0.92) 64%, rgba(0,0,0,1) 100%);
+      linear-gradient(90deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.05) 14%, rgba(0,0,0,0.05) 46%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,1) 100%);
             mask-image:
       url('/art/waghenaer-vlie-marsdiep-1583.png'),
-      linear-gradient(90deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.50) 40%, rgba(0,0,0,0.92) 64%, rgba(0,0,0,1) 100%);
+      linear-gradient(90deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.05) 14%, rgba(0,0,0,0.05) 46%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,1) 100%);
     -webkit-mask-size: 2320px auto, 100% 100%;
             mask-size: 2320px auto, 100% 100%;
     -webkit-mask-position: 50% 42%, 0 0;
@@ -1049,6 +1049,19 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .why-chart::before { top: 0;    background: linear-gradient(var(--band-tinted), transparent); }
   .why-chart::after  { bottom: 0; background: linear-gradient(transparent, var(--band-tinted)); }
   .why-chart-inner { position: relative; z-index: 2; }
+  /* Soft scrim under the copy so body text always clears the chart */
+  .why-chart .origin-copy {
+    position: relative;
+  }
+  .why-chart .origin-copy::before {
+    content: "";
+    position: absolute;
+    inset: -40px -56px -40px -80px;
+    z-index: -1;
+    background: radial-gradient(ellipse at 40% 50%, var(--band-tinted) 55%, transparent 80%);
+    pointer-events: none;
+  }
+  .why-chart .origin-copy p { color: var(--text); opacity: 0.78; }
   .why-chart-cap {
     margin: 56px 0 0;
     font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
