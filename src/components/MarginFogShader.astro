@@ -81,6 +81,19 @@
         return v;
       }
 
+      // Low-octave fbm for soft billowing banks (fewer octaves = less high-frequency shredding)
+      float softFbm(vec2 p) {
+        float v = 0.0;
+        float a = 0.55;
+        mat2 rot = mat2(0.80, 0.60, -0.60, 0.80);
+        for (int i = 0; i < 4; i++) {
+          v += a * vnoise(p);
+          p = rot * p * 1.9 + vec2(13.7, 8.3);
+          a *= 0.45;
+        }
+        return v / 1.02;
+      }
+
       // Ridged variant: thin torn filaments instead of soft round blobs
       float ridged(vec2 p) {
         float v = 0.0;
@@ -159,33 +172,35 @@
           float lx = xCss + mShift.x;
           float wy = yCss + uScrollY * par + mShift.y;
 
-          // Feature scale: far banks are broad and soft, near wisps are tighter and torn
-          float sc = mix(0.0030, 0.0062, d);
+          // Feature scale: broad, soft banks (lower frequency = billows, not shreds)
+          float sc = mix(0.0015, 0.0028, d);
           vec2 lOff = sideOff + vec2(19.7, 7.3) * float(L);
-          vec2 base = vec2(lx * sc, wy * sc * 0.78) + lOff;
-          float lt = tt * mix(0.6, 1.9, d);
+          vec2 base = vec2(lx * sc, wy * sc * 0.7) + lOff;
+          float lt = tt * mix(0.5, 1.2, d);
 
-          // Single-level domain warp per layer (cheaper than double, still non-repeating)
+          // Gentle domain warp: enough to break regularity, not enough to tear
           vec2 q = vec2(
-            fbm(base + vec2(0.0, lt)),
-            fbm(base + vec2(5.2, 1.3) - vec2(lt * 0.7 * sideSign, 0.0))
+            softFbm(base * 0.6 + vec2(0.0, lt)),
+            softFbm(base * 0.6 + vec2(5.2, 1.3) - vec2(lt * 0.7 * sideSign, 0.0))
           );
-          float n = fbm(base + 3.6 * q + vec2(lt * 0.4 * sideSign, lt * 0.2));
+          float n = softFbm(base + 1.3 * q + vec2(lt * 0.4 * sideSign, lt * 0.2));
 
-          // Reach: far bank spreads across the whole gutter, near wisps cling to the outer screen edge
-          float layerEdge = pow(edgeMask, mix(0.55, 1.8, d));
-          float coastWarp = (n - 0.5) * mix(0.5, 1.1, d) + (q.x - 0.5) * 0.4;
-          float reach = clamp(layerEdge + coastWarp * 0.6 * smoothstep(0.0, 0.6, layerEdge + 0.12), 0.0, 1.0);
+          // Reach: far bank spreads across the whole gutter, near banks hug the outer screen edge
+          float layerEdge = pow(edgeMask, mix(0.55, 1.5, d));
+          float coastWarp = (n - 0.5) * mix(0.45, 0.8, d);
+          float reach = clamp(layerEdge + coastWarp * 0.5 * smoothstep(0.0, 0.6, layerEdge + 0.12), 0.0, 1.0);
 
-          // Aperiodic clearings, independent per layer so gaps reveal the planes behind
-          float clearing = smoothstep(0.30, 0.64, fbm(vec2(wy * 0.0010, 3.1 + float(L) * 5.0) + lOff * 0.1 + vec2(0.0, lt * 0.2)));
+          // Slow, wide clearings independent per layer so gaps reveal the planes behind
+          float clearing = smoothstep(0.38, 0.56, softFbm(vec2(wy * 0.0007, 3.1 + float(L) * 5.0) + lOff * 0.1 + vec2(0.0, lt * 0.15)));
 
-          float dens = reach * (0.12 + 0.98 * smoothstep(0.34, 0.80, n)) * (0.3 + 0.7 * clearing);
-          if (L == 2) {
-            // Only the foreground carries wind-torn filaments
-            float fil = ridged(vec2(lx * 0.012, wy * 0.019) * vec2(1.0, 0.5) + 2.2 * q + lOff - vec2(lt * 1.4 * sideSign, 0.0));
-            dens += fil * reach * 0.42 * clearing;
-          }
+          // Bimodal banks: a bank is either clearly there (dense, cohesive) or clearly absent.
+          // The transition band is narrow in value but the noise is low-frequency, so edges stay round, not torn.
+          float body = smoothstep(0.40, 0.60, n);
+          // Inside a bank, a gentle interior gradient keeps it from reading as a flat cut-out
+          float interior = 0.62 + 0.38 * smoothstep(0.55, 0.85, n);
+          float dens = reach * body * interior * clearing;
+          // Drop the faint residue that only ever dithers into lone grains
+          dens = dens < 0.16 ? 0.0 : dens;
 
           // Cursor nudges density in the nearer planes only
           float dMouse = length(vec2(xCss, yCss) - uMouse);
@@ -196,7 +211,8 @@
           vec2 cPx = mix(vec2(2.0, 2.0), vec2(4.0, 3.0), d) * uDpr;
           vec2 cId = floor(gl_FragCoord.xy / cPx) + vec2(float(L) * 37.0, float(L) * 11.0);
           vec2 loc = fract(gl_FragCoord.xy / cPx) - 0.5;
-          float thr = mix(bayer8(cId), hash21(cId * 0.731 + 11.0 + float(L)), 0.45);
+          // Mostly ordered Bayer for smooth tonal gradients; only a touch of hash to hide tiling
+          float thr = mix(bayer8(cId), hash21(cId * 0.731 + 11.0 + float(L)), 0.14);
 
           if (dens - 0.02 <= thr * 0.82) continue;
 
