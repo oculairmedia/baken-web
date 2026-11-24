@@ -10,6 +10,7 @@
     "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
+    "@rive-app/canvas": "^2.55.1",
     "astro": "^5.16.0"
   },
   "devDependencies": {

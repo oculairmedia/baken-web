@@ -1,0 +1,49 @@
+---
+interface Props {
+  size?: number;
+  shape?: 'circle' | 'blob' | 'roundedSquare' | 'pill' | 'triangle' | 'hexagon' | 'cloud' | 'drop';
+  color?: string;
+  state?: 'idle' | 'listening' | 'thinking' | 'waitingInput' | 'speaking' | 'error' | 'sleeping' | 'loading' | 'failed' | 'degraded' | 'working' | 'dreaming';
+  talk?: boolean;
+  interactive?: boolean;
+  rotation?: number;
+  title?: string;
+}
+
+const {
+  size = 48,
+  shape = 'blob',
+  color = '#1E7BF0',
+  state = 'idle',
+  talk = false,
+  interactive = true,
+  rotation = 0,
+  title = 'Baken agent mascot',
+} = Astro.props;
+---
+
+<canvas
+  class:list={['rive-mascot-canvas', interactive && 'rive-interactive']}
+  width={size * 2}
+  height={size * 2}
+  style={`width:${size}px;height:${size}px;`}
+  data-rive-mascot
+  data-shape={shape}
+  data-color={color}
+  data-state={state}
+  data-talk={String(talk)}
+  data-interactive={String(interactive)}
+  data-rotation={String(rotation)}
+  aria-label={title}
+  title={title}
+></canvas>
+
+<style>
+  .rive-mascot-canvas {
+    display: block;
+    flex-shrink: 0;
+  }
+  .rive-interactive {
+    cursor: pointer;
+  }
+</style>

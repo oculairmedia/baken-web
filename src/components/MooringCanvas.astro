@@ -1,0 +1,1282 @@
+---
+// Full-bleed Hydrodynamic Waterline & Seabed Mooring Cross-Section:
+// - Real 1D shallow-water heightfield simulation (propagating wakes, colliding swells, buoy splash displacement)
+// - Real multi-link Verlet iron mooring chains from fixed seabed anchors to buoy keels (slack sway -> whip-taut snap)
+// - 2D draggable MH 6 slatted buoys (pull sideways or dunk underwater; release for splash + damped buoyancy roll)
+// - Storm / Squall presets (Calm tide, Model retired gale + rain, Cloud outage blackout + Fresnel lantern beams, Swap provider rogue wave)
+// - Variable-density square-dot dithered water column, wet crimson MH 6 reflections, Peilschaal gauge & NAP 0.00 datum
+---
+
+<section class="mooring-band dark-surface" id="ownership" aria-label="Interactive substrate mooring simulation">
+  <div class="container mooring-head">
+    <h2>Own the substrate.<br />Let the tide shift.</h2>
+    <p class="mooring-lead">
+      Models, pricing, and cloud platforms turn over constantly. Your machine and your memory are the fixed ground beneath them.
+    </p>
+
+    <div class="tide-controls" id="tideControls" role="group" aria-label="Simulate shifting environment">
+      <button type="button" class="tide-btn active" data-tide="calm">Calm tide</button>
+      <button type="button" class="tide-btn" data-tide="retired">Model retired</button>
+      <button type="button" class="tide-btn" data-tide="outage">Cloud outage</button>
+      <button type="button" class="tide-btn" data-tide="swap">Swap provider</button>
+    </div>
+  </div>
+
+  <div class="mooring-stage" id="mooringStage">
+    <canvas class="mooring-canvas" id="mooringCanvas" aria-label="Interactive moored buoys with live wave physics and seabed chains"></canvas>
+  </div>
+
+  <div class="container mooring-readout-bar">
+    <span class="mono-readout" id="mooringTelemetry">DATUM NAP 0.00 · CURRENT +0.7 KT · TENSION 1.2 KN · ANCHOR DRIFT 0.00 M</span>
+    <span class="mono-hint">slice the water, dunk a buoy, or trigger a squall — watch the chains hold</span>
+  </div>
+</section>
+
+<style>
+  .mooring-band {
+    position: relative;
+    width: 100%;
+    background: #070709;
+    color: #F4F4F6;
+    padding: 96px 0 40px;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mooring-head {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 26px;
+  }
+
+  .mooring-head h2 {
+    margin: 0 0 14px;
+    font-size: clamp(34px, 4.6vw, 54px);
+    line-height: 1.06;
+    letter-spacing: -0.042em;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  .mooring-lead {
+    margin: 0 0 24px;
+    font-size: 16.5px;
+    line-height: 1.58;
+    color: #8E8E98;
+    max-width: 52ch;
+  }
+
+  .tide-controls {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 10px;
+    background: #111114;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+  }
+
+  .tide-btn {
+    padding: 7px 14px;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #8E8E98;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 140ms ease;
+  }
+
+  .tide-btn:hover {
+    color: #F4F4F6;
+  }
+
+  .tide-btn.active {
+    background: #FFFFFF;
+    color: #09090B;
+  }
+
+  .mooring-stage {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 500px;
+    user-select: none;
+    touch-action: pan-y;
+    cursor: grab;
+  }
+
+  .mooring-stage.dragging {
+    cursor: grabbing;
+  }
+
+  .mooring-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .mooring-readout-bar {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .mono-readout {
+    color: #C2C2CC;
+  }
+
+  .mono-hint {
+    color: #6B6B75;
+  }
+
+  @media (max-width: 720px) {
+    .mooring-band {
+      padding: 72px 0 30px;
+    }
+    .mooring-stage {
+      height: 430px;
+    }
+    .mooring-readout-bar {
+      font-size: 10px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const stage = document.getElementById('mooringStage');
+    const canvas = document.getElementById('mooringCanvas');
+    const telemetry = document.getElementById('mooringTelemetry');
+    const controls = document.getElementById('tideControls');
+    if (!stage || !canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let W = 0;
+    let H = 0;
+    let dpr = 1;
+    let visible = true;
+    let rafId = null;
+
+    // 8x8 Bayer matrix for variable-density square-dot dither
+    const BAYER4 = [
+      0, 8, 2, 10,
+      12, 4, 14, 6,
+      3, 11, 1, 9,
+      15, 7, 13, 5,
+    ];
+    function bayer8(x, y) {
+      const x0 = x & 3, y0 = y & 3;
+      const x1 = (x >> 1) & 3, y1 = (y >> 1) & 3;
+      return ((BAYER4[y0 * 4 + x0] * 4 + BAYER4[y1 * 4 + x1]) + 0.5) / 64.0;
+    }
+
+    // =========================================================================
+    // 1. REAL 1D SHALLOW-WATER HEIGHTFIELD (propagating wakes + swell + splashes)
+    // =========================================================================
+    const N_COLS = 180;
+    const waveH = new Float32Array(N_COLS);
+    const waveV = new Float32Array(N_COLS);
+    const waveSlope = new Float32Array(N_COLS);
+
+    function splashAt(screenX, strength, radiusCols = 5) {
+      if (W <= 0) return;
+      const idx = Math.round((screenX / W) * (N_COLS - 1));
+      for (let i = -radiusCols; i <= radiusCols; i++) {
+        const k = idx + i;
+        if (k < 1 || k >= N_COLS - 1) continue;
+        const falloff = Math.cos((i / (radiusCols + 1)) * Math.PI * 0.5);
+        waveV[k] += strength * falloff * falloff;
+      }
+    }
+
+    function sampleWave(screenX) {
+      if (W <= 0) return { h: 0, slope: 0 };
+      const f = Math.max(0, Math.min(N_COLS - 1.001, (screenX / W) * (N_COLS - 1)));
+      const i = Math.floor(f);
+      const t = f - i;
+      const h = waveH[i] * (1 - t) + waveH[i + 1] * t;
+      const slope = waveSlope[i] * (1 - t) + waveSlope[i + 1] * t;
+      return { h, slope };
+    }
+
+    // =========================================================================
+    // 2. PIXEL SPRAY DROPLETS, RAIN STREAKS & SUBSURFACE BUBBLES
+    // =========================================================================
+    const particles = []; // { x, y, vx, vy, life, maxLife, size, warm, underwater }
+    const rainDrops = []; // deterministic pool for storm presets
+    for (let i = 0; i < 90; i++) {
+      rainDrops.push({
+        x: Math.random(),
+        y: Math.random(),
+        len: 10 + Math.random() * 18,
+        speed: 420 + Math.random() * 280,
+      });
+    }
+
+    function spawnSpray(x, y, count, boostX, boostY, warmChance = 0.25) {
+      for (let i = 0; i < count; i++) {
+        if (particles.length > 260) particles.shift();
+        const ang = -Math.PI * (0.15 + Math.random() * 0.7);
+        const spd = 45 + Math.random() * 155;
+        particles.push({
+          x: x + (Math.random() - 0.5) * 26,
+          y: y + (Math.random() - 0.5) * 6,
+          vx: Math.cos(ang) * spd + boostX * 0.45,
+          vy: Math.sin(ang) * spd - Math.abs(boostY) * 0.35,
+          life: 0,
+          maxLife: 0.45 + Math.random() * 0.55,
+          size: Math.random() > 0.4 ? 2.5 : 3.5,
+          warm: Math.random() < warmChance,
+          underwater: false,
+        });
+      }
+    }
+
+    function spawnBubbles(x, y, count) {
+      for (let i = 0; i < count; i++) {
+        if (particles.length > 260) particles.shift();
+        particles.push({
+          x: x + (Math.random() - 0.5) * 22,
+          y: y + Math.random() * 16,
+          vx: (Math.random() - 0.5) * 22,
+          vy: -25 - Math.random() * 45,
+          life: 0,
+          maxLife: 0.65 + Math.random() * 0.6,
+          size: 2.2,
+          warm: false,
+          underwater: true,
+        });
+      }
+    }
+
+    // Passing overhead "environment / weather" labels that drift with wind & current
+    const weatherTags = [
+      { label: 'MODEL DEPRECATION',  x: 0.14, yOff: -162, speedMul: 0.90 },
+      { label: 'API v3 SUNSET',      x: 0.36, yOff: -130, speedMul: 1.12 },
+      { label: 'PRICING TIER HIKE',  x: 0.58, yOff: -166, speedMul: 0.86 },
+      { label: 'RATE LIMIT SPIKE',   x: 0.80, yOff: -134, speedMul: 1.06 },
+      { label: 'CLOUD TERMS v4.2',   x: 0.99, yOff: -152, speedMul: 0.80 },
+    ];
+
+    // =========================================================================
+    // 3. FIVE MOORED BUOYS WITH REAL MULTI-LINK VERLET MOORING CHAINS
+    // =========================================================================
+    const CHAIN_LINKS = 12;
+    const marks = [
+      { code: 'BK-01', label: 'Long-term memory', sub: 'plain markdown',  primary: true,  flashOffset: 0.0 },
+      { code: 'BK-02', label: 'Identity & voice', sub: 'stays yours',     primary: true,  flashOffset: 1.4 },
+      { code: 'BK-03', label: 'Files & notes',    sub: 'local disk',      primary: false, flashOffset: 2.7 },
+      { code: 'BK-04', label: 'Private keys',     sub: 'never leaves',    primary: true,  flashOffset: 4.1 },
+      { code: 'BK-05', label: 'Routines',         sub: 'runs on box',     primary: false, flashOffset: 5.5 },
+    ].map((m, idx) => ({
+      ...m,
+      idx,
+      x: 0, y: 0, vx: 0, vy: 0,
+      heel: 0, vheel: 0,
+      tension: 0,
+      peakPulse: 0,   // seabed anchor shock glow when chain whips taut
+      submerged: 0,
+      chain: Array.from({ length: CHAIN_LINKS + 1 }, () => ({ x: 0, y: 0, ox: 0, oy: 0 })),
+    }));
+
+    // Hydrodynamic weather & preset state
+    const env = {
+      mode: 'calm',
+      current: 0.7,
+      targetCurrent: 0.7,
+      chop: 1.0,
+      targetChop: 1.0,
+      rain: 0.0,
+      targetRain: 0.0,
+      blackout: 0.0,     // 1.0 during cloud outage: sky darkens, cloud tags flicker, buoy lamps flare!
+      targetBlackout: 0.0,
+      surgeBoost: 0,
+      swellPhase: 0,
+      rogueWaveX: -999,  // traveling wave crest for "Swap provider"
+      rogueWaveDir: 1,
+      eventLabel: '',
+      eventTimer: 0,
+    };
+
+    const PRESETS = {
+      calm:    { current: 0.7,  chop: 1.0,  rain: 0.0, blackout: 0.0, surge: 0.0,  note: '' },
+      retired: { current: 4.2,  chop: 2.5,  rain: 0.85, blackout: 0.15, surge: 4.4, note: 'GALE SURGE · MODEL RETIRED' },
+      outage:  { current: -3.4, chop: 2.6,  rain: 0.55, blackout: 1.0,  surge: -3.2, note: 'SQUALL BLACKOUT · CLOUD OUTAGE' },
+      swap:    { current: 2.4,  chop: 1.8,  rain: 0.2,  blackout: 0.0,  surge: 2.6,  note: 'ROGUE SWELL · PROVIDER SWAPPED' },
+    };
+
+    const pointer = {
+      active: false,
+      id: null,
+      buoy: null,
+      hovered: null,
+      x: 0, y: 0,
+      lastX: 0, lastY: 0,
+    };
+
+    function layoutMetrics() {
+      const waterY = H * 0.50;
+      const seabedY = H - 54;
+      const padLeft = W < 720 ? 58 : Math.max(104, (W - 1160) * 0.5 + 40);
+      const padRight = W < 720 ? 30 : Math.max(68, (W - 1160) * 0.5 + 36);
+      const span = Math.max(240, W - padLeft - padRight);
+      return { waterY, seabedY, padLeft, padRight, span };
+    }
+
+    function anchorX(m) {
+      const { padLeft, span } = layoutMetrics();
+      const t = marks.length > 1 ? m.idx / (marks.length - 1) : 0.5;
+      return padLeft + span * (0.07 + t * 0.86);
+    }
+
+    function initChains() {
+      const { waterY, seabedY } = layoutMetrics();
+      for (const m of marks) {
+        const ax = anchorX(m);
+        if (m.x === 0) {
+          m.x = ax;
+          m.y = waterY;
+        }
+        for (let i = 0; i <= CHAIN_LINKS; i++) {
+          const u = i / CHAIN_LINKS;
+          const px = ax + (m.x - ax) * u;
+          const py = seabedY + (m.y + 8 - seabedY) * u;
+          m.chain[i].x = px;
+          m.chain[i].y = py;
+          m.chain[i].ox = px;
+          m.chain[i].oy = py;
+        }
+      }
+    }
+
+    function resize() {
+      const r = stage.getBoundingClientRect();
+      W = Math.max(320, Math.round(r.width));
+      H = Math.max(340, Math.round(r.height));
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      initChains();
+    }
+
+    // Step the 1D wave heightfield with spring coupling + ambient North Sea swell + traveling rogue wave
+    function stepWater(dt, t) {
+      const { waterY } = layoutMetrics();
+      env.swellPhase += dt * (1.45 + env.current * 0.72);
+
+      // Travelling rogue wave impulse (for Swap provider / Model retired bursts)
+      if (env.rogueWaveX > -200 && env.rogueWaveX < W + 200) {
+        env.rogueWaveX += env.rogueWaveDir * dt * Math.max(420, W * 0.42);
+        splashAt(env.rogueWaveX, -42 * env.chop * dt * 28, 8);
+      }
+
+      // Continuous ocean swell driver along the field
+      const tensionK = 195;
+      const spreadK = 1450;
+      const damping = Math.pow(0.24, dt);
+
+      for (let i = 0; i < N_COLS; i++) {
+        const u = i / (N_COLS - 1);
+        const swellTarget =
+          Math.sin(u * Math.PI * 3.6 - env.swellPhase) * (7.5 * env.chop) +
+          Math.sin(u * Math.PI * 7.8 - env.swellPhase * 1.62 + 1.3) * (3.6 * env.chop) +
+          Math.sin(u * Math.PI * 14.5 + env.swellPhase * 0.95) * (1.4 * env.chop);
+
+        const left = i > 0 ? waveH[i - 1] : waveH[0];
+        const right = i < N_COLS - 1 ? waveH[i + 1] : waveH[N_COLS - 1];
+        const laplacian = left + right - 2 * waveH[i];
+
+        const accel = (swellTarget - waveH[i]) * tensionK * 0.14 + laplacian * spreadK;
+        waveV[i] = (waveV[i] + accel * dt) * damping;
+      }
+
+      const dxPx = W / Math.max(1, N_COLS - 1);
+      for (let i = 0; i < N_COLS; i++) {
+        waveH[i] += waveV[i] * dt;
+        // Clamp extreme splashes so water stays inside stage
+        if (waveH[i] > 62) waveH[i] = 62;
+        if (waveH[i] < -62) waveH[i] = -62;
+      }
+      for (let i = 0; i < N_COLS; i++) {
+        const l = i > 0 ? waveH[i - 1] : waveH[i];
+        const r = i < N_COLS - 1 ? waveH[i + 1] : waveH[i];
+        waveSlope[i] = (r - l) / (2 * dxPx);
+      }
+    }
+
+    // Step Verlet iron mooring chains + buoy 2D hydrodynamics
+    function stepBuoysAndChains(dt, t) {
+      const { waterY, seabedY } = layoutMetrics();
+      const depth = Math.max(110, seabedY - waterY);
+      const chainTotalLen = depth * 1.13; // ~13% catenary scope: natural slack at rest, whip-taut under surge!
+      const segLen = chainTotalLen / CHAIN_LINKS;
+
+      for (const m of marks) {
+        const ax = anchorX(m);
+        const w = sampleWave(m.x);
+        const surfY = waterY + w.h;
+        const prevY = m.y;
+
+        if (pointer.active && pointer.buoy === m) {
+          // 2D direct drag (pull sideways OR dunk underwater!)
+          const dx = pointer.x - ax;
+          const dy = pointer.y - seabedY;
+          const dist = Math.hypot(dx, dy);
+          const maxR = chainTotalLen * 1.03;
+          let tx = pointer.x;
+          let ty = Math.min(seabedY - 26, Math.max(waterY - 125, pointer.y));
+          if (dist > maxR && dist > 0.001) {
+            tx = ax + (dx / dist) * maxR;
+            ty = seabedY + (dy / dist) * maxR;
+          }
+          m.vx = (tx - m.x) * 18;
+          m.vy = (ty - m.y) * 18;
+          m.x += (tx - m.x) * Math.min(1, dt * 18);
+          m.y += (ty - m.y) * Math.min(1, dt * 18);
+
+          // Dragging buoy through water stirs real wakes & bubbles!
+          if (Math.abs(m.vx) > 25 || Math.abs(m.vy) > 25) {
+            splashAt(m.x, m.vy * 0.22 + Math.abs(m.vx) * 0.04, 3);
+            if (m.y > surfY + 8 && Math.random() < 0.45) spawnBubbles(m.x, m.y, 2);
+          }
+        } else {
+          // Vertical buoyancy + gravity + hydrodynamic drag
+          const submersion = m.y - surfY; // >0 = pushed underwater -> strong upward buoyancy!
+          const isInWater = submersion > -14;
+          let fy = 420; // gravity pulling buoy down
+          if (isInWater) {
+            const buoyDepth = Math.max(0, submersion + 14);
+            fy -= buoyDepth * 34; // strong Archimedes righting force
+            // Water vertical damping
+            fy -= m.vy * 5.2;
+          } else {
+            fy -= m.vy * 0.8;
+          }
+
+          // Horizontal current force + wave-slope slide
+          const fx = env.current * 56 + w.slope * 130 - m.vx * (isInWater ? 3.2 : 0.9);
+
+          m.vx += fx * dt;
+          m.vy += fy * dt;
+          m.x += m.vx * dt;
+          m.y += m.vy * dt;
+
+          // Detect splashdown / breach through waterline!
+          const crossedDown = prevY <= surfY - 6 && m.y > surfY - 6 && m.vy > 85;
+          const crossedUp = prevY > surfY + 12 && m.y <= surfY + 12 && m.vy < -95;
+          if (crossedDown || crossedUp) {
+            splashAt(m.x, m.vy * 0.65, 5);
+            spawnSpray(m.x, surfY, 12, m.vx * 0.4, Math.abs(m.vy), m.primary ? 0.45 : 0.15);
+            if (crossedDown) spawnBubbles(m.x, surfY + 8, 7);
+          }
+
+          // Continuous light spray when big surge slams the buoy
+          if (Math.abs(env.current) > 2.4 && Math.random() < 0.16) {
+            spawnSpray(m.x + Math.sign(env.current) * 14, surfY - 2, 2, env.current * 24, 55, m.primary ? 0.35 : 0.1);
+          }
+        }
+
+        // Enforce taut iron mooring chain distance constraint from fixed seabed anchor (ax, seabedY)
+        const keelX = m.x - Math.sin(m.heel) * 8;
+        const keelY = m.y + Math.cos(m.heel) * 8;
+        const cdx = keelX - ax;
+        const cdy = keelY - seabedY;
+        const cdist = Math.hypot(cdx, cdy);
+
+        const prevTension = m.tension;
+        m.tension = Math.max(0, Math.min(1, (cdist - depth * 0.96) / (chainTotalLen - depth * 0.96)));
+
+        if (cdist > chainTotalLen && cdist > 0.001) {
+          const nx = cdx / cdist;
+          const ny = cdy / cdist;
+          const excess = cdist - chainTotalLen;
+          // Pull buoy back onto chain arc
+          m.x -= nx * excess;
+          m.y -= ny * excess;
+          // Reflect/cancel outward velocity along chain (physical iron-chain tug!)
+          const radialV = m.vx * nx + m.vy * ny;
+          if (radialV > 0) {
+            m.vx -= nx * radialV * 1.28;
+            m.vy -= ny * radialV * 1.28;
+            // Snapping taut imparts a sharp righting kick to heel + triggers seabed lock pulse!
+            m.vheel += -nx * radialV * 0.008;
+            if (radialV > 35 || prevTension < 0.85) {
+              m.peakPulse = Math.min(1, m.peakPulse + 0.75);
+            }
+          }
+        }
+
+        // Clamp buoy above seabed
+        if (m.y > seabedY - 22) {
+          m.y = seabedY - 22;
+          if (m.vy > 0) m.vy *= -0.25;
+        }
+
+        m.peakPulse = Math.max(0, m.peakPulse - dt * 1.8);
+        m.submerged = Math.max(0, Math.min(1, (m.y - surfY) / 38));
+
+        // Buoy rotational heel: tilts with local wave slope, current drag, and chain torque, then self-rights!
+        const chainPullBias = ((m.x - ax) / Math.max(60, chainTotalLen)) * 0.34;
+        const targetHeel = Math.max(-0.56, Math.min(0.56,
+          Math.atan(w.slope) * 1.35 + env.current * 0.072 + chainPullBias
+        ));
+        const heelAccel = (targetHeel - m.heel) * 38 - m.vheel * 4.8;
+        m.vheel += heelAccel * dt;
+        m.heel += m.vheel * dt;
+
+        // Step Verlet chain nodes between fixed seabed anchor (index 0) and live buoy keel (index CHAIN_LINKS)
+        const chain = m.chain;
+        const endX = m.x - Math.sin(m.heel) * 9;
+        const endY = m.y + Math.cos(m.heel) * 9;
+
+        for (let i = 1; i < CHAIN_LINKS; i++) {
+          const n = chain[i];
+          const vx = (n.x - n.ox) * 0.92;
+          const vy = (n.y - n.oy) * 0.92;
+          n.ox = n.x;
+          n.oy = n.y;
+          // Underwater chain gravity (iron sinks) + subtle depth-attenuated current push
+          const u = i / CHAIN_LINKS;
+          const waterPush = env.current * (0.04 + 0.22 * u * u);
+          n.x += vx + waterPush;
+          n.y += vy + 0.38;
+        }
+
+        // Pin endpoints & solve distance constraints (7 iterations = crisp steel links)
+        for (let iter = 0; iter < 7; iter++) {
+          chain[0].x = ax;
+          chain[0].y = seabedY;
+          chain[CHAIN_LINKS].x = endX;
+          chain[CHAIN_LINKS].y = endY;
+
+          for (let i = 0; i < CHAIN_LINKS; i++) {
+            const a = chain[i];
+            const b = chain[i + 1];
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const d = Math.hypot(dx, dy) || 0.0001;
+            const diff = (d - segLen) / d;
+            if (i === 0) {
+              b.x -= dx * diff;
+              b.y -= dy * diff;
+            } else if (i + 1 === CHAIN_LINKS) {
+              a.x += dx * diff;
+              a.y += dy * diff;
+            } else {
+              a.x += dx * diff * 0.5;
+              a.y += dy * diff * 0.5;
+              b.x -= dx * diff * 0.5;
+              b.y -= dy * diff * 0.5;
+            }
+            if (b.y > seabedY) b.y = seabedY;
+          }
+        }
+      }
+    }
+
+    function stepParticles(dt) {
+      const { waterY, seabedY } = layoutMetrics();
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life += dt;
+        if (p.life >= p.maxLife) {
+          particles.splice(i, 1);
+          continue;
+        }
+        if (p.underwater) {
+          p.x += (p.vx + env.current * 14) * dt;
+          p.y += p.vy * dt;
+          const surfY = waterY + sampleWave(p.x).h;
+          if (p.y <= surfY) particles.splice(i, 1);
+        } else {
+          p.vx += env.current * 24 * dt;
+          p.vy += 420 * dt;
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          const surfY = waterY + sampleWave(p.x).h;
+          if (p.y > surfY && p.vy > 0) {
+            particles.splice(i, 1);
+          }
+        }
+      }
+    }
+
+    // =========================================================================
+    // 4. RENDERING — DITHERED WATER, MH 6 BUOYS, LANTERN CONES, PEILSCHAAL
+    // =========================================================================
+    function drawPeilschaal(waterY, seabedY) {
+      const gx = W < 720 ? 12 : 24;
+      const topY = waterY - 110;
+      const botY = seabedY;
+
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(gx, topY);
+      ctx.lineTo(gx, botY);
+      ctx.stroke();
+
+      const step = 12;
+      for (let y = topY; y < botY - 4; y += step) {
+        const idx = Math.round((y - waterY) / step);
+        const isZero = idx === 0;
+        const isMajor = idx % 4 === 0;
+        const w = isZero ? 16 : isMajor ? 9 : 5;
+        if (isZero) {
+          ctx.fillStyle = '#EE5A3F';
+          ctx.fillRect(gx, y - 1.5, w, 3);
+        } else if ((idx & 1) === 0) {
+          ctx.fillStyle = isMajor ? 'rgba(255, 255, 255, 0.36)' : 'rgba(255, 255, 255, 0.16)';
+          ctx.fillRect(gx, y, w, 4);
+        }
+      }
+
+      // Dashed NAP 0.00 zero-datum line
+      ctx.setLineDash([3, 6]);
+      ctx.strokeStyle = 'rgba(238, 90, 63, 0.25)';
+      ctx.beginPath();
+      ctx.moveTo(gx + 18, waterY);
+      ctx.lineTo(W, waterY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.font = '600 9.5px ui-monospace, SFMono-Regular, Menlo, monospace';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.34)';
+      ctx.fillText('TIDE +2M', gx + 14, topY + 7);
+      ctx.fillStyle = '#EE5A3F';
+      ctx.fillText('NAP 0.00', gx + 20, waterY - 5);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.48)';
+      ctx.fillText('SEABED', gx + 14, seabedY - 7);
+      ctx.restore();
+    }
+
+    function drawDitheredWater(waterY, seabedY, t) {
+      const pitch = W < 720 ? 9 : 7;
+      const depthSpan = Math.max(40, seabedY - waterY);
+
+      ctx.save();
+      // Subtle translucent dark water body
+      ctx.beginPath();
+      ctx.moveTo(0, seabedY);
+      for (let i = 0; i < N_COLS; i++) {
+        const x = (i / (N_COLS - 1)) * W;
+        ctx.lineTo(x, waterY + waveH[i]);
+      }
+      ctx.lineTo(W, seabedY);
+      ctx.closePath();
+
+      const bodyGrad = ctx.createLinearGradient(0, waterY - 18, 0, seabedY);
+      bodyGrad.addColorStop(0, `rgba(255, 255, 255, ${(0.055 - env.blackout * 0.025).toFixed(3)})`);
+      bodyGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.015)');
+      bodyGrad.addColorStop(1, 'rgba(7, 7, 9, 0.0)');
+      ctx.fillStyle = bodyGrad;
+      ctx.fill();
+
+      // Variable-density square-dot dither matrix reacting live to wave height, slope, and buoy reflections!
+      const flowShift = env.swellPhase * 28;
+      const cols = Math.ceil(W / pitch);
+      for (let cx = 0; cx < cols; cx++) {
+        const x = cx * pitch + pitch * 0.5;
+        const w = sampleWave(x);
+        const surfY = waterY + w.h;
+        const firstRow = Math.ceil(surfY / pitch);
+        const lastRow = Math.floor((seabedY - 4) / pitch);
+        const crestBoost = Math.max(0, -w.h / 28) * 0.35 + Math.min(0.4, Math.abs(w.slope) * 1.4);
+
+        // Check proximity to primary vermilion buoys for authentic MH 6 broken red water reflection!
+        let redGlow = 0;
+        for (const m of marks) {
+          if (!m.primary) continue;
+          const dx = Math.abs(x - (m.x + m.heel * 12));
+          if (dx < 34) {
+            redGlow = Math.max(redGlow, Math.exp(-(dx * dx) / 320));
+          }
+        }
+
+        for (let cy = firstRow; cy <= lastRow; cy++) {
+          const y = cy * pitch + pitch * 0.5;
+          const depth = (y - surfY) / depthSpan;
+          if (depth < 0 || depth > 1) continue;
+
+          // Subsurface current ribbons moving faster near top, slowing into stillness at the seabed
+          const shear = Math.sin((x - flowShift * (1.0 - depth * 0.82)) * 0.022 + depth * 7.2) * 0.5 + 0.5;
+          const surfFoam = Math.exp(-depth * 4.8) * (0.44 + crestBoost);
+          const redCol = redGlow * Math.exp(-depth * 3.1) * (0.55 + 0.45 * shear);
+          const energy = Math.min(1, surfFoam + shear * (1 - depth) * 0.15 + redCol * 0.35);
+
+          const th = bayer8(cx, cy);
+          if (energy <= th * 0.52 + 0.035) continue;
+
+          const size = 1.3 + Math.pow(energy, 0.78) * 2.8;
+          const isWarmDot = redCol > 0.16 && (redCol + (th - 0.5) * 0.25 > 0.22);
+          if (isWarmDot) {
+            const a = Math.min(0.82, 0.28 + redCol * 0.65);
+            ctx.fillStyle = `rgba(238, 90, 63, ${a.toFixed(3)})`;
+          } else {
+            const dim = 1 - env.blackout * 0.38;
+            const a = (0.10 + energy * 0.38) * dim;
+            ctx.fillStyle = `rgba(234, 234, 240, ${a.toFixed(3)})`;
+          }
+          ctx.fillRect(x - size * 0.5, y - size * 0.5, size, size);
+        }
+      }
+
+      // Razor-sharp whitecap surface ridge
+      ctx.beginPath();
+      for (let i = 0; i < N_COLS; i++) {
+        const x = (i / (N_COLS - 1)) * W;
+        const y = waterY + waveH[i];
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = `rgba(255, 255, 255, ${(0.44 - env.blackout * 0.14).toFixed(3)})`;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawVerletChain(m, seabedY) {
+      const chain = m.chain;
+      const ax = anchorX(m);
+      const taut = Math.max(0, Math.min(1, (m.tension - 0.32) / 0.68));
+      const hot = Math.max(taut, m.peakPulse);
+
+      ctx.save();
+
+      // Subtle vertical DIEPLOOD plumb-line when hovering a buoy (shows zero anchor drift!)
+      if (pointer.hovered === m || pointer.buoy === m) {
+        ctx.setLineDash([2, 4]);
+        ctx.strokeStyle = 'rgba(238, 90, 63, 0.32)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(ax, m.y - 68);
+        ctx.lineTo(ax, seabedY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Draw linked iron chain segments from Verlet nodes
+      ctx.beginPath();
+      ctx.moveTo(chain[0].x, chain[0].y);
+      for (let i = 1; i <= CHAIN_LINKS; i++) {
+        ctx.lineTo(chain[i].x, chain[i].y);
+      }
+      if (hot > 0.08) {
+        ctx.strokeStyle = `rgba(238, 90, 63, ${(0.34 + hot * 0.66).toFixed(3)})`;
+        ctx.lineWidth = 1.5 + hot * 1.1;
+      } else {
+        ctx.strokeStyle = m.primary ? 'rgba(255, 255, 255, 0.34)' : 'rgba(255, 255, 255, 0.22)';
+        ctx.lineWidth = 1.3;
+      }
+      ctx.stroke();
+
+      // Discrete iron link knots along the Verlet chain
+      for (let i = 1; i < CHAIN_LINKS; i++) {
+        const n = chain[i];
+        ctx.fillStyle = hot > 0.15
+          ? `rgba(255, 176, 152, ${(0.4 + hot * 0.6).toFixed(3)})`
+          : 'rgba(255, 255, 255, 0.32)';
+        ctx.fillRect(n.x - 1.6, n.y - 1.6, 3.2, 3.2);
+      }
+
+      // Seabed shockwave ring when chain snaps taut (proving the fixed substrate absorbed the load!)
+      if (m.peakPulse > 0.04) {
+        const r = (1 - m.peakPulse) * 44 + 8;
+        ctx.strokeStyle = `rgba(238, 90, 63, ${(m.peakPulse * 0.72).toFixed(3)})`;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(ax - r, seabedY);
+        ctx.lineTo(ax + r, seabedY);
+        ctx.stroke();
+      }
+
+      // Fixed seabed concrete/iron anchor block
+      ctx.fillStyle = '#141418';
+      ctx.strokeStyle = hot > 0.15 ? '#EE5A3F' : 'rgba(255, 255, 255, 0.42)';
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(ax - 10, seabedY + 7);
+      ctx.lineTo(ax - 7, seabedY - 3);
+      ctx.lineTo(ax + 7, seabedY - 3);
+      ctx.lineTo(ax + 10, seabedY + 7);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = m.primary || hot > 0.15 ? '#EE5A3F' : '#F4F4F6';
+      ctx.fillRect(ax - 1.8, seabedY - 1.5, 3.6, 3.6);
+      ctx.restore();
+    }
+
+    function drawBuoy(m, t) {
+      const compact = W < 720;
+      const scale = compact ? 0.85 : 1.04;
+      const isActive = pointer.hovered === m || pointer.buoy === m;
+
+      ctx.save();
+      ctx.translate(m.x, m.y);
+      ctx.rotate(m.heel);
+      ctx.scale(scale, scale);
+
+      const mainCol = m.primary ? '#EE5A3F' : '#D4D4DC';
+
+      // Rhythmic maritime Lichtkarakter lantern + sweeping mini Fresnel cone (intensifies in blackout squall!)
+      const flash = Math.pow(Math.max(0, Math.sin(t * 1.45 + m.flashOffset)), 12);
+      const beamStrength = Math.max(flash * 0.55, env.blackout * (0.42 + flash * 0.58));
+      if (beamStrength > 0.08 && (m.primary || env.blackout > 0.3)) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'screen';
+        const sweepAng = Math.sin(t * 0.9 + m.flashOffset) * 0.55;
+        const reach = 85 + env.blackout * 95;
+        const spread = 0.22;
+        ctx.beginPath();
+        ctx.moveTo(0, -58);
+        ctx.lineTo(Math.cos(sweepAng - spread) * reach, -58 + Math.sin(sweepAng - spread) * reach - 12);
+        ctx.lineTo(Math.cos(sweepAng + spread) * reach, -58 + Math.sin(sweepAng + spread) * reach - 12);
+        ctx.closePath();
+        const bg = ctx.createRadialGradient(0, -58, 2, 0, -58, reach);
+        bg.addColorStop(0, `rgba(255, 240, 232, ${(0.34 * beamStrength).toFixed(3)})`);
+        bg.addColorStop(0.35, `rgba(238, 90, 63, ${(0.20 * beamStrength).toFixed(3)})`);
+        bg.addColorStop(1, 'rgba(238, 90, 63, 0)');
+        ctx.fillStyle = bg;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Submerged counter-weight keel
+      ctx.fillStyle = '#191920';
+      ctx.fillRect(-5, 2, 10, 9);
+
+      // Low wide industrial pontoon hull (MH 6 reference!)
+      ctx.fillStyle = mainCol;
+      ctx.beginPath();
+      ctx.roundRect(-23, -6, 46, 11, 4);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Slatted steel lattice body
+      ctx.beginPath();
+      ctx.moveTo(-15, -6);
+      ctx.lineTo(-10, -35);
+      ctx.lineTo(10, -35);
+      ctx.lineTo(15, -6);
+      ctx.closePath();
+      ctx.fillStyle = mainCol;
+      ctx.fill();
+
+      // Open vertical slat cutouts
+      ctx.fillStyle = '#09090C';
+      for (const sx of [-6.5, 0, 6.5]) {
+        ctx.fillRect(sx - 1.5, -31, 3, 10);
+        ctx.fillRect(sx - 1.5, -17.5, 3, 9.5);
+      }
+
+      // Subtle solar panel glint on the upper collar (straight from MH 6!)
+      ctx.fillStyle = 'rgba(30, 123, 240, 0.55)';
+      ctx.fillRect(-5.5, -42, 4.5, 6);
+      ctx.fillStyle = 'rgba(130, 185, 255, 0.35)';
+      ctx.fillRect(1, -42, 4.5, 6);
+
+      // Top tubular frame hoop
+      ctx.strokeStyle = mainCol;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(-11, -35);
+      ctx.lineTo(-7, -46);
+      ctx.lineTo(7, -46);
+      ctx.lineTo(11, -35);
+      ctx.stroke();
+
+      // White octahedral radar reflector diamond
+      ctx.fillStyle = '#F4F4F6';
+      ctx.beginPath();
+      ctx.moveTo(0, -57);
+      ctx.lineTo(7.5, -50);
+      ctx.lineTo(0, -43.5);
+      ctx.lineTo(-7.5, -50);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+
+      // Lantern core glow
+      const glowR = 6 + flash * 16 + env.blackout * 10;
+      const g = ctx.createRadialGradient(0, -59, 0.5, 0, -59, glowR);
+      g.addColorStop(0, `rgba(255, 248, 242, ${(0.6 + flash * 0.4).toFixed(3)})`);
+      g.addColorStop(0.38, `rgba(238, 90, 63, ${(0.38 + flash * 0.52 + env.blackout * 0.25).toFixed(3)})`);
+      g.addColorStop(1, 'rgba(238, 90, 63, 0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, -59, glowR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(-1.5, -60.5, 3, 3);
+
+      // Stenciled buoy ID on pontoon
+      ctx.font = '700 7.5px ui-monospace, SFMono-Regular, Menlo, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = m.primary ? '#0B0B0E' : '#121216';
+      ctx.fillText(m.code, 0, 2);
+
+      ctx.restore();
+
+      // Crisp upright label floating above the buoy
+      ctx.save();
+      ctx.textAlign = 'center';
+      const labelY = m.y - (compact ? 66 : 76);
+      ctx.font = `700 ${compact ? 11.5 : 13}px "Plus Jakarta Sans", -apple-system, sans-serif`;
+      ctx.fillStyle = isActive ? '#FFFFFF' : m.primary ? '#F4F4F6' : '#C8C8D2';
+      ctx.fillText(m.label, m.x, labelY);
+
+      ctx.font = `500 ${compact ? 9.5 : 10.5}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      const kn = (0.8 + m.tension * 9.4).toFixed(1);
+      const subText = isActive || m.tension > 0.55 ? `${kn} KN · 0.00M DRIFT` : m.sub;
+      ctx.fillStyle = isActive || m.tension > 0.55 ? '#EE5A3F' : '#7A7A84';
+      ctx.fillText(subText, m.x, labelY + 14);
+      ctx.restore();
+    }
+
+    function drawParticles() {
+      ctx.save();
+      for (const p of particles) {
+        const a = Math.max(0, 1 - p.life / p.maxLife);
+        if (p.underwater) {
+          ctx.fillStyle = `rgba(220, 224, 234, ${(a * 0.45).toFixed(3)})`;
+        } else if (p.warm) {
+          ctx.fillStyle = `rgba(238, 90, 63, ${(a * 0.85).toFixed(3)})`;
+        } else {
+          ctx.fillStyle = `rgba(244, 244, 248, ${(a * 0.72).toFixed(3)})`;
+        }
+        ctx.fillRect(p.x - p.size * 0.5, p.y - p.size * 0.5, p.size, p.size);
+      }
+      ctx.restore();
+    }
+
+    function drawRain(dt, waterY) {
+      if (env.rain < 0.02) return;
+      ctx.save();
+      const windX = env.current * 42;
+      ctx.strokeStyle = `rgba(230, 232, 240, ${(env.rain * 0.22).toFixed(3)})`;
+      ctx.lineWidth = 1;
+      for (const r of rainDrops) {
+        if (!reducedMotion) {
+          r.y += (r.speed * dt) / Math.max(300, H);
+          r.x += (windX * dt) / Math.max(600, W);
+          if (r.y > 0.58) { r.y -= 0.62; r.x = Math.random(); }
+          if (r.x > 1.05) r.x -= 1.1;
+          if (r.x < -0.05) r.x += 1.1;
+        }
+        const x = r.x * W;
+        const y = r.y * H;
+        if (y > waterY + 14) continue;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + windX * 0.032, y + r.len);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawSeabed(seabedY) {
+      ctx.save();
+      ctx.fillStyle = '#0D0D11';
+      ctx.fillRect(0, seabedY, W, H - seabedY);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.lineWidth = 1.25;
+      ctx.beginPath();
+      ctx.moveTo(0, seabedY);
+      ctx.lineTo(W, seabedY);
+      ctx.stroke();
+
+      // Architectural stipple strata inside solid ground
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+      for (let x = 16; x < W; x += 24) {
+        ctx.fillRect(x, seabedY + 9, 2, 2);
+        ctx.fillRect(x + 12, seabedY + 19, 2, 2);
+      }
+
+      ctx.font = '600 10.5px ui-monospace, SFMono-Regular, Menlo, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(244, 244, 246, 0.58)';
+      ctx.fillText('LOCAL SUBSTRATE · YOUR MACHINE · PLAIN FILES ON DISK', W * 0.5, seabedY + 35);
+      ctx.restore();
+    }
+
+    let lastTime = performance.now();
+
+    function frame(nowMs) {
+      const dt = Math.min(0.033, Math.max(0.008, (nowMs - lastTime) * 0.001));
+      lastTime = nowMs;
+      const t = reducedMotion ? 1.5 : nowMs * 0.001;
+
+      const { waterY, seabedY } = layoutMetrics();
+
+      // Smoothly ease environment weather
+      env.surgeBoost *= Math.pow(0.24, dt);
+      const desiredFlow = env.targetCurrent + env.surgeBoost;
+      env.current += (desiredFlow - env.current) * Math.min(1, dt * 3.8);
+      env.chop += (env.targetChop - env.chop) * Math.min(1, dt * 2.8);
+      env.rain += (env.targetRain - env.rain) * Math.min(1, dt * 2.6);
+      env.blackout += (env.targetBlackout - env.blackout) * Math.min(1, dt * 2.4);
+      if (env.eventTimer > 0) env.eventTimer = Math.max(0, env.eventTimer - dt);
+
+      if (!reducedMotion) {
+        stepWater(dt, t);
+        stepBuoysAndChains(dt, t);
+        stepParticles(dt);
+      } else {
+        stepBuoysAndChains(0.016, t);
+      }
+
+      // Sky background (darkens slightly deeper during Cloud Outage blackout)
+      ctx.fillStyle = env.blackout > 0.1 ? '#050507' : '#070709';
+      ctx.fillRect(0, 0, W, H);
+
+      // Drifting overhead cloud/environment labels (flicker & fade during Cloud Outage!)
+      ctx.save();
+      ctx.font = '600 10.5px ui-monospace, SFMono-Regular, Menlo, monospace';
+      ctx.textAlign = 'center';
+      for (const tag of weatherTags) {
+        if (!reducedMotion) {
+          tag.x += dt * (0.013 + env.current * 0.024) * tag.speedMul;
+          if (tag.x > 1.15) tag.x -= 1.3;
+          if (tag.x < -0.15) tag.x += 1.3;
+        }
+        const tx = tag.x * W;
+        const ty = waterY + tag.yOff;
+        if (ty < 16) continue;
+        const leftFade = Math.max(0, Math.min(1, (tx - 130) / 80));
+        const rightFade = Math.max(0, Math.min(1, (W - tx - 30) / 70));
+        const edgeFade = leftFade * rightFade;
+        if (edgeFade <= 0.02) continue;
+
+        let flicker = 1.0;
+        if (env.blackout > 0.2) {
+          const fl = Math.sin(t * 27 + tag.yOff) * Math.sin(t * 13 + tag.x * 40);
+          flicker = fl > 0.25 ? 0.55 : 0.12;
+        }
+
+        const vis = Math.min(0.44, 0.18 + Math.abs(env.current) * 0.06) * edgeFade * flicker;
+        ctx.fillStyle = env.blackout > 0.35
+          ? `rgba(238, 90, 63, ${(vis * 0.9).toFixed(3)})`
+          : `rgba(255, 255, 255, ${vis.toFixed(3)})`;
+        ctx.fillText(env.blackout > 0.55 ? `${tag.label} [503]` : tag.label, tx, ty);
+
+        if (Math.abs(env.current) > 1.5 && env.blackout < 0.5) {
+          const dir = Math.sign(env.current);
+          const len = Math.min(54, Math.abs(env.current) * 10);
+          ctx.strokeStyle = `rgba(238, 90, 63, ${(vis * 0.85).toFixed(3)})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(tx - dir * len * 0.5, ty + 6);
+          ctx.lineTo(tx + dir * len * 0.5, ty + 6);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+
+      // Storm rain streaks
+      drawRain(dt, waterY);
+
+      // Dithered water column + wet red MH 6 reflections
+      drawDitheredWater(waterY, seabedY, t);
+
+      // Peilschaal datum scale
+      drawPeilschaal(waterY, seabedY);
+
+      // Fixed local seabed shelf
+      drawSeabed(seabedY);
+
+      // Verlet iron chains + fixed anchor blocks
+      for (const m of marks) {
+        drawVerletChain(m, seabedY);
+      }
+
+      // Moored MH 6 buoys
+      for (const m of marks) {
+        drawBuoy(m, t);
+      }
+
+      // Crisp pixel spray & underwater bubbles
+      drawParticles();
+
+      // Live hydrographic telemetry
+      if (telemetry) {
+        let maxT = 0;
+        for (const m of marks) if (m.tension > maxT) maxT = m.tension;
+        const kn = (0.8 + maxT * 9.4).toFixed(1);
+        const sign = env.current >= 0 ? '+' : '';
+        const evt = env.eventTimer > 0 && env.eventLabel ? ` · ${env.eventLabel}` : '';
+        telemetry.textContent = `DATUM NAP 0.00 · CURRENT ${sign}${env.current.toFixed(1)} KT · PEAK LOAD ${kn} KN · ANCHOR DRIFT 0.00 M${evt}`;
+      }
+
+      if (!reducedMotion && visible) {
+        rafId = requestAnimationFrame(frame);
+      }
+    }
+
+    // Preset controls
+    if (controls) {
+      const btns = Array.from(controls.querySelectorAll('.tide-btn'));
+      btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-tide') || 'calm';
+          const p = PRESETS[key] || PRESETS.calm;
+          env.mode = key;
+          env.targetCurrent = p.current;
+          env.targetChop = p.chop;
+          env.targetRain = p.rain;
+          env.targetBlackout = p.blackout;
+          env.surgeBoost = p.surge;
+          env.eventLabel = p.note;
+          env.eventTimer = p.note ? 5.0 : 0;
+
+          if (key === 'swap' || key === 'retired') {
+            env.rogueWaveDir = 1;
+            env.rogueWaveX = -40;
+          } else if (key === 'outage') {
+            env.rogueWaveDir = -1;
+            env.rogueWaveX = W + 40;
+          }
+
+          btns.forEach((b) => b.classList.toggle('active', b === btn));
+        });
+      });
+    }
+
+    // Pointer hover + 2D drag (grab buoy OR slice through water to throw real waves!)
+    function findBuoyAt(px, py) {
+      let best = null;
+      let bestD = 54;
+      for (const m of marks) {
+        const d = Math.hypot(px - m.x, py - (m.y - 24));
+        if (d < bestD) { bestD = d; best = m; }
+      }
+      return best;
+    }
+
+    stage.addEventListener('pointerdown', (e) => {
+      const r = stage.getBoundingClientRect();
+      const px = e.clientX - r.left;
+      const py = e.clientY - r.top;
+
+      pointer.active = true;
+      pointer.id = e.pointerId;
+      pointer.x = px;
+      pointer.y = py;
+      pointer.lastX = px;
+      pointer.lastY = py;
+      pointer.buoy = findBuoyAt(px, py);
+
+      if (!pointer.buoy) {
+        // Clicking the water directly drops a crisp splash wave!
+        const { waterY } = layoutMetrics();
+        const surfY = waterY + sampleWave(px).h;
+        splashAt(px, 140, 6);
+        spawnSpray(px, surfY, 10, 0, 120, 0.2);
+      }
+
+      stage.classList.add('dragging');
+      stage.setPointerCapture(e.pointerId);
+    });
+
+    stage.addEventListener('pointermove', (e) => {
+      const r = stage.getBoundingClientRect();
+      const px = e.clientX - r.left;
+      const py = e.clientY - r.top;
+      const dx = px - pointer.lastX;
+      const dy = py - pointer.lastY;
+      pointer.lastX = px;
+      pointer.lastY = py;
+      pointer.x = px;
+      pointer.y = py;
+
+      if (!pointer.active) {
+        pointer.hovered = findBuoyAt(px, py);
+        return;
+      }
+      if (e.pointerId !== pointer.id) return;
+
+      if (!pointer.buoy) {
+        // Dragging across the water physically pushes a traveling wave + current surge!
+        const { waterY } = layoutMetrics();
+        const surfY = waterY + sampleWave(px).h;
+        splashAt(px, Math.max(-180, Math.min(180, dy * 6 + Math.abs(dx) * 3.8)), 5);
+        env.surgeBoost = Math.max(-5.8, Math.min(5.8, env.surgeBoost + dx * 0.055));
+        if (Math.hypot(dx, dy) > 8 && Math.random() < 0.65) {
+          spawnSpray(px, surfY, 3, dx * 4.5, Math.abs(dx) * 3, 0.25);
+        }
+      }
+    });
+
+    function release(e) {
+      if (!pointer.active || (e.pointerId !== undefined && e.pointerId !== pointer.id)) return;
+      pointer.active = false;
+      pointer.buoy = null;
+      pointer.id = null;
+      stage.classList.remove('dragging');
+    }
+    stage.addEventListener('pointerup', release);
+    stage.addEventListener('pointercancel', release);
+    stage.addEventListener('pointerleave', () => { if (!pointer.active) pointer.hovered = null; });
+
+    function start() {
+      if (rafId) cancelAnimationFrame(rafId);
+      lastTime = performance.now();
+      rafId = requestAnimationFrame(frame);
+    }
+
+    resize();
+    if (reducedMotion) {
+      frame(performance.now());
+    } else {
+      start();
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      if (reducedMotion) frame(performance.now());
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          visible = entries[0]?.isIntersecting ?? true;
+          if (visible && !reducedMotion) start();
+          if (!visible && rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        },
+        { threshold: 0.02 }
+      );
+      io.observe(stage);
+    }
+  })();
+</script>

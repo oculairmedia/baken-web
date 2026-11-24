@@ -1,47 +1,33 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BakenMark from '../components/BakenMark.astro';
-import StringsCanvas from '../components/StringsCanvas.astro';
+import RiveMascot from '../components/RiveMascot.astro';
+import RiveBakenMark from '../components/RiveBakenMark.astro';
+import MooringCanvas from '../components/MooringCanvas.astro';
 import PixelStageShader from '../components/PixelStageShader.astro';
-import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
+import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 ---
 
 <Layout>
-  <!-- 1. HERO: WHAT IT DOES + CAST OF MASCOTS + FULL PRODUCT WINDOW -->
+  <!-- 1. HERO: WHAT IT DOES + LIVE RIVE CAST + FULL PRODUCT WINDOW -->
   <section class="hero">
     <div class="container hero-center">
-      <!-- Mascot Cast Row (Grok Bot / Muse visual warmth up top) -->
-      <div class="mascot-lineup" aria-hidden="true">
-        <div class="mascot-wrap m-chip m-cobalt" title="Meridian">
-          <svg width="46" height="46" viewBox="-185 -185 370 370">
-            <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
-            <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(-8)" />
-            <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-          </svg>
+      <!-- Real mascot.riv + baken_mark.riv cast row (same binaries shipped in the app) -->
+      <div class="mascot-lineup">
+        <div class="m-chip" title="Meridian — hover or poke">
+          <RiveMascot size={48} shape="blob" color="#1E7BF0" state="idle" title="Meridian" />
         </div>
-        <div class="mascot-wrap m-chip m-orange" style="animation-delay:-1.1s" title="Builder">
-          <svg width="44" height="44" viewBox="-185 -185 370 370">
-            <path d={MASCOT_BODIES.triangle} fill="#FF6A1A" />
-            <rect x="-56" y="-42" width="112" height="112" rx="26" fill="#F7F7F7" />
-            <g class="m-gaze" transform="translate(0,14)"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-          </svg>
+        <div class="m-chip" title="Builder — hover or poke">
+          <RiveMascot size={46} shape="triangle" color="#FF6A1A" state="working" title="Builder" />
         </div>
-        <div class="baken-hero-badge">
-          <BakenMark uid="hero-mark" size={42} state="idle" />
+        <div class="baken-hero-badge" title="Baken — click to lock">
+          <RiveBakenMark size={46} state="ambient" theme="dark" boot={true} title="Baken mark" />
         </div>
-        <div class="mascot-wrap m-chip m-green" style="animation-delay:-2.2s" title="Planner">
-          <svg width="44" height="44" viewBox="-185 -185 370 370">
-            <path d={MASCOT_BODIES.squircle} fill="#1DA34A" />
-            <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(5)" />
-            <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-          </svg>
+        <div class="m-chip" title="Planner — hover or poke">
+          <RiveMascot size={46} shape="roundedSquare" color="#1DA34A" state="thinking" title="Planner" />
         </div>
-        <div class="mascot-wrap m-chip m-crimson" style="animation-delay:-3.1s" title="Archivist">
-          <svg width="44" height="44" viewBox="-185 -185 370 370">
-            <path d={MASCOT_BODIES.circle} fill="#E5484D" />
-            <rect x="-62" y="-62" width="124" height="124" rx="28" fill="#F7F7F7" transform="rotate(-5)" />
-            <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-          </svg>
+        <div class="m-chip" title="Archivist — hover or poke">
+          <RiveMascot size={46} shape="circle" color="#E5484D" state="idle" title="Archivist" />
         </div>
       </div>
 
@@ -64,95 +50,119 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
       </div>
     </div>
 
-    <!-- HERO PRODUCT SHOWCASE: FULL DESKTOP + PHONE CONTINUITY -->
+    <!-- HERO PRODUCT SHOWCASE: ACCURATE BAKEN DESKTOP WINDOW -->
     <div class="container">
       <div class="showcase-stage dark-surface">
         <PixelStageShader />
         <div class="app-window">
           <div class="win-titlebar">
             <div class="win-left">
-              <BakenMark uid="win-top" size={18} state="idle" tight />
-              <span class="win-tab active-tab">Meridian</span>
-              <span class="win-tab">Builder</span>
-              <span class="win-tab">Planner</span>
-              <span class="win-tab">+</span>
+              <span class="win-toggle" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18"/></svg>
+              </span>
+              <span class="win-tab active-tab">
+                <strong>Store domain &amp; launch</strong>
+                <span class="win-tab-agent">Meridian</span>
+                <span class="win-tab-x" aria-hidden="true">×</span>
+              </span>
+              <span class="win-tab-add" aria-hidden="true">+</span>
             </div>
-            <div class="win-search">Search agents, tasks, and memory…</div>
-            <div class="win-dots" aria-hidden="true">
-              <span></span><span></span><span></span>
+            <div class="win-right">
+              <div class="win-search">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span>Search agents, conversations, memory…</span>
+              </div>
+              <div class="win-controls" aria-hidden="true">
+                <span>−</span><span>□</span><span>×</span>
+              </div>
             </div>
           </div>
 
           <div class="win-body">
             <aside class="win-rail" aria-label="Agent rail">
+              <div class="rail-brand">
+                <BakenMark uid="win-rail-mark" size={20} state="idle" tight />
+              </div>
               <div class="rail-icon rail-selected" title="Meridian">
-                <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
-                  <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
-                  <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(-8)" />
-                  <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-                </svg>
+                <RiveMascot size={30} shape="blob" color="#1E7BF0" state="idle" title="Meridian" />
               </div>
               <div class="rail-icon" title="Builder">
-                <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
-                  <path d={MASCOT_BODIES.triangle} fill="#FF6A1A" />
-                  <rect x="-58" y="-44" width="116" height="116" rx="28" fill="#F7F7F7" />
-                  <g class="m-gaze" transform="translate(0,14)"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-                </svg>
+                <RiveMascot size={30} shape="triangle" color="#FF6A1A" state="working" title="Builder" />
               </div>
               <div class="rail-icon" title="Planner">
-                <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
-                  <path d={MASCOT_BODIES.squircle} fill="#1DA34A" />
-                  <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(4)" />
-                  <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-                </svg>
+                <RiveMascot size={30} shape="roundedSquare" color="#1DA34A" state="idle" title="Planner" />
               </div>
               <div class="rail-icon" title="Archivist">
-                <svg width="28" height="28" viewBox="-185 -185 370 370" aria-hidden="true">
-                  <path d={MASCOT_BODIES.circle} fill="#E5484D" />
-                  <rect x="-66" y="-66" width="132" height="132" rx="30" fill="#F7F7F7" transform="rotate(-5)" />
-                  <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-                </svg>
+                <RiveMascot size={30} shape="circle" color="#E5484D" state="idle" title="Archivist" />
               </div>
+              <div class="rail-spacer"></div>
+              <div class="rail-add" aria-hidden="true">+</div>
             </aside>
 
             <aside class="win-sidebar">
               <div class="agent-hero">
-                <div class="mascot-wrap">
-                  <svg width="64" height="64" viewBox="-190 -190 380 380" aria-hidden="true">
-                    <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
-                    <g transform="rotate(-8)">
-                      <rect x="-56" y="-56" width="112" height="112" rx="26" fill="#F7F7F7" />
-                      <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.idle} /></g>
-                    </g>
-                  </svg>
-                </div>
+                <RiveMascot size={74} shape="blob" color="#1E7BF0" state="idle" title="Meridian — poke to react" />
                 <strong>Meridian</strong>
-                <span class="agent-sub">Running on your computer</span>
+              </div>
+
+              <div class="ctx-card">
+                <div class="ctx-model">
+                  <span>Your chosen model</span>
+                  <span aria-hidden="true">▾</span>
+                </div>
+                <div class="ctx-bar"><span style="width:20%"></span></div>
+                <div class="ctx-meta">20% of context used</div>
               </div>
 
               <div class="side-nav">
-                <div class="side-item">Memory</div>
-                <div class="side-item">Routines</div>
-                <div class="side-item">Skills</div>
+                <div class="side-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 2.5"/></svg>
+                  <span>Memory</span>
+                </div>
+                <div class="side-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                  <span>Schedules</span>
+                </div>
+                <div class="side-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.3 11 15.7 7M8.3 13l7.4 4"/></svg>
+                  <span>Channels</span>
+                </div>
+                <div class="side-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  <span>Skills</span>
+                </div>
+                <div class="side-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  <span>New chat</span>
+                </div>
               </div>
 
               <div class="side-threads">
-                <span class="side-label">Active work</span>
-                <div class="thread active-thread">Store domain &amp; launch</div>
-                <div class="thread">Living room TV setup</div>
-                <div class="thread">Monthly budget check</div>
+                <div class="side-filter" aria-hidden="true">
+                  <span class="sf-active">Active</span>
+                  <span>Archived</span>
+                  <span>All</span>
+                </div>
+                <div class="thread active-thread">
+                  <span class="t-name">Store domain &amp; launch</span>
+                  <span class="t-age">30m</span>
+                </div>
+                <div class="thread">
+                  <span class="t-name">Living room TV setup</span>
+                  <span class="t-age">11h</span>
+                </div>
+                <div class="thread">
+                  <span class="t-name">Monthly budget check</span>
+                  <span class="t-age">20h</span>
+                </div>
               </div>
             </aside>
 
             <div class="win-chat">
               <div class="chat-feed">
                 <div class="msg-user">
-                  Point the new shop domain at the storefront, set up a support@ address, and make sure my personal email isn't on any public page.
-                </div>
-
-                <div class="tool-fold">
-                  <span class="fold-dot"></span>
-                  Worked · configured DNS, email routing &amp; verified 4 pages · 18s
+                  <span class="msg-who">You</span>
+                  <p>Point the new shop domain at the storefront, set up a support@ address, and make sure my personal email isn't on any public page.</p>
                 </div>
 
                 <div class="msg-agent">
@@ -161,14 +171,38 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
                     <li><strong>northwindgoods.com</strong> is the primary domain with SSL active.</li>
                     <li><strong>support@northwindgoods.com</strong> is live and verified; your personal address appears <strong>0</strong> times on the site.</li>
                   </ul>
+                  <span class="msg-time">10:42 AM</span>
                 </div>
               </div>
 
-              <div class="win-composer">
-                <span>Ask for the next thing — composer stays open while tasks run…</span>
-                <div class="comp-right">
-                  <span class="comp-sync">Synced to phone</span>
-                  <span class="comp-send" aria-hidden="true">↑</span>
+              <div class="composer-stack">
+                <div class="task-chip-row">
+                  <span class="task-chip">
+                    <span class="fold-dot"></span>
+                    Verified 4 live pages · 18s
+                    <span class="task-chip-x" aria-hidden="true">×</span>
+                  </span>
+                </div>
+
+                <div class="win-composer">
+                  <div class="comp-input">Ask for the next thing — composer stays open while tasks run…</div>
+                  <div class="comp-bar">
+                    <div class="comp-left">
+                      <span class="comp-ico" aria-hidden="true">+</span>
+                      <span class="comp-model-pill">Local or Cloud · Medium ▾</span>
+                    </div>
+                    <div class="comp-right">
+                      <span class="comp-wave" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i>
+                      </span>
+                      <span class="comp-send" aria-hidden="true">↑</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="composer-foot">
+                  <span>✓ Approve routine steps</span>
+                  <span>Context 20%</span>
                 </div>
               </div>
             </div>
@@ -237,7 +271,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-run-row">
-              <BakenMark uid="b-run" size={24} state="loading" />
+              <RiveBakenMark size={30} state="loading" theme="dark" title="Baken loading state" />
               <div class="run-meta">
                 <strong>Scanning 45 repositories for leaked keys…</strong>
                 <span>Background worker · 3m elapsed · chat stays unlocked</span>
@@ -278,15 +312,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-voice-box">
-              <div class="mascot-wrap voice-halo">
-                <svg width="56" height="56" viewBox="-190 -190 380 380" aria-hidden="true">
-                  <path d={MASCOT_BODIES.blob} fill="#1E7BF0" />
-                  <g transform="rotate(-6)">
-                    <rect x="-56" y="-56" width="112" height="112" rx="26" fill="#F7F7F7" />
-                    <g class="m-gaze"><g class="eye-blink" set:html={GLYPHS.listening} /></g>
-                  </g>
-                </svg>
-              </div>
+              <RiveMascot size={62} shape="blob" color="#1E7BF0" state="speaking" talk={true} title="Meridian speaking" />
               <div class="v-bars" aria-hidden="true">
                 <span style="--h:36%"></span><span style="--h:82%"></span><span style="--h:54%"></span>
                 <span style="--h:95%"></span><span style="--h:60%"></span><span style="--h:78%"></span>
@@ -305,7 +331,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-pair-box">
-              <BakenMark uid="b-pair" size={38} state="connecting" />
+              <RiveBakenMark size={44} state="connecting" theme="dark" title="Baken connecting state — click to peer-lock" />
               <div class="pair-text">
                 <strong>Your phone ⇄ Home computer</strong>
                 <span>Direct encrypted tunnel · 0 cloud relays · instant resume</span>
@@ -440,8 +466,8 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     </div>
   </section>
 
-  <!-- 4. OWNERSHIP: FULL-BLEED ELASTIC STRINGS BOARD (Mistral-inspired) -->
-  <StringsCanvas />
+  <!-- 4. OWNERSHIP: FULL-BLEED WATERLINE & SEABED MOORING CROSS-SECTION -->
+  <MooringCanvas />
 
   <!-- 5. WHY THIS MATTERS + 3-STEP SETUP -->
   <section class="band" id="details">
@@ -563,7 +589,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   <section class="band band-rule closing-band">
     <div class="container hero-center">
       <div class="closing-mark-wrap">
-        <BakenMark uid="close" size={48} state="idle" />
+        <RiveBakenMark size={56} state="ambient" theme="auto" title="Baken — click to lock" />
       </div>
       <h2 class="closing-h2">Keep what you build together.</h2>
       <p class="hero-lead" style="margin-bottom:28px">
@@ -591,15 +617,11 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   .mascot-lineup {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 28px;
   }
   .m-chip {
     width: 52px; height: 52px;
-    border-radius: 15px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    box-shadow: var(--pill-shadow);
     display: grid;
     place-items: center;
   }
@@ -634,76 +656,151 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
   .app-window {
     position: relative;
     z-index: 1;
-    background: #0F0F12; color: #F4F4F6;
-    border-radius: 12px 12px 0 0; border: 1px solid rgba(255, 255, 255, 0.09); border-bottom: none;
+    background: #0E0E11; color: #F4F4F6;
+    border-radius: 12px 12px 0 0; border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: none;
     overflow: hidden; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
   }
   .win-titlebar {
-    height: 44px; padding: 0 16px; background: #0B0B0D;
+    height: 42px; padding: 0 14px; background: #0B0B0D;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     display: flex; align-items: center; justify-content: space-between; gap: 14px;
   }
-  .win-left { display: flex; align-items: center; gap: 10px; }
-  .win-tab { font-size: 12px; color: #7C7C86; padding: 4px 10px; border-radius: 6px; }
-  .win-tab.active-tab { background: rgba(255, 255, 255, 0.07); color: #F4F4F6; font-weight: 700; }
-  .win-search {
-    font-size: 12px; color: #6F6F78; background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.07); padding: 4px 14px; border-radius: 6px;
+  .win-left { display: flex; align-items: center; gap: 8px; }
+  .win-toggle {
+    width: 26px; height: 26px; border-radius: 6px;
+    display: grid; place-items: center; color: #8E8E98;
+    border: 1px solid rgba(255, 255, 255, 0.07);
   }
-  .win-dots { display: flex; gap: 7px; }
-  .win-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+  .win-tab {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #8E8E98; padding: 4px 10px; border-radius: 6px;
+  }
+  .win-tab.active-tab {
+    background: rgba(255, 255, 255, 0.07); color: #F4F4F6;
+  }
+  .win-tab.active-tab strong { font-weight: 600; font-style: italic; }
+  .win-tab-agent { font-size: 11px; color: #8E8E98; }
+  .win-tab-x { font-size: 13px; color: #6E6E78; }
+  .win-tab-add { font-size: 15px; color: #8E8E98; padding: 0 4px; }
+  .win-right { display: flex; align-items: center; gap: 16px; }
+  .win-search {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; color: #7C7C86;
+  }
+  .win-controls {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 13px; color: #7C7C86; line-height: 1;
+  }
 
-  .win-body { display: grid; grid-template-columns: 56px 210px 1fr; min-height: 390px; }
+  .win-body { display: grid; grid-template-columns: 50px 228px 1fr; min-height: 440px; }
   .win-rail {
     background: #0B0B0D; border-right: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 9px;
+  }
+  .rail-brand {
+    width: 34px; height: 34px; display: grid; place-items: center; margin-bottom: 2px;
   }
   .rail-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; }
-  .rail-icon.rail-selected { background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
-  .win-sidebar {
-    background: #0E0E11; border-right: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 20px 14px; display: flex; flex-direction: column; gap: 18px;
-  }
-  .agent-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
-  .agent-hero strong { font-size: 15px; }
-  .agent-sub { font-size: 11.5px; color: #7C7C86; }
-  .side-nav { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #9A9AA4; }
-  .side-item { padding: 6px 8px; border-radius: 6px; }
-  .side-threads { display: flex; flex-direction: column; gap: 4px; }
-  .side-label { font-size: 11px; color: #686872; padding: 0 8px 4px; }
-  .thread { font-size: 12.5px; color: #8A8A94; padding: 6px 8px; border-radius: 6px; }
-  .thread.active-thread { background: rgba(255, 255, 255, 0.07); color: #F4F4F6; }
+  .rail-icon.rail-selected { background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16); }
+  .rail-spacer { flex: 1; }
+  .rail-add { font-size: 18px; color: #7C7C86; line-height: 1; padding-bottom: 2px; }
 
-  .win-chat { padding: 24px 28px 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; background: #101013; }
+  .win-sidebar {
+    background: #0D0D10; border-right: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 16px 14px; display: flex; flex-direction: column; gap: 13px;
+  }
+  .agent-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; }
+  .agent-hero strong { font-size: 14.5px; letter-spacing: -0.015em; }
+  .ctx-card {
+    background: #16161B; border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 9px; padding: 9px 11px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .ctx-model {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11.5px; color: #E2E2E8; font-weight: 600;
+  }
+  .ctx-bar {
+    height: 3px; width: 100%; border-radius: 999px; background: rgba(255, 255, 255, 0.1); overflow: hidden;
+  }
+  .ctx-bar span { display: block; height: 100%; background: #EE5A3F; border-radius: 999px; }
+  .ctx-meta { font-size: 10.5px; color: #7C7C86; }
+
+  .side-nav { display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; color: #9A9AA4; }
+  .side-item { display: flex; align-items: center; gap: 9px; padding: 5px 8px; border-radius: 6px; }
+  .side-threads { display: flex; flex-direction: column; gap: 4px; margin-top: 2px; }
+  .side-filter {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-bottom: 4px;
+    font-size: 11px; text-align: center; color: #7C7C86;
+  }
+  .side-filter span {
+    padding: 4px 6px; border-radius: 6px; background: #141418;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .side-filter .sf-active { background: #222229; color: #F4F4F6; border-color: rgba(255, 255, 255, 0.14); }
+  .thread {
+    display: flex; align-items: center; justify-content: space-between; gap: 6px;
+    font-size: 12px; color: #8A8A94; padding: 6px 8px; border-radius: 7px;
+  }
+  .t-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .t-age { font-size: 10.5px; color: #686872; flex-shrink: 0; }
+  .thread.active-thread { background: #1B1B22; color: #F4F4F6; border: 1px solid rgba(255, 255, 255, 0.07); }
+
+  .win-chat { padding: 20px 26px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; background: #0F0F12; }
   .chat-feed { display: flex; flex-direction: column; gap: 16px; }
   .msg-user {
-    align-self: flex-end; background: #1E1E24; color: #F4F4F6;
+    align-self: flex-end; background: #1A1A20; color: #F4F4F6;
     border: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 11px 16px; border-radius: 14px 14px 4px 14px; font-size: 14px; max-width: 78%;
+    padding: 10px 14px; border-radius: 12px; font-size: 13.5px; max-width: 72%;
   }
-  .tool-fold {
-    align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12.5px; color: #8E8E98; padding: 5px 11px; border-radius: 7px;
-    background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.08);
+  .msg-who { display: block; font-size: 10.5px; color: #7C7C86; margin-bottom: 3px; font-weight: 600; }
+  .msg-user p { margin: 0; }
+  .msg-agent { font-size: 14px; color: #E2E2E8; max-width: 60ch; }
+  .msg-agent p { margin: 0 0 10px; }
+  .msg-agent ul { margin: 0 0 8px; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #B8B8C2; }
+  .msg-agent strong { color: #FFFFFF; }
+  .msg-time { display: block; font-size: 10.5px; color: #686872; }
+
+  .composer-stack { display: flex; flex-direction: column; gap: 7px; }
+  .task-chip-row { display: flex; align-items: center; gap: 6px; }
+  .task-chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11.5px; color: #A0A0AA; padding: 4px 10px; border-radius: 7px;
+    background: #17171C; border: 1px solid rgba(255, 255, 255, 0.08);
   }
   .fold-dot { width: 6px; height: 6px; border-radius: 50%; background: #EE5A3F; }
-  .msg-agent { font-size: 14.5px; color: #E2E2E8; max-width: 60ch; }
-  .msg-agent p { margin: 0 0 10px; }
-  .msg-agent ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #B4B4BE; }
-  .msg-agent strong { color: #FFFFFF; }
+  .task-chip-x { color: #6E6E78; font-size: 12px; margin-left: 2px; }
+
   .win-composer {
-    display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 10px 16px;
-    border-radius: 12px; background: #141418;
-    border: 1px solid rgba(238, 90, 63, 0.65);
+    display: flex; flex-direction: column; gap: 12px; padding: 12px 14px 10px;
+    border-radius: 12px; background: #131317;
+    border: 1.5px solid rgba(238, 90, 63, 0.85);
     box-shadow: 0 0 0 1px rgba(238, 90, 63, 0.14);
-    font-size: 13.5px; color: #7C7C86;
   }
-  .comp-right { display: flex; align-items: center; gap: 10px; font-size: 12px; }
-  .comp-sync { color: #8E8E98; }
+  .comp-input { font-size: 13.5px; color: #C2C2CC; }
+  .comp-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .comp-left { display: flex; align-items: center; gap: 10px; }
+  .comp-ico { font-size: 16px; color: #8E8E98; line-height: 1; }
+  .comp-model-pill {
+    font-size: 11.5px; color: #A0A0AA; padding: 4px 10px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .comp-right { display: flex; align-items: center; gap: 12px; }
+  .comp-wave {
+    display: inline-flex; align-items: center; gap: 2.5px; height: 14px;
+  }
+  .comp-wave i { display: block; width: 2px; border-radius: 2px; background: #A0A0AA; }
+  .comp-wave i:nth-child(1) { height: 6px; }
+  .comp-wave i:nth-child(2) { height: 12px; }
+  .comp-wave i:nth-child(3) { height: 9px; }
+  .comp-wave i:nth-child(4) { height: 5px; }
   .comp-send {
-    width: 28px; height: 28px; border-radius: 50%;
+    width: 30px; height: 30px; border-radius: 50%;
     background: #EE5A3F; color: #FFFFFF;
-    display: grid; place-items: center; font-size: 14px; font-weight: 700; line-height: 1;
+    display: grid; place-items: center; font-size: 15px; font-weight: 700; line-height: 1;
+  }
+  .composer-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: #7C7C86; padding: 0 4px;
   }
 
   /* 2. Bento Capability Grid — neutral obsidian/white surfaces, surgical color only in semantic signals */
@@ -979,7 +1076,7 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
     });
   });
 
-  // Mascot pointer gaze + bottom Wadden Sea Transit Sightline
+  // Bottom Wadden Sea Transit Sightline
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const rear = document.getElementById('rearStone');
     const front = document.getElementById('frontStone');
@@ -989,11 +1086,6 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
 
     window.addEventListener('pointermove', (e) => {
       const nx = (e.clientX / window.innerWidth) * 2 - 1;
-      const ny = (e.clientY / window.innerHeight) * 2 - 1;
-
-      document.querySelectorAll('.m-gaze').forEach((g) => {
-        g.setAttribute('transform', `translate(${(nx * 12).toFixed(1)}, ${(ny * 9).toFixed(1)})`);
-      });
 
       if (rear && front && ray && glow && readout) {
         const rearDx = nx * 6;
@@ -1013,4 +1105,9 @@ import { LINKS, MASCOT_BODIES, GLYPHS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib
       }
     });
   }
+</script>
+
+<script>
+  import { initRiveHost } from '../lib/rive-host';
+  initRiveHost();
 </script>

@@ -1,0 +1,38 @@
+---
+interface Props {
+  size?: number;
+  state?: 'idle' | 'loading' | 'connecting' | 'degraded' | 'ambient';
+  theme?: 'auto' | 'dark' | 'light' | 'monoDark' | 'monoLight';
+  boot?: boolean;
+  title?: string;
+}
+
+const {
+  size = 44,
+  state = 'idle',
+  theme = 'auto',
+  boot = false,
+  title = 'Baken mark',
+} = Astro.props;
+---
+
+<canvas
+  class="rive-mark-canvas"
+  width={size * 2}
+  height={size * 2}
+  style={`width:${size}px;height:${size}px;`}
+  data-rive-mark
+  data-state={state}
+  data-theme={theme}
+  data-boot={String(boot)}
+  aria-label={title}
+  title={title}
+></canvas>
+
+<style>
+  .rive-mark-canvas {
+    display: block;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+</style>
