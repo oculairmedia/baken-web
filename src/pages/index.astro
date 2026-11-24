@@ -31,10 +31,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </div>
       </div>
 
-      <h1>AI agents you can give<br />real work to.</h1>
+      <h1>Agents that run on<br />your own machine.</h1>
 
       <p class="hero-lead">
-        Baken gives you a team of agents that live on your own computer, remember everything you teach them, and come with you on your phone. Hand them a task, close the lid, and come back to finished work.
+        Baken is a client for persistent AI agents. Each agent runs on a Linux or Windows machine you control, keeps its memory as plain files on that machine, and pairs directly with your Android phone. You run the host; Baken connects to it.
       </p>
 
       <div class="hero-cta-row">
@@ -216,16 +216,16 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   <section class="band" id="capabilities">
     <div class="container">
       <div class="band-head">
-        <h2>Everything you want in a companion.<br />And a teammate.</h2>
-        <p>Every card below is a real surface in Baken — built to take work off your plate and remember how you like things done.</p>
+        <h2>What a Baken agent does.</h2>
+        <p>Each example below is taken from the app. The agent, its memory and its tools are the same on every device.</p>
       </div>
 
       <div class="bento-grid">
         <!-- Card 1: Remembers what you teach it -->
         <article class="bento-card" data-tone="vermilion">
           <div class="bento-copy">
-            <h3>Gets smarter every week you use it.</h3>
-            <p>Tell your agent a preference or a rule once. It writes it to its own memory on your machine and follows it from then on — no repeating yourself every session.</p>
+            <h3>It remembers what you tell it.</h3>
+            <p>The agent's memory is a set of plain text files on your host. When you state a preference or a rule, it writes it there and applies it in later sessions. You can open and edit those files directly.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-msg-u">Never put my personal Gmail on any public store page.</div>
@@ -240,11 +240,28 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
           </div>
         </article>
 
+        <!-- Card 6: Phone + Desktop paired directly -->
+        <article class="bento-card" data-tone="teal">
+          <div class="bento-copy">
+            <h3>Your phone connects straight to it.</h3>
+            <p>Pair your phone by scanning a QR code. The connection is encrypted end to end and goes direct when it can. When a direct path fails it falls back to a relay, which cannot read the traffic. We run no Baken server.</p>
+          </div>
+          <div class="bento-ui dark-surface">
+            <div class="ui-pair-box">
+              <RiveBakenMark size={44} state="connecting" theme="dark" title="Baken connecting state — click to peer-lock" />
+              <div class="pair-text">
+                <strong>Your phone ⇄ Home computer</strong>
+                <span>End-to-end encrypted · direct when possible</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
         <!-- Card 2: Every agent has its own computer (yours) -->
         <article class="bento-card" data-tone="emerald">
           <div class="bento-copy">
-            <h3>Works directly on your computer.</h3>
-            <p>Your agents use your real files, terminal, browser, and local apps. You stay in control — auto-approve routine steps or have it ask before touching anything sensitive.</p>
+            <h3>It works on your computer.</h3>
+            <p>Agents use the host's files, terminal, browser and local apps. Each session runs in one of four permission modes: standard, accept edits, strict, or unrestricted.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-term-head">
@@ -266,8 +283,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Card 3: Keeps working when you walk away (Fork & Relay) -->
         <article class="bento-card" data-tone="amber">
           <div class="bento-copy">
-            <h3>Keeps working while you walk away.</h3>
-            <p>Hand off a 20-minute job and keep chatting, or lock your phone and leave. Background workers finish the heavy lifting and bring the result back into the conversation.</p>
+            <h3>It keeps working when you leave.</h3>
+            <p>Long tasks run in the background on the host, so the conversation stays usable. Running tasks show on both your phone and desktop.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-run-row">
@@ -287,8 +304,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Card 4: Agents work with each other -->
         <article class="bento-card" data-tone="cobalt">
           <div class="bento-copy">
-            <h3>Agents delegate to each other.</h3>
-            <p>Your main companion stays fast and conversational while delegating code, reviews, or research to specialized workers — and you see every handoff in one place.</p>
+            <h3>Agents hand work to each other.</h3>
+            <p>Agents on the same host can pass tasks to each other, for example from a general agent to a coding agent. Each handoff appears in the conversation.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-handoff">
@@ -307,8 +324,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Card 5: Hands-free voice -->
         <article class="bento-card" data-tone="voice">
           <div class="bento-copy">
-            <h3>Talk to it out loud, hands-free.</h3>
-            <p>Start a voice session from your phone or desktop. Speech is recognized locally and your agent answers out loud sentence by sentence from your own GPU or model.</p>
+            <h3>You can talk to it.</h3>
+            <p>Voice mode works on phone and desktop. Speech recognition runs on a speech server you configure on the host, and each agent can have its own voice.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-voice-box">
@@ -322,23 +339,6 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
             </div>
           </div>
         </article>
-
-        <!-- Card 6: Phone + Desktop paired directly -->
-        <article class="bento-card" data-tone="teal">
-          <div class="bento-copy">
-            <h3>Your computer's power, in your pocket.</h3>
-            <p>Scan one code to pair your Android phone straight to your computer. Every agent, file, and conversation is there instantly — encrypted end to end with zero cloud middleman.</p>
-          </div>
-          <div class="bento-ui dark-surface">
-            <div class="ui-pair-box">
-              <RiveBakenMark size={44} state="connecting" theme="dark" title="Baken connecting state — click to peer-lock" />
-              <div class="pair-text">
-                <strong>Your phone ⇄ Home computer</strong>
-                <span>Direct encrypted tunnel · 0 cloud relays · instant resume</span>
-              </div>
-            </div>
-          </div>
-        </article>
       </div>
     </div>
   </section>
@@ -347,8 +347,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   <section class="band band-rule band-tinted" id="jobs">
     <div class="container">
       <div class="band-head">
-        <h2>Give each agent a job.</h2>
-        <p>Run one personal companion for your day-to-day life, and spin up focused specialists for your code, your homelab, your store, or your research.</p>
+        <h2>One person's setup.</h2>
+        <p>These are real examples from the developer who builds Baken. Each agent is a general agent given access to specific tools on his host. Baken doesn't ship these as features; they show what one agent with memory and tool access can be set up to do.</p>
       </div>
 
       <div class="jobs-pills" id="jobPills" role="tablist" aria-label="Agent roles">
@@ -364,8 +364,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Job 1: Daily Companion -->
         <div class="job-panel active" data-panel="companion">
           <div class="job-desc">
-            <h3>Remembers the thread of your life across months.</h3>
-            <p>Knows your family, your schedule, what you're building, and how you like to be talked to. Points at your real life — shipping your work, resting on time — never at fake app-open streaks.</p>
+            <h3>A general companion agent.</h3>
+            <p>Over months, the agent builds up context about your projects, your schedule and how you like to work. That memory stays on your machine and carries across every device.</p>
             <ul>
               <li>Picks up threads you paused weeks ago without re-explaining</li>
               <li>Reaches you across desktop, phone, voice, or chat rooms</li>
@@ -381,12 +381,12 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Job 2: Code & PRs -->
         <div class="job-panel" data-panel="coding">
           <div class="job-desc">
-            <h3>Takes a bug from diagnosis to a verified PR.</h3>
-            <p>Works in isolated git worktrees, runs the build and test suite, inspects failure logs bottom-up, and watches CI until the branch is genuinely ready to merge.</p>
+            <h3>A coding agent with repository access.</h3>
+            <p>Works in an isolated git worktree, runs the build and tests, reads failure logs, and watches CI until the branch is ready to merge.</p>
             <ul>
               <li>Spawns fresh coding workers while staying in chat with you</li>
               <li>Simulates merges to catch conflicts before you click</li>
-              <li>Verifies real artifacts on disk, never claims "done" on faith</li>
+              <li>Checks the result on disk before reporting it done</li>
             </ul>
           </div>
           <div class="job-chat">
@@ -398,8 +398,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Job 3: Home & Media -->
         <div class="job-panel" data-panel="homelab">
           <div class="job-desc">
-            <h3>Runs your home servers, TV, and smart home.</h3>
-            <p>Works with your home server, smart home, and TV. Figures out why a stream keeps buffering, frees up space before a disk fills, or puts on a movie from chat.</p>
+            <h3>An agent wired to a home server and TV.</h3>
+            <p>Connects to your home server, smart home and TV. It can diagnose a buffering stream, clear space before a disk fills, or start a movie from chat.</p>
             <ul>
               <li>Controls lights, speakers, and Google TV directly</li>
               <li>Watches container health and disk pressure before things crash</li>
@@ -415,8 +415,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Job 4: Store & Ops -->
         <div class="job-panel" data-panel="store">
           <div class="job-desc">
-            <h3>Launch pages, domains, print files, and store ops.</h3>
-            <p>Registers and wires Cloudflare DNS, sets up email routing, audits public pages for personal data leaks, generates print-ready vector artwork, and wires self-hosted analytics.</p>
+            <h3>An agent running a small online store.</h3>
+            <p>Configures DNS and email routing, checks public pages for personal data, produces print-ready artwork, and sets up self-hosted analytics.</p>
             <ul>
               <li>Sets up domains, DNS, and storefront settings end to end</li>
               <li>Generates exact 300 DPI print files and SVG brand kits</li>
@@ -432,8 +432,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Job 5: Finances & Admin -->
         <div class="job-panel" data-panel="finances">
           <div class="job-desc">
-            <h3>Keeps your household numbers and inbox clean.</h3>
-            <p>Bridges bank imports into your self-hosted finance tracker, categorizes transactions with your household rules, and sweeps thousands of promo emails out of your inbox with a review brake before mutating.</p>
+            <h3>An agent with a finance tracker and inbox.</h3>
+            <p>Imports bank data into a self-hosted finance tracker, categorises transactions with your rules, and clears promotional email after you approve the list.</p>
             <ul>
               <li>Works with your own finance tracker, invoicing, and email</li>
               <li>Proposes bulk changes with exact counts before touching data</li>
@@ -449,8 +449,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <!-- Job 6: Deep Research -->
         <div class="job-panel" data-panel="research">
           <div class="job-desc">
-            <h3>Digs through primary sources and writes it down.</h3>
-            <p>Searches through your self-hosted SearXNG, crawls documentation, cross-checks claims against primary PDFs or commit history, and saves structured reference notes into your knowledge base.</p>
+            <h3>A research agent with search access.</h3>
+            <p>Searches the web and your documentation, checks claims against primary sources, and saves sourced notes to your knowledge base.</p>
             <ul>
               <li>Verifies every quote and page number against the real source</li>
               <li>Writes durable notes to BookStack or your git memory repo</li>
@@ -473,26 +473,26 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   <section class="band" id="details">
     <div class="container">
       <div class="band-head">
-        <h2>Built so it can't be taken<br />away from you tomorrow.</h2>
-        <p>When an AI lives in a company's cloud, they decide what it's allowed to remember, how much it costs next month, and when to shut it down. Baken keeps the relationship on your side.</p>
+        <h2>Your agent outlives any one provider.</h2>
+        <p>Most AI products store your agent's memory on their servers. Baken stores it on yours, so a pricing change, a policy change or a retired model does not take your agent with it.</p>
       </div>
 
       <div class="clean-grid">
         <div class="clean-item">
-          <h3>Plain files you actually own.</h3>
-          <p>Everything your companion learns — your projects, the people in your life, what you decided three months ago — is saved as plain, readable files on your own computer. Open them, edit them, or back them up anytime.</p>
+          <h3>Memory is plain files.</h3>
+          <p>Everything the agent learns is saved as readable text files on your computer. You can open, edit, version or back them up like any other files.</p>
         </div>
         <div class="clean-item">
-          <h3>Change the brain, keep the companion.</h3>
-          <p>New models come out every month. Because your companion's memory and personality live on your machine, you can swap the underlying AI model whenever you want without starting over from a blank slate.</p>
+          <h3>Models are swappable.</h3>
+          <p>Because memory lives outside the model, you can switch to a different model at any time. The agent keeps its history and behaviour.</p>
         </div>
         <div class="clean-item">
-          <h3>Up and running in three steps.</h3>
-          <p><strong>1.</strong> Run Baken on your Windows or Linux computer. <strong>2.</strong> Install the free Android or Desktop app. <strong>3.</strong> Scan the code on your screen to lock them directly together — no account, no middleman server.</p>
+          <h3>You run the host.</h3>
+          <p>Baken needs a host machine running letta-code and the Baken wrapper, set up as a service on Linux or Windows. Then install the Android or desktop app and scan the pairing code. No account is required. There is no macOS or iOS build yet.</p>
         </div>
         <div class="clean-item">
-          <h3>Points at your life, not at the app.</h3>
-          <p>No fake streaks for opening the app, no subscription traps, and no guilt notifications. Baken is built to help you ship your work, run your home, and close the app when you're done.</p>
+          <h3>No engagement tricks.</h3>
+          <p>There are no streaks, no subscription and no re-engagement notifications. The app is a client for your agent, not a place to spend time.</p>
         </div>
       </div>
     </div>
@@ -508,23 +508,23 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
       <div class="faq-list">
         <details open>
           <summary>What happens if Baken stops being updated tomorrow?</summary>
-          <p>Your companion keeps working. The app is open source, it runs on your own machine without calling any server we own, and all of your companion's memory sits in plain text files on your hard drive.</p>
+          <p>Your agent keeps working. The source is public, it runs without contacting any server we operate, and its memory is in plain text files on your disk.</p>
         </details>
         <details>
           <summary>Is Baken free?</summary>
-          <p>Yes. Baken is free and open source. If you run local models on your own computer, it costs nothing to run. If you connect a cloud model, you only pay that provider for what you use.</p>
+          <p>Yes. Baken is free, and the source is public. Local models cost nothing to run. If you use a cloud model, you pay that provider directly.</p>
         </details>
         <details>
           <summary>Do I need my own computer?</summary>
-          <p>Yes. Your companion lives on a computer or home server you control so that your memory, files, and tools stay in your hands. The phone app connects straight to that computer.</p>
+          <p>Yes. The agent runs on a computer or server you control, and the phone app connects to it. This is what keeps memory and files on your hardware.</p>
         </details>
         <details>
           <summary>What happens when I switch to a newer AI model?</summary>
-          <p>Your companion stays the same. Its memory, history, and habits aren't locked inside OpenAI, Anthropic, or Google — they stay on your machine, and the new model picks right up where the last one left off.</p>
+          <p>Nothing is lost. Memory and conversation history are stored on your machine, not inside any model provider, so the new model continues from the same state.</p>
         </details>
         <details>
           <summary>Who can see my conversations?</summary>
-          <p>Only you. There is no Baken account and no central cloud database. Your phone and your computer talk directly to each other with a key only the two of them share.</p>
+          <p>There is no Baken account and no central database. Your phone and computer connect directly, using a key that only those two devices hold. If you use a cloud model, that provider sees the requests you send it.</p>
         </details>
       </div>
     </div>
@@ -538,13 +538,13 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <div class="origin-copy">
           <h2>Why it's called Baken.</h2>
           <p>
-            For four hundred years along the Dutch Wadden Sea, the sandbanks shifted with every tide. A chart drawn in spring could ground a ship by autumn. So islanders on Texel, Vlieland, and Terschelling built <em>bakens</em> — fixed landmarks of stone, iron, and timber set into the dunes.
+            The sandbanks of the Dutch Wadden Sea move with every tide, so a chart drawn in spring could be wrong by autumn. To navigate it, islanders on Texel, Vlieland and Terschelling built <em>bakens</em>: fixed landmarks of stone, iron and timber set into the dunes.
           </p>
           <p>
-            They worked in pairs. When a sailor lined up the smaller front mark against the tall rear mark on the shore — a sightline called a <em>kenning</em> — they knew they were in the safe channel, no matter how the water moved beneath them.
+            Bakens were built in pairs. A sailor who lined up the front mark with the taller rear mark, a sightline called a <em>kenning</em>, was in the safe channel regardless of where the sand had moved.
           </p>
           <p>
-            AI shifts the same way today: providers change their rules, raise prices, or retire the model you relied on overnight. Baken is the fixed mark you own. The rear stone is your computer, holding years of memory; the front stone is your phone, aligned with it wherever you go.
+            Models and providers change in a similar way. Baken is meant to be the fixed reference: your computer holds the agent's memory, and your phone stays aligned with it wherever you are.
           </p>
         </div>
 
@@ -595,9 +595,9 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
       <div class="closing-mark-wrap">
         <RiveBakenMark size={56} state="ambient" theme="auto" title="Baken — click to lock" />
       </div>
-      <h2 class="closing-h2">Keep what you build together.</h2>
+      <h2 class="closing-h2">Get Baken.</h2>
       <p class="hero-lead" style="margin-bottom:28px">
-        Free and open source on Android, Windows, and Linux. No account, no lock-in.
+        Free for Android, Windows and Linux. Source available. No account required.
       </p>
       <div class="hero-cta-row">
         <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-footer">

@@ -1,0 +1,46 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { LINKS } from '../lib/brand';
+---
+
+<LegalLayout title="Security" description="How to report a security vulnerability in Baken, and how Baken protects your connection.">
+  <h2>Reporting a vulnerability</h2>
+  <p>
+    If you find a security issue in the Baken apps, the host wrapper, or baken.ca, please report it privately so we can fix
+    it before it is disclosed.
+  </p>
+  <p>
+    Report it through <a href={LINKS.securityAdvisory}>GitHub private vulnerability reporting</a> on the letta-mobile
+    repository. Please do not open a public issue for security problems.
+  </p>
+  <p>Helpful details to include:</p>
+  <ul>
+    <li>The affected component and version (for example the app version from Settings, or the release tag).</li>
+    <li>Steps to reproduce, and what an attacker could achieve.</li>
+    <li>Whether the issue is already public.</li>
+  </ul>
+  <p>
+    We will acknowledge your report within 5 business days and keep you updated as we work on a fix. We ask that you give
+    us a reasonable time to release a fix before disclosing the issue publicly. We will credit you in the release notes
+    unless you prefer otherwise. We do not currently run a paid bug bounty.
+  </p>
+
+  <h2>Scope</h2>
+  <ul>
+    <li>The Baken Android, Windows and Linux apps.</li>
+    <li>The host wrapper and the pairing flow.</li>
+    <li>The baken.ca website.</li>
+  </ul>
+  <p>
+    Issues in third-party components (for example letta-code, Iroh, or a model provider) should also be reported to their
+    maintainers. Tell us too if they affect Baken.
+  </p>
+
+  <h2>How Baken protects your connection</h2>
+  <ul>
+    <li>Your phone or desktop pairs with your host by scanning a QR code, which establishes a mutually authenticated connection between those two devices.</li>
+    <li>Traffic is encrypted end to end over Iroh. It goes direct when possible and falls back to a relay only when needed; relays cannot read the content.</li>
+    <li>There is no Baken account and no Baken server, so there is no central store of conversations to breach.</li>
+    <li>Agents run on your host within a permission mode you choose: standard, accept edits, strict, or unrestricted.</li>
+  </ul>
+</LegalLayout>

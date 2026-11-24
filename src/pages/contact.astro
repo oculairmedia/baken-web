@@ -1,0 +1,30 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { LEGAL, LINKS, SOCIALS } from '../lib/brand';
+const live = SOCIALS.filter((s) => s.href);
+---
+
+<LegalLayout title="Contact" description="How to reach the people behind Baken.">
+  <p>
+    Baken is made by {LEGAL.operator}, {LEGAL.location}.
+  </p>
+
+  <table>
+    <thead><tr><th>For</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Bugs and feature requests</td><td><a href={`${LINKS.appRepo}/issues`}>GitHub issues</a></td></tr>
+      <tr><td>Security vulnerabilities</td><td><a href="/security">Report privately</a>, not in a public issue</td></tr>
+      <tr><td>Privacy requests</td><td>{LEGAL.contactEmail ? <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a> : 'Email address coming soon'}</td></tr>
+      <tr><td>Press, partnerships, everything else</td><td>{LEGAL.contactEmail ? <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a> : 'Email address coming soon'}</td></tr>
+    </tbody>
+  </table>
+
+  {live.length > 0 && (
+    <>
+      <h2>Elsewhere</h2>
+      <ul>
+        {live.map((s) => <li><a href={s.href} rel="me noreferrer" target="_blank">{s.label}</a></li>)}
+      </ul>
+    </>
+  )}
+</LegalLayout>

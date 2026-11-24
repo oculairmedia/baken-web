@@ -1,0 +1,99 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { LEGAL, LINKS } from '../lib/brand';
+const contact = LEGAL.contactEmail
+  ? `email ${LEGAL.contactEmail}`
+  : 'use the contact page';
+---
+
+<LegalLayout title="Privacy" description="What data Baken and baken.ca collect, where it goes, and what stays on your own machine.">
+  <p>
+    Baken is built so that the data your agents work with stays on hardware you control. This page describes
+    exactly what the Baken apps and the baken.ca website collect, who processes it, and what you can do about it.
+    {LEGAL.operator} ("we") operates baken.ca and publishes the Baken apps. We are based in {LEGAL.location}.
+  </p>
+
+  <h2>The short version</h2>
+  <ul>
+    <li>There is no Baken account and no Baken server holding your conversations, memory or files.</li>
+    <li>Your agent's memory and history live on the host machine you run.</li>
+    <li>The release builds of the apps contain no crash reporting or analytics.</li>
+    <li>baken.ca uses self-hosted, cookie-free analytics to count visits.</li>
+    <li>If you connect a cloud model, that provider receives what your agent sends it, under its own terms.</li>
+  </ul>
+
+  <h2>The Baken apps</h2>
+  <h3>Data that stays on your hardware</h3>
+  <p>
+    Conversations, agent memory, files, tool output and settings are stored on the host machine you run, and on your
+    paired phone or desktop as a local cache. We do not receive a copy. Agent memory is kept as plain text files on the
+    host, which you can read, edit, back up or delete directly.
+  </p>
+
+  <h3>How your devices connect</h3>
+  <p>
+    Your phone or desktop connects to your host over Iroh, a peer-to-peer protocol. The connection is encrypted end to
+    end with keys held only by your paired devices. It goes direct when it can. When a direct path is not available,
+    traffic passes through a public relay operated by n0, the maintainers of Iroh. A relay can see the IP addresses
+    involved and the volume and timing of traffic, but it cannot read the content. You can configure your host to use
+    your own relay or to disable relays.
+  </p>
+
+  <h3>Model providers</h3>
+  <p>
+    Baken can use local models or cloud models. With a local model, prompts and responses stay on your hardware. With a
+    cloud model (for example from OpenAI, Anthropic or Google), your agent sends prompts, context and tool results to that
+    provider, which processes them under its own privacy policy and terms. You choose and configure the provider; we have
+    no access to that traffic.
+  </p>
+
+  <h3>Telemetry and crash reports</h3>
+  <p>
+    The published release builds of the apps do not include crash reporting or usage analytics. The source contains
+    optional integrations for crash reporting (Sentry) and performance monitoring (Kotzilla) that are used only in
+    developer builds where a developer supplies their own configuration. Crash details are written to a file on your own
+    device so you can read or share them yourself; they are not sent anywhere.
+  </p>
+
+  <h3>Permissions</h3>
+  <p>
+    The Android app asks for the camera to scan pairing codes, the microphone for voice mode, and notifications for task
+    updates. Each is used only for that purpose, and you can deny or revoke any of them in system settings.
+  </p>
+
+  <h2>The baken.ca website</h2>
+  <h3>Analytics</h3>
+  <p>
+    baken.ca uses Umami, an open source analytics tool that we host ourselves. It records page views, the referring site,
+    browser and device type, country, and clicks on download buttons. It sets no cookies and does not build a profile of
+    you across sites. Visit data stays on our own server.
+  </p>
+
+  <h3>Hosting</h3>
+  <p>
+    The site is served by Cloudflare. As part of delivering and protecting the site, Cloudflare processes request data such
+    as your IP address and browser details, under its own privacy policy.
+  </p>
+
+  <h3>Links and downloads</h3>
+  <p>
+    Downloads and source code are hosted on GitHub. When you follow those links, GitHub's privacy policy applies.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    Most of your data never reaches us, so you control it directly on your own hardware. For the limited website data we
+    hold, you can ask what we have, ask us to correct or delete it, or object to its use. To make a request, {contact}.
+    We will respond within 30 days. If you are in Canada you may also contact the Office of the Privacy Commissioner of
+    Canada; if you are in the EU or UK, your local data protection authority.
+  </p>
+
+  <h2>Children</h2>
+  <p>Baken is not directed at children under 13, and we do not knowingly collect their data.</p>
+
+  <h2>Changes</h2>
+  <p>
+    If we change how data is handled, we will update this page and the date at the top. The source for this page is
+    public in the <a href={LINKS.webRepo}>baken-web repository</a>, so every change is visible in its history.
+  </p>
+</LegalLayout>

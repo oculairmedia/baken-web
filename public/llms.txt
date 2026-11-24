@@ -1,10 +1,10 @@
 # Baken (baken.ca)
 
-> Open-source, local-first client for stateful AI agents on Android, Windows, and Linux.
+> Source-available, local-first client for stateful AI agents on Android, Windows, and Linux.
 
 ## What Baken is
 - A native companion client (Android 8.0+, Windows x64, Linux x64 AppImage) that pairs directly with an agent host you control over end-to-end encrypted Iroh QUIC.
-- No account, no subscription, no hosted cloud relay. Models, git-tracked memory (MemFS), tools (MCP), and structured surfaces (A2UI) stay on hardware you own.
+- No account, no subscription, and no Baken-operated server. Phone-to-host traffic is end-to-end encrypted over Iroh, direct when possible, falling back to a relay that cannot read it. Models, git-tracked memory (MemFS), tools (MCP), and structured surfaces (A2UI) stay on hardware you own.
 - Built around a unified Rive presence system: the grounded basalt Baken mark carries app/connection state (`idle`, `boot`, `loading`, `connecting`, `degraded`, `ambient`, `success`), while per-agent Rive mascots carry turn activity (`listening`, `thinking`, `working`, `speaking`, `dreaming`, `sleeping`).
 
 ## Key links

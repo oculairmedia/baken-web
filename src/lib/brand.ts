@@ -2,6 +2,28 @@ export const LINKS = {
   releases: 'https://github.com/oculairmedia/letta-mobile/releases/latest',
   appRepo: 'https://github.com/oculairmedia/letta-mobile',
   webRepo: 'https://github.com/oculairmedia/baken-web',
+  // Security reports go through GitHub private vulnerability reporting until a mailbox exists
+  securityAdvisory: 'https://github.com/oculairmedia/letta-mobile/security/advisories/new',
+};
+
+// Social profiles. Leave a value empty until the account exists: empty entries are not rendered.
+export const SOCIALS: { label: string; href: string }[] = [
+  { label: 'GitHub', href: 'https://github.com/oculairmedia/letta-mobile' },
+  { label: 'X', href: '' },
+  { label: 'Bluesky', href: '' },
+  { label: 'Discord', href: '' },
+  { label: 'YouTube', href: '' },
+  { label: 'LinkedIn', href: '' },
+];
+
+// Company and legal facts used across the legal pages. TODO values must be confirmed before launch.
+export const LEGAL = {
+  operator: 'Oculair Media',
+  location: 'Georgetown, Ontario, Canada',
+  jurisdiction: 'the Province of Ontario and the federal laws of Canada applicable there',
+  contactEmail: '', // TODO: set once baken.ca has mail routing (no MX record today)
+  updated: '24 November 2026',
+  license: '', // TODO: set when a licence file is added to letta-mobile; until then the source is "source available"
 };
 
 // Finalized 03 Basalt Planes (flush ground y=168, 0 overlap, 5px min / 10px median seam at 200x200)

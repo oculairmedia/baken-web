@@ -1,0 +1,69 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { LEGAL, LINKS } from '../lib/brand';
+---
+
+<LegalLayout title="Terms" description="The terms for using the Baken apps and the baken.ca website.">
+  <p>
+    These terms cover your use of the Baken apps and the baken.ca website, both provided by {LEGAL.operator}
+    ("we"). By downloading the apps or using the site, you agree to them.
+  </p>
+
+  <h2>The software</h2>
+  <p>
+    The Baken apps are provided free of charge. The source code is public in the
+    <a href={LINKS.appRepo}>letta-mobile repository</a>.
+    {LEGAL.license
+      ? <>Your use of the source code is governed by the {LEGAL.license} licence in that repository; where these terms and that licence differ, the licence controls for the code.</>
+      : <>A licence for the source code has not yet been published. Until it is, the code is available to read, build and run for your own use, and all other rights are reserved.</>}
+  </p>
+  <p>
+    Baken also depends on third-party software, including letta-code (Apache-2.0). Those components are governed by their
+    own licences, listed on the <a href="/licenses">licences page</a>.
+  </p>
+
+  <h2>You run the host</h2>
+  <p>
+    Baken is a client. Your agents run on a host machine that you install, configure and operate. You are responsible for
+    that machine, for what you allow your agents to do on it, and for the permission mode you choose. Agents can read and
+    change files, run commands and use tools on the host; review the permission modes and grant only the access you are
+    comfortable with.
+  </p>
+
+  <h2>Third-party models and services</h2>
+  <p>
+    If you connect a model provider, a relay, or any other third-party service, your use of it is governed by that
+    provider's terms, including its usage policies and fees. We are not a party to that relationship and are not
+    responsible for those services.
+  </p>
+
+  <h2>Acceptable use</h2>
+  <p>
+    Do not use Baken to break the law, to access systems or data you are not authorised to access, or to harm others. Do not
+    misrepresent the Baken name or mark, which is covered by the <a href="/brand">brand guidelines</a>.
+  </p>
+
+  <h2>No warranty</h2>
+  <p>
+    The apps and the website are provided "as is" and "as available", without warranties of any kind, express or implied,
+    including merchantability, fitness for a particular purpose and non-infringement. AI models can produce incorrect or
+    harmful output, and agents can take actions with real effects. You are responsible for reviewing what your agents do.
+  </p>
+
+  <h2>Limitation of liability</h2>
+  <p>
+    To the maximum extent permitted by law, we are not liable for any indirect, incidental, special, consequential or
+    punitive damages, or for any loss of data, profits or business, arising from your use of Baken. Because the software is
+    provided free, our total liability for any claim is limited to CAD $100. Some jurisdictions do not allow these
+    limitations, so they may not apply to you in full.
+  </p>
+
+  <h2>Changes and termination</h2>
+  <p>
+    We may update these terms; the date at the top shows the latest version, and the page history is public in the
+    <a href={LINKS.webRepo}>baken-web repository</a>. You can stop using Baken at any time by uninstalling it.
+  </p>
+
+  <h2>Governing law</h2>
+  <p>These terms are governed by the laws of {LEGAL.jurisdiction}.</p>
+</LegalLayout>

@@ -1,0 +1,64 @@
+---
+import Layout from './Layout.astro';
+import { LEGAL } from '../lib/brand';
+
+interface Props {
+  title: string;
+  description: string;
+  updated?: string;
+}
+const { title, description, updated = LEGAL.updated } = Astro.props;
+const nav = [
+  { href: '/privacy', label: 'Privacy' },
+  { href: '/terms', label: 'Terms' },
+  { href: '/security', label: 'Security' },
+  { href: '/licenses', label: 'Licences' },
+  { href: '/brand', label: 'Brand' },
+  { href: '/contact', label: 'Contact' },
+];
+const here = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<Layout title={`${title} · Baken`} description={description}>
+  <section class="legal-wrap">
+    <div class="container legal-grid">
+      <nav class="legal-nav" aria-label="Legal and company pages">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>
+        ))}
+      </nav>
+      <article class="legal-body">
+        <h1>{title}</h1>
+        <p class="legal-updated">Last updated {updated}</p>
+        <slot />
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal-wrap { padding: 56px 0 120px; position: relative; z-index: 3; }
+  .legal-grid { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 56px; align-items: start; }
+  .legal-nav { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 4px; }
+  .legal-nav a { font-size: 14px; color: var(--muted); padding: 6px 10px; border-radius: 6px; }
+  .legal-nav a:hover { color: var(--text); }
+  .legal-nav a[aria-current='page'] { color: var(--text); background: var(--surface); border: 1px solid var(--border); }
+  .legal-body { max-width: 68ch; }
+  .legal-body :global(h1) { margin: 0 0 6px; font-size: clamp(32px, 4vw, 44px); letter-spacing: -0.04em; line-height: 1.08; }
+  .legal-updated { margin: 0 0 40px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); }
+  .legal-body :global(h2) { margin: 40px 0 12px; font-size: 20px; letter-spacing: -0.02em; }
+  .legal-body :global(h3) { margin: 24px 0 8px; font-size: 16px; }
+  .legal-body :global(p), .legal-body :global(li) { font-size: 15.5px; line-height: 1.7; color: var(--text); opacity: 0.86; }
+  .legal-body :global(ul) { padding-left: 20px; }
+  .legal-body :global(li) { margin: 4px 0; }
+  .legal-body :global(a) { color: var(--stone-2); text-decoration: underline; text-underline-offset: 3px; }
+  .legal-body :global(code) { font-size: 0.9em; padding: 1px 5px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); }
+  .legal-body :global(table) { width: 100%; border-collapse: collapse; margin: 12px 0 8px; font-size: 14px; }
+  .legal-body :global(th), .legal-body :global(td) { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .legal-body :global(th) { font-weight: 700; color: var(--muted); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .legal-body :global(.callout) { margin: 20px 0; padding: 14px 16px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+  @media (max-width: 820px) {
+    .legal-grid { grid-template-columns: 1fr; gap: 24px; }
+    .legal-nav { position: static; flex-direction: row; flex-wrap: wrap; }
+  }
+</style>

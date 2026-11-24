@@ -1,0 +1,41 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { LEGAL, LINKS } from '../lib/brand';
+---
+
+<LegalLayout title="Licences and credits" description="Licences for Baken, the third-party software it uses, and credits for the artwork on this site.">
+  <h2>Baken</h2>
+  <p>
+    The Baken source is public in the <a href={LINKS.appRepo}>letta-mobile repository</a>.
+    {LEGAL.license
+      ? <>It is licensed under {LEGAL.license}.</>
+      : <>A licence has not been published yet, so the source is currently "source available": you can read, build and run it for your own use, and all other rights are reserved. This page will be updated when a licence is added.</>}
+    The source for this website is in the <a href={LINKS.webRepo}>baken-web repository</a>.
+  </p>
+
+  <h2>Third-party software</h2>
+  <p>Key components the apps and this site rely on:</p>
+  <table>
+    <thead><tr><th>Component</th><th>Used for</th><th>Licence</th></tr></thead>
+    <tbody>
+      <tr><td>letta-code</td><td>Agent runtime on the host</td><td>Apache-2.0</td></tr>
+      <tr><td>Iroh</td><td>Encrypted peer-to-peer connection</td><td>MIT / Apache-2.0</td></tr>
+      <tr><td>Kotlin, Compose Multiplatform</td><td>App framework</td><td>Apache-2.0</td></tr>
+      <tr><td>Rive runtime</td><td>Mascot and mark animation</td><td>MIT</td></tr>
+      <tr><td>Astro</td><td>This website</td><td>MIT</td></tr>
+      <tr><td>Plus Jakarta Sans</td><td>Typeface</td><td>SIL Open Font License 1.1</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The apps include many further open source libraries. The Android app includes the full list with licence texts in its
+    open source licences screen.
+  </p>
+
+  <h2>Artwork</h2>
+  <p>
+    The chart on the homepage is <em>Paskaart van het Vlie en de Marsdiep</em> (1583), from Lucas Jansz. Waghenaer's
+    <em>Spieghel der Zeevaerdt</em>, engraved by Joannes van Doetechum (I). It is in the public domain and comes from the
+    collection of the Rijksmuseum, Amsterdam (object NG-43), via its open data service. We have converted it to a dithered
+    image for this site.
+  </p>
+</LegalLayout>
