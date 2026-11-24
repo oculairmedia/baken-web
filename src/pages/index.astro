@@ -533,6 +533,14 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   <!-- 7. THE "WHY BAKEN" ORIGIN & INTERACTIVE TRANSIT (MOVED TO THE END AS THE SIGNATURE CODA) -->
   <section class="band band-rule band-tinted" id="why-baken">
     <div class="container">
+      <figure class="chart-plate" id="chartPlate">
+        <div class="chart-plate-art" role="img" aria-label="Paskaart van het Vlie en de Marsdiep, 1583, by Lucas Jansz. Waghenaer, engraved by Joannes van Doetechum: the Wadden Sea channels between Texel, Vlieland and Terschelling, with sandbanks and soundings."></div>
+        <figcaption class="chart-plate-cap">
+          <span>PLATE I — PASKAART VAN HET VLIE EN DE MARSDIEP · 1583</span>
+          <span>L. J. WAGHENAER · ENGR. J. VAN DOETECHUM · RIJKSMUSEUM NG-43</span>
+        </figcaption>
+      </figure>
+
       <div class="origin-grid">
         <div class="origin-copy">
           <h2>Why it's called Baken.</h2>
@@ -998,6 +1006,62 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .faq-list details p { margin: 12px 0 0; font-size: 15px; color: var(--muted); max-width: 62ch; }
 
   /* 7. Why Baken Origin Coda at the Bottom */
+  /* Waghenaer chart plate: dithered engraving drawn as a CSS mask so it takes the theme ink colour */
+  .chart-plate {
+    margin: 0 0 64px;
+    position: relative;
+  }
+  .chart-plate-art {
+    width: 100%;
+    aspect-ratio: 2320 / 1713;
+    background-color: var(--text);
+    opacity: 0.86;
+    -webkit-mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
+            mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
+    -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    /* reveal sweep: a soft lantern band crosses the plate once on scroll-in */
+    transition: opacity 600ms ease;
+  }
+  .chart-plate::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    aspect-ratio: 2320 / 1713;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 0%, transparent 42%, rgba(238, 90, 63, 0.55) 50%, transparent 58%, transparent 100%);
+    background-size: 260% 100%;
+    background-position: 120% 0;
+    -webkit-mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
+            mask-image: url('/art/waghenaer-vlie-marsdiep-1583.png');
+    -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+    opacity: 0;
+  }
+  .chart-plate.lit::after {
+    animation: plateSweep 2600ms ease-out 1 forwards;
+  }
+  @keyframes plateSweep {
+    0%   { opacity: 1; background-position: 120% 0; }
+    100% { opacity: 0.0; background-position: -20% 0; }
+  }
+  .chart-plate-cap {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chart-plate.lit::after { animation: none; }
+  }
+
   .origin-grid {
     display: grid;
     grid-template-columns: 1.05fr 0.95fr;
@@ -1073,6 +1137,15 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
       jobPanels.forEach((p) => p.classList.toggle('active', p.getAttribute('data-panel') === target));
     });
   });
+
+  // Waghenaer plate: one lantern sweep the first time it scrolls into view
+  const plate = document.getElementById('chartPlate');
+  if (plate && 'IntersectionObserver' in window) {
+    const po = new IntersectionObserver((entries) => {
+      if (entries[0]?.isIntersecting) { plate.classList.add('lit'); po.disconnect(); }
+    }, { threshold: 0.35 });
+    po.observe(plate);
+  }
 
   // Bottom Wadden Sea Transit Sightline
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
