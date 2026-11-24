@@ -117,7 +117,7 @@ export function initRiveHost() {
             canvas,
             artboard: 'Mascot',
             stateMachine: 'Avatar',
-            autoplay: true,
+            autoplay: false,
             autoBind: true,
             layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
             onLoad: () => {
@@ -141,6 +141,7 @@ export function initRiveHost() {
                 }
               }
 
+              rive.play();
               const rec: ActiveMascot = { canvas, rive, vmi, talk, visible: true };
               mascots.push(rec);
               io?.observe(canvas);
@@ -189,7 +190,7 @@ export function initRiveHost() {
             canvas,
             artboard: 'BakenMark',
             stateMachine: 'BrandMark',
-            autoplay: true,
+            autoplay: false,
             autoBind: true,
             layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
             onLoad: () => {
@@ -207,6 +208,7 @@ export function initRiveHost() {
                 }
               }
 
+              rive.play();
               const rec: ActiveMark = { canvas, rive, vmi, themeMode, visible: true };
               marks.push(rec);
               io?.observe(canvas);
