@@ -49,8 +49,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </a>
       </div>
     </div>
+  </section>
 
-    <!-- HERO PRODUCT SHOWCASE: ACCURATE BAKEN DESKTOP WINDOW -->
+  <!-- 1b. PRODUCT SHOWCASE: ACCURATE BAKEN DESKTOP WINDOW, on its own screen -->
+  <section class="showcase-band" id="showcase" aria-label="The Baken desktop app">
     <div class="container">
       <div class="showcase-stage dark-surface">
         <PixelStageShader />
@@ -213,7 +215,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   </section>
 
   <!-- 2. BENTO CAPABILITY GRID (x.ai/bot style: each card is a concrete behavior + live mini-UI artifact) -->
-  <section class="band" id="capabilities">
+  <section class="band screens-2" id="capabilities">
     <div class="container">
       <div class="band-head">
         <h2>What a Baken agent does.</h2>
@@ -222,9 +224,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
       <div class="bento-grid">
         <!-- Card 1: Remembers what you teach it -->
-        <article class="bento-card" data-tone="vermilion">
+        <article class="bento-card" data-tone="indigo">
+          <div class="bento-art" style="--art:url('/art/cards/memory.png')" role="img" aria-label="Sea chart west of Ireland, 1658"></div>
           <div class="bento-copy">
-            <h3>It remembers what you tell it.</h3>
+            <h3>Memory as plain files.</h3>
             <p>The agent's memory is a set of plain text files on your host. When you state a preference or a rule, it writes it there and applies it in later sessions. You can open and edit those files directly.</p>
           </div>
           <div class="bento-ui dark-surface">
@@ -241,9 +244,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </article>
 
         <!-- Card 6: Phone + Desktop paired directly -->
-        <article class="bento-card" data-tone="teal">
+        <article class="bento-card" data-tone="vermilion">
+          <div class="bento-art" style="--art:url('/art/cards/pairing.png')" role="img" aria-label="Anglers by a windmill and a baken, Jan van de Velde II, 1627"></div>
           <div class="bento-copy">
-            <h3>Your phone connects straight to it.</h3>
+            <h3>Direct phone pairing.</h3>
             <p>Pair your phone by scanning a QR code. The connection is encrypted end to end and goes direct when it can. When a direct path fails it falls back to a relay, which cannot read the traffic. We run no Baken server.</p>
           </div>
           <div class="bento-ui dark-surface">
@@ -258,9 +262,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </article>
 
         <!-- Card 2: Every agent has its own computer (yours) -->
-        <article class="bento-card" data-tone="emerald">
+        <article class="bento-card" data-tone="ochre">
+          <div class="bento-art" style="--art:url('/art/cards/permissions.png')" role="img" aria-label="Compass, Isaac Weissenbruch, 1836"></div>
           <div class="bento-copy">
-            <h3>It works on your computer.</h3>
+            <h3>Four permission modes.</h3>
             <p>Agents use the host's files, terminal, browser and local apps. Each session runs in one of four permission modes: standard, accept edits, strict, or unrestricted.</p>
           </div>
           <div class="bento-ui dark-surface">
@@ -281,9 +286,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </article>
 
         <!-- Card 3: Keeps working when you walk away (Fork & Relay) -->
-        <article class="bento-card" data-tone="amber">
+        <article class="bento-card" data-tone="verdigris">
+          <div class="bento-art" style="--art:url('/art/cards/background.png')" role="img" aria-label="Dunes with a lighthouse, after Coenraet Decker, c.1685"></div>
           <div class="bento-copy">
-            <h3>It keeps working when you leave.</h3>
+            <h3>Background tasks.</h3>
             <p>Long tasks run in the background on the host, so the conversation stays usable. Running tasks show on both your phone and desktop.</p>
           </div>
           <div class="bento-ui dark-surface">
@@ -302,9 +308,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </article>
 
         <!-- Card 4: Agents work with each other -->
-        <article class="bento-card" data-tone="cobalt">
+        <article class="bento-card" data-tone="indigo">
+          <div class="bento-art" style="--art:url('/art/cards/handoff.png')" role="img" aria-label="Harbour with a lighthouse, Reinier Zeeman, 1656"></div>
           <div class="bento-copy">
-            <h3>Agents hand work to each other.</h3>
+            <h3>Agent handoff.</h3>
             <p>Agents on the same host can pass tasks to each other, for example from a general agent to a coding agent. Each handoff appears in the conversation.</p>
           </div>
           <div class="bento-ui dark-surface">
@@ -322,9 +329,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </article>
 
         <!-- Card 5: Hands-free voice -->
-        <article class="bento-card" data-tone="voice">
+        <article class="bento-card" data-tone="verdigris">
+          <div class="bento-art" style="--art:url('/art/cards/voice.png')" role="img" aria-label="River landscape with a baken, H. J. H. Rijkelijkhuizen, 1857"></div>
           <div class="bento-copy">
-            <h3>You can talk to it.</h3>
+            <h3>Voice mode.</h3>
             <p>Voice mode works on phone and desktop. Speech recognition runs on a speech server you configure on the host, and each agent can have its own voice.</p>
           </div>
           <div class="bento-ui dark-surface">
@@ -578,7 +586,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
               <path d={BAKEN_PEBBLE} fill="#EE5A3F" />
             </g>
 
-            <text x="18" y="204" fill="#7A7A84" font-size="10.5" font-family="ui-monospace, monospace">REAR · YOUR COMPUTER</text>
+            <text x="18" y="204" fill="#8C8C96" font-size="10.5" font-family="ui-monospace, monospace">REAR · YOUR COMPUTER</text>
             <text x="392" y="204" fill="#EE5A3F" font-size="10.5" font-family="ui-monospace, monospace">FRONT · YOUR PHONE</text>
           </svg>
         </div>
@@ -589,26 +597,6 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     </div>
   </section>
 
-  <!-- 8. CLOSING -->
-  <section class="band band-rule closing-band">
-    <div class="container hero-center">
-      <div class="closing-mark-wrap">
-        <RiveBakenMark size={56} state="ambient" theme="auto" title="Baken — click to lock" />
-      </div>
-      <h2 class="closing-h2">Get Baken.</h2>
-      <p class="hero-lead" style="margin-bottom:28px">
-        Free for Android, Windows and Linux. Source available. No account required.
-      </p>
-      <div class="hero-cta-row">
-        <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-footer">
-          Download Baken
-        </a>
-        <a class="btn btn-outline" href={LINKS.appRepo} target="_blank" rel="noreferrer">
-          Source on GitHub
-        </a>
-      </div>
-    </div>
-  </section>
 </Layout>
 
 <style>
@@ -616,6 +604,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .hero {
     padding: 56px 0 88px;
   }
+  @media (min-width: 900px) and (min-height: 700px) {
+    main > section.hero { justify-content: center; padding: 0 0 6vh; }
+  }
+  .showcase-band { padding: 24px 0 64px; }
   .hero-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
 
   .mascot-lineup {
@@ -650,7 +642,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
   .showcase-stage {
     position: relative;
-    margin-top: 56px; border-radius: 16px; padding: 28px 28px 0;
+    margin-top: 0; border-radius: 16px; padding: 28px 28px 0;
     background: #0A0A0C;
     border: 1px solid rgba(255, 255, 255, 0.09);
     box-shadow: 0 28px 72px rgba(0, 0, 0, 0.42);
@@ -672,28 +664,28 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .win-left { display: flex; align-items: center; gap: 8px; }
   .win-toggle {
     width: 26px; height: 26px; border-radius: 6px;
-    display: grid; place-items: center; color: #8E8E98;
+    display: grid; place-items: center; color: #A6A6B0;
     border: 1px solid rgba(255, 255, 255, 0.07);
   }
   .win-tab {
     display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12px; color: #8E8E98; padding: 4px 10px; border-radius: 6px;
+    font-size: 12px; color: #A6A6B0; padding: 4px 10px; border-radius: 6px;
   }
   .win-tab.active-tab {
     background: rgba(255, 255, 255, 0.07); color: #F4F4F6;
   }
   .win-tab.active-tab strong { font-weight: 600; font-style: italic; }
-  .win-tab-agent { font-size: 11px; color: #8E8E98; }
-  .win-tab-x { font-size: 13px; color: #6E6E78; }
-  .win-tab-add { font-size: 15px; color: #8E8E98; padding: 0 4px; }
+  .win-tab-agent { font-size: 11px; color: #A6A6B0; }
+  .win-tab-x { font-size: 13px; color: #8C8C96; }
+  .win-tab-add { font-size: 15px; color: #A6A6B0; padding: 0 4px; }
   .win-right { display: flex; align-items: center; gap: 16px; }
   .win-search {
     display: inline-flex; align-items: center; gap: 7px;
-    font-size: 12px; color: #7C7C86;
+    font-size: 12px; color: #8C8C96;
   }
   .win-controls {
     display: flex; align-items: center; gap: 14px;
-    font-size: 13px; color: #7C7C86; line-height: 1;
+    font-size: 13px; color: #8C8C96; line-height: 1;
   }
 
   .win-body { display: grid; grid-template-columns: 50px 228px 1fr; min-height: 440px; }
@@ -707,7 +699,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .rail-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; }
   .rail-icon.rail-selected { background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16); }
   .rail-spacer { flex: 1; }
-  .rail-add { font-size: 18px; color: #7C7C86; line-height: 1; padding-bottom: 2px; }
+  .rail-add { font-size: 18px; color: #8C8C96; line-height: 1; padding-bottom: 2px; }
 
   .win-sidebar {
     background: #0D0D10; border-right: 1px solid rgba(255, 255, 255, 0.07);
@@ -727,14 +719,14 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     height: 3px; width: 100%; border-radius: 999px; background: rgba(255, 255, 255, 0.1); overflow: hidden;
   }
   .ctx-bar span { display: block; height: 100%; background: #EE5A3F; border-radius: 999px; }
-  .ctx-meta { font-size: 10.5px; color: #7C7C86; }
+  .ctx-meta { font-size: 10.5px; color: #8C8C96; }
 
   .side-nav { display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; color: #9A9AA4; }
   .side-item { display: flex; align-items: center; gap: 9px; padding: 5px 8px; border-radius: 6px; }
   .side-threads { display: flex; flex-direction: column; gap: 4px; margin-top: 2px; }
   .side-filter {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-bottom: 4px;
-    font-size: 11px; text-align: center; color: #7C7C86;
+    font-size: 11px; text-align: center; color: #8C8C96;
   }
   .side-filter span {
     padding: 4px 6px; border-radius: 6px; background: #141418;
@@ -746,7 +738,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     font-size: 12px; color: #8A8A94; padding: 6px 8px; border-radius: 7px;
   }
   .t-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .t-age { font-size: 10.5px; color: #686872; flex-shrink: 0; }
+  .t-age { font-size: 10.5px; color: #8C8C96; flex-shrink: 0; }
   .thread.active-thread { background: #1B1B22; color: #F4F4F6; border: 1px solid rgba(255, 255, 255, 0.07); }
 
   .win-chat { padding: 20px 26px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; background: #0F0F12; }
@@ -756,13 +748,13 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     border: 1px solid rgba(255, 255, 255, 0.07);
     padding: 10px 14px; border-radius: 12px; font-size: 13.5px; max-width: 72%;
   }
-  .msg-who { display: block; font-size: 10.5px; color: #7C7C86; margin-bottom: 3px; font-weight: 600; }
+  .msg-who { display: block; font-size: 10.5px; color: #8C8C96; margin-bottom: 3px; font-weight: 600; }
   .msg-user p { margin: 0; }
   .msg-agent { font-size: 14px; color: #E2E2E8; max-width: 60ch; }
   .msg-agent p { margin: 0 0 10px; }
   .msg-agent ul { margin: 0 0 8px; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #B8B8C2; }
   .msg-agent strong { color: #FFFFFF; }
-  .msg-time { display: block; font-size: 10.5px; color: #686872; }
+  .msg-time { display: block; font-size: 10.5px; color: #8C8C96; }
 
   .composer-stack { display: flex; flex-direction: column; gap: 7px; }
   .task-chip-row { display: flex; align-items: center; gap: 6px; }
@@ -772,7 +764,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     background: #17171C; border: 1px solid rgba(255, 255, 255, 0.08);
   }
   .fold-dot { width: 6px; height: 6px; border-radius: 50%; background: #EE5A3F; }
-  .task-chip-x { color: #6E6E78; font-size: 12px; margin-left: 2px; }
+  .task-chip-x { color: #8C8C96; font-size: 12px; margin-left: 2px; }
 
   .win-composer {
     display: flex; flex-direction: column; gap: 12px; padding: 12px 14px 10px;
@@ -783,7 +775,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .comp-input { font-size: 13.5px; color: #C2C2CC; }
   .comp-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .comp-left { display: flex; align-items: center; gap: 10px; }
-  .comp-ico { font-size: 16px; color: #8E8E98; line-height: 1; }
+  .comp-ico { font-size: 16px; color: #A6A6B0; line-height: 1; }
   .comp-model-pill {
     font-size: 11.5px; color: #A0A0AA; padding: 4px 10px; border-radius: 999px;
     background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
@@ -804,7 +796,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   }
   .composer-foot {
     display: flex; align-items: center; justify-content: space-between;
-    font-size: 11px; color: #7C7C86; padding: 0 4px;
+    font-size: 11px; color: #8C8C96; padding: 0 4px;
   }
 
   /* 2. Bento Capability Grid — neutral obsidian/white surfaces, surgical color only in semantic signals */
@@ -834,6 +826,28 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   }
   .bento-card:hover {
     border-color: var(--border-strong);
+  }
+  .bento-card { --tone: var(--tone-vermilion); position: relative; overflow: hidden; }
+  .bento-card[data-tone="verdigris"] { --tone: var(--tone-verdigris); }
+  .bento-card[data-tone="indigo"]    { --tone: var(--tone-indigo); }
+  .bento-card[data-tone="ochre"]     { --tone: var(--tone-ochre); }
+  /* Dithered engraving, inked in the card's chart tone */
+  .bento-art {
+    height: 168px;
+    margin: -6px -6px 0;
+    background-color: var(--tone);
+    -webkit-mask-image: var(--art); mask-image: var(--art);
+    -webkit-mask-size: cover; mask-size: cover;
+    -webkit-mask-position: center 40%; mask-position: center 40%;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  }
+  .bento-copy h3::before {
+    content: "";
+    display: inline-block;
+    width: 8px; height: 8px;
+    margin: 0 9px 2px 0;
+    background: var(--tone);
+    vertical-align: middle;
   }
   .bento-copy h3 {
     margin: 0 0 8px;
@@ -874,11 +888,11 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     display: flex; align-items: center; gap: 7px; font-size: 12px; margin-bottom: 4px;
   }
   .mem-dot { width: 7px; height: 7px; border-radius: 50%; background: #EE5A3F; }
-  .mem-file { margin-left: auto; font-family: ui-monospace, monospace; font-size: 11px; color: #7C7C86; }
+  .mem-file { margin-left: auto; font-family: ui-monospace, monospace; font-size: 11px; color: #8C8C96; }
   .ui-memory-toast p { margin: 0; font-size: 12px; color: #B4B4BE; }
 
   .ui-term-head {
-    display: flex; justify-content: space-between; font-size: 11.5px; color: #7C7C86;
+    display: flex; justify-content: space-between; font-size: 11.5px; color: #8C8C96;
   }
   .ui-badge-live { color: #EE5A3F; font-weight: 700; }
   .ui-diff {
@@ -886,7 +900,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     border: 1px solid rgba(255, 255, 255, 0.06);
     font-family: ui-monospace, monospace; font-size: 11.5px; line-height: 1.55;
   }
-  .diff-file { color: #7C7C86; margin-bottom: 4px; }
+  .diff-file { color: #8C8C96; margin-bottom: 4px; }
   .diff-del { color: #F07167; }
   .diff-add { color: #4ADE80; }
   .ui-approve-bar {
@@ -901,14 +915,14 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     border: 1px solid rgba(255, 255, 255, 0.07);
   }
   .run-meta { display: flex; flex-direction: column; font-size: 12px; }
-  .run-meta span { font-size: 11px; color: #7C7C86; }
+  .run-meta span { font-size: 11px; color: #8C8C96; }
   .ui-relay {
     font-size: 12.5px; color: #D4D4DC; padding: 6px 2px 2px;
   }
 
   .ui-handoff { display: flex; flex-direction: column; gap: 12px; }
   .ho-row { display: flex; align-items: flex-start; gap: 10px; font-size: 12.5px; }
-  .ho-row p { margin: 2px 0 0; color: #8E8E98; font-size: 12px; }
+  .ho-row p { margin: 2px 0 0; color: #A6A6B0; font-size: 12px; }
   .ho-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
   .ho-dot.blue { background: #1E7BF0; }
   .ho-dot.orange { background: #FF6A1A; }
@@ -922,13 +936,13 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .v-bars span { width: 4px; height: var(--h); border-radius: 999px; background: #EE5A3F; animation: vbar 1.4s ease-in-out infinite; }
   .v-bars span:nth-child(even) { background: rgba(255, 255, 255, 0.45); animation-delay: -0.45s; }
   @keyframes vbar { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.1); } }
-  .v-live { font-family: ui-monospace, monospace; font-size: 11.5px; color: #8E8E98; }
+  .v-live { font-family: ui-monospace, monospace; font-size: 11.5px; color: #A6A6B0; }
 
   .ui-pair-box {
     display: flex; align-items: center; gap: 14px; padding: 10px 8px;
   }
   .pair-text { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
-  .pair-text span { font-size: 11.5px; color: #7C7C86; }
+  .pair-text span { font-size: 11.5px; color: #8C8C96; }
 
   /* 3. Give Each Agent a Job — crisp neutral tab bar (orca.dev restraint) */
   .jobs-pills {
@@ -940,9 +954,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     padding: 8px 15px; border-radius: 7px;
     background: transparent; border: 1px solid transparent;
     color: var(--muted); font-family: inherit; font-size: 13.5px; font-weight: 600;
-    cursor: pointer; transition: all 140ms ease;
+    cursor: pointer; transition: color 140ms ease, background-color 140ms ease;
   }
   .job-pill:hover { color: var(--text); }
+  .job-pill:focus-visible { outline: 2px solid var(--stone-2); outline-offset: 2px; }
   .job-pill.active {
     background: var(--primary-btn-bg); color: var(--primary-btn-text);
   }
@@ -958,11 +973,11 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     display: none;
     grid-template-columns: 1.05fr 0.95fr;
     gap: 40px;
-    align-items: center;
+    align-items: start;
   }
   .job-panel.active { display: grid; }
   .job-desc h3 { margin: 0 0 10px; font-size: 24px; letter-spacing: -0.03em; color: #FFFFFF; }
-  .job-desc p { margin: 0 0 16px; font-size: 15px; color: #8E8E98; }
+  .job-desc p { margin: 0 0 16px; font-size: 15px; color: #A6A6B0; }
   .job-desc ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px; color: #D4D4DC; }
   .job-desc li::marker { color: #EE5A3F; }
   .job-chat {
@@ -990,7 +1005,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
   /* 6. FAQ */
   .faq-container { max-width: 760px; }
-  .faq-list { border-top: 1px solid var(--border); }
+  .faq-list { }
   .faq-list details { border-bottom: 1px solid var(--border); padding: 22px 0; }
   .faq-list summary {
     cursor: pointer; font-size: 17px; font-weight: 700; letter-spacing: -0.02em;
@@ -1073,7 +1088,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     display: grid;
     grid-template-columns: 1.05fr 0.95fr;
     gap: 52px;
-    align-items: center;
+    align-items: start;
   }
   .origin-copy h2 {
     margin: 0 0 16px;
@@ -1099,7 +1114,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 8px;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px; color: #7C7C86;
+    font-size: 11px; color: #8C8C96;
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
@@ -1120,6 +1135,11 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     .bento-grid, .job-panel.active, .origin-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 680px) {
+    .win-titlebar { height: auto; min-height: 42px; padding: 8px 12px; }
+    .win-tab.active-tab { min-width: 0; }
+    .win-tab.active-tab strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46vw; display: inline-block; }
+    .win-chat { padding: 16px 14px 12px; min-width: 0; }
+    .msg-agent, .msg-agent p, .msg-agent li { overflow-wrap: anywhere; min-width: 0; }
     .hero { padding-top: 28px; }
     .band { padding: 72px 0; }
     .clean-grid { grid-template-columns: 1fr; gap: 32px; }

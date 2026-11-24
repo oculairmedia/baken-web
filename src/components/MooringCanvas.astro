@@ -39,7 +39,7 @@
     width: 100%;
     background: #070709;
     color: #F4F4F6;
-    padding: 96px 0 40px;
+    padding: 56px 0 24px;
     overflow: hidden;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -66,7 +66,7 @@
     margin: 0 0 24px;
     font-size: 16.5px;
     line-height: 1.58;
-    color: #8E8E98;
+    color: #A6A6B0;
     max-width: 52ch;
   }
 
@@ -86,7 +86,7 @@
     border-radius: 7px;
     border: 1px solid transparent;
     background: transparent;
-    color: #8E8E98;
+    color: #A6A6B0;
     font-family: inherit;
     font-size: 13px;
     font-weight: 600;
@@ -108,7 +108,7 @@
     width: 100vw;
     left: 50%;
     transform: translateX(-50%);
-    height: 500px;
+    height: 470px;
     user-select: none;
     touch-action: pan-y;
     cursor: grab;
@@ -143,7 +143,7 @@
   }
 
   .mono-hint {
-    color: #6B6B75;
+    color: #8C8C96;
   }
 
   @media (max-width: 720px) {
@@ -957,7 +957,7 @@
       ctx.font = `500 ${compact ? 9.5 : 10.5}px ui-monospace, SFMono-Regular, Menlo, monospace`;
       const kn = (0.8 + m.tension * 9.4).toFixed(1);
       const subText = isActive || m.tension > 0.55 ? `${kn} KN · 0.00M DRIFT` : m.sub;
-      ctx.fillStyle = isActive || m.tension > 0.55 ? '#EE5A3F' : '#7A7A84';
+      ctx.fillStyle = isActive || m.tension > 0.55 ? '#EE5A3F' : '#8C8C96';
       ctx.fillText(subText, m.x, labelY + 14);
       ctx.restore();
     }

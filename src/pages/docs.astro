@@ -3,19 +3,19 @@ import Layout from '../layouts/Layout.astro';
 import { LINKS } from '../lib/brand';
 ---
 
-<Layout title="Docs — Baken" description="Install, pair, and understand Baken's local-first agent architecture and living Rive motion system.">
+<Layout title="Docs · Baken" description="Install, pair, and understand Baken's local-first agent architecture and living Rive motion system.">
   <section class="docs-wrap">
     <div class="container docs-inner">
       <span class="eyebrow mono">DOCUMENTATION · BAKEN.CA</span>
       <h1>Getting started with Baken</h1>
       <p class="docs-lead">
-        Baken is a native Android &amp; Desktop client for stateful AI agents, built on Kotlin Multiplatform, encrypted Iroh peer-to-peer pairing, and git-backed agent memory.
+        Baken is a client for persistent AI agents. Your agents run on a host machine you control, and the Android and desktop apps pair with it over an encrypted peer-to-peer connection.
       </p>
 
       <div class="doc-block" id="install">
         <h2>1. Download &amp; Install</h2>
         <p>
-          All Android APKs and Desktop installers (Windows, macOS, Linux) publish to the single latest-release page:
+          Android APKs, Windows installers and the Linux AppImage are published on the latest-release page. There is no macOS or iOS build yet.
         </p>
         <p>
           <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer">
@@ -30,10 +30,10 @@ import { LINKS } from '../lib/brand';
       <div class="doc-block" id="pairing">
         <h2>2. Pair your devices (QR over Iroh)</h2>
         <p>
-          Baken connects directly to your agent host over Iroh QUIC — no public reverse proxy or hand-copied API tokens required.
+          Baken connects to your agent host over Iroh. The connection is encrypted end to end and goes direct when it can, falling back to a relay that cannot read the traffic. You don't need a public reverse proxy or hand-copied API tokens.
         </p>
         <ol>
-          <li>Start the host wrapper on your server or workstation.</li>
+          <li>Start letta-code and the Baken host wrapper on your Linux or Windows machine.</li>
           <li>Generate a pairing invite QR code from the CLI or Desktop host.</li>
           <li>Scan from Baken on Android to establish a mutually authenticated peer connection.</li>
         </ol>
@@ -90,8 +90,8 @@ import { LINKS } from '../lib/brand';
   }
   .doc-block h2 { margin: 0 0 14px; font-size: 22px; letter-spacing: -0.025em; }
   .doc-block p, .doc-block li { color: var(--muted); font-size: 15px; }
-  .doc-block strong, .doc-block a { color: var(--text); }
-  .doc-block a:hover { color: var(--stone-2); }
+  .doc-block strong, .doc-block a:not(.btn) { color: var(--text); }
+  .doc-block a:not(.btn):hover { color: var(--stone-2); }
   .doc-block code {
     font-size: 13px;
     background: var(--bg-subtle);

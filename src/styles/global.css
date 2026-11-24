@@ -29,7 +29,7 @@
   --stone-2-dim: #7C6E6C;
   --band-tinted: #F3F3F5;
   --text: #09090B;
-  --muted: #63636B;
+  --muted: #4A4A52;
   --nav-btn-bg: #09090B;
   --nav-btn-text: #FFFFFF;
   --primary-btn-bg: #09090B;
@@ -37,11 +37,20 @@
   --pill-bg: #FFFFFF;
   --pill-shadow: 0 2px 10px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --radius: 8px;
-  --max-w: 1160px;
+  --max-w: 1200px;
+  /* Hand-coloured Dutch chart palette: vermilion is the signal, the other three are sea, sand and deep water */
+  --tone-vermilion: #C2412B;
+  --tone-verdigris: #2E7A6A;
+  --tone-indigo: #2F4A7A;
+  --tone-ochre: #8A6418;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --tone-vermilion: #EE5A3F;
+    --tone-verdigris: #5FB8A3;
+    --tone-indigo: #7E9CD6;
+    --tone-ochre: #D8A84A;
     --bg: #09090B;
     --bg-subtle: #0E0E11;
     --surface: #111114;
@@ -55,7 +64,7 @@
     --stone-2-dim: #6E5855;
     --band-tinted: #0D0D10;
     --text: #F4F4F6;
-    --muted: #8E8E98;
+    --muted: #A6A6B0;
     --nav-btn-bg: #F4F4F6;
     --nav-btn-text: #09090B;
     --primary-btn-bg: #FFFFFF;
@@ -94,9 +103,10 @@ code, pre, .mono {
 }
 
 .container {
-  max-width: var(--max-w);
+  width: min(var(--max-w), calc(100% - 48px));
   margin: 0 auto;
-  padding: 0 28px;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Header — airy, borderless, Osaurus height & restraint */
@@ -389,4 +399,26 @@ code, pre, .mono {
   .site-nav {
     height: 68px;
   }
+}
+
+/* Screen rhythm (taste-skill SR-1/SR-2): the hero fills the first screen, and every later section is
+   one or two whole screens tall, its content centred vertically in the tile. Desktop only: on small
+   screens sections take their natural height. */
+@media (min-width: 900px) and (min-height: 700px) {
+  main > section {
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  main > section.screens-2 { min-height: 200vh; }
+  main > section.hero {
+    height: calc(100vh - 84px);
+    min-height: calc(100vh - 84px);
+    overflow: hidden;
+    justify-content: flex-start;
+  }
+  main > section > .container,
+  main > section > .container-full { width: 100%; }
 }
