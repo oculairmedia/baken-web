@@ -23,7 +23,8 @@
 <script is:inline>
   (function () {
     const canvas = document.getElementById('marginFogCanvas');
-    if (!canvas) return;
+    if (!canvas || canvas.dataset.glBound) return;
+    canvas.dataset.glBound = '1';
 
     const gl = canvas.getContext('webgl', {
       alpha: true,

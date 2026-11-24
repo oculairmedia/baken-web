@@ -248,7 +248,8 @@ const year = new Date().getFullYear();
   (function () {
     const footer = document.getElementById('beaconFooter');
     const canvas = document.getElementById('beaconCanvas');
-    if (!footer || !canvas) return;
+    if (!footer || !canvas || canvas.dataset.glBound) return;
+    canvas.dataset.glBound = '1';
 
     const gl = canvas.getContext('webgl', { alpha: false, antialias: false, depth: false, preserveDrawingBuffer: false });
     if (!gl) { canvas.style.display = 'none'; return; }

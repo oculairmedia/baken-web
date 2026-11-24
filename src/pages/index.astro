@@ -1234,75 +1234,75 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 </style>
 
 <script is:inline>
-  // Role Switcher ("Give each agent a job")
-  const jobPills = document.querySelectorAll('#jobPills .job-pill');
-  const jobPanels = document.querySelectorAll('#jobStage .job-panel');
-  const jobStage = document.getElementById('jobStage');
-  jobPills.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-job');
-      if (jobStage && target) jobStage.setAttribute('data-active-job', target);
-      jobPills.forEach((b) => {
-        const active = b === btn;
-        b.classList.toggle('active', active);
-        b.setAttribute('aria-selected', String(active));
-      });
-      jobPanels.forEach((p) => p.classList.toggle('active', p.getAttribute('data-panel') === target));
+  (function () {
+    const ac = new AbortController();
+    const { signal } = ac;
+    document.addEventListener('astro:before-swap', () => ac.abort(), { once: true });
+
+    // Role Switcher ("One person's setup")
+    const jobPills = document.querySelectorAll('#jobPills .job-pill');
+    const jobPanels = document.querySelectorAll('#jobStage .job-panel');
+    const jobStage = document.getElementById('jobStage');
+    jobPills.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-job');
+        if (jobStage && target) jobStage.setAttribute('data-active-job', target);
+        jobPills.forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', String(active));
+        });
+        jobPanels.forEach((p) => p.classList.toggle('active', p.getAttribute('data-panel') === target));
+      }, { signal });
     });
-  });
 
-  // Waghenaer chart background: slow scroll parallax (moves at ~22% of scroll, opposite direction)
-  const plate = document.getElementById('chartPlate');
-  const whySection = document.getElementById('why-baken');
-  if (plate && whySection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let ticking = false;
-    const updateChart = () => {
-      ticking = false;
-      const r = whySection.getBoundingClientRect();
-      const vh = window.innerHeight;
-      if (r.bottom < 0 || r.top > vh) return;
-      // -1 when section enters at bottom, +1 when it leaves at top
-      const progress = ((vh - r.top) / (vh + r.height)) * 2 - 1;
-      plate.style.setProperty('--chart-shift', `${(-progress * r.height * 0.10).toFixed(1)}px`);
-    };
-    window.addEventListener('scroll', () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(updateChart); }
-    }, { passive: true });
-    updateChart();
-  }
+    // Waghenaer chart background: slow scroll parallax (moves at ~22% of scroll, opposite direction)
+    const plate = document.getElementById('chartPlate');
+    const whySection = document.getElementById('why-baken');
+    if (plate && whySection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let ticking = false;
+      const updateChart = () => {
+        ticking = false;
+        const r = whySection.getBoundingClientRect();
+        const vh = window.innerHeight;
+        if (r.bottom < 0 || r.top > vh) return;
+        const progress = ((vh - r.top) / (vh + r.height)) * 2 - 1;
+        plate.style.setProperty('--chart-shift', `${(-progress * r.height * 0.10).toFixed(1)}px`);
+      };
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(updateChart); }
+      }, { passive: true, signal });
+      updateChart();
+    }
 
-  // Bottom Wadden Sea Transit Sightline
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const rear = document.getElementById('rearStone');
-    const front = document.getElementById('frontStone');
-    const ray = document.getElementById('sightRay');
-    const glow = document.getElementById('sightGlow');
-    const readout = document.getElementById('transitReadout');
+    // Bottom Wadden Sea Transit Sightline
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const rear = document.getElementById('rearStone');
+      const front = document.getElementById('frontStone');
+      const ray = document.getElementById('sightRay');
+      const glow = document.getElementById('sightGlow');
+      const readout = document.getElementById('transitReadout');
 
-    window.addEventListener('pointermove', (e) => {
-      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      window.addEventListener('pointermove', (e) => {
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
 
-      if (rear && front && ray && glow && readout) {
-        const rearDx = nx * 6;
-        const frontDx = nx * 20;
-        rear.setAttribute('transform', `translate(${(202 + rearDx).toFixed(1)}, 24) scale(0.78)`);
-        front.setAttribute('transform', `translate(${(202 + frontDx).toFixed(1)}, 24) scale(0.78)`);
-        ray.setAttribute('x1', (280 + rearDx).toFixed(1));
-        ray.setAttribute('x2', (280 + frontDx * 1.3).toFixed(1));
+        if (rear && front && ray && glow && readout) {
+          const rearDx = nx * 6;
+          const frontDx = nx * 20;
+          rear.setAttribute('transform', `translate(${(202 + rearDx).toFixed(1)}, 24) scale(0.78)`);
+          front.setAttribute('transform', `translate(${(202 + frontDx).toFixed(1)}, 24) scale(0.78)`);
+          ray.setAttribute('x1', (280 + rearDx).toFixed(1));
+          ray.setAttribute('x2', (280 + frontDx * 1.3).toFixed(1));
 
-        const driftDeg = Math.abs(nx * 4.2);
-        const aligned = driftDeg < 0.8;
-        glow.setAttribute('opacity', aligned ? '1' : '0.35');
-        ray.setAttribute('stroke', aligned ? 'rgba(238,90,63,0.85)' : 'rgba(220,230,238,0.28)');
-        readout.textContent = aligned
-          ? `Bearing aligned · ${driftDeg.toFixed(1)}° drift`
-          : `Sighting transit · ${driftDeg.toFixed(1)}° offset`;
-      }
-    });
-  }
-</script>
-
-<script>
-  import { initRiveHost } from '../lib/rive-host';
-  initRiveHost();
+          const driftDeg = Math.abs(nx * 4.2);
+          const aligned = driftDeg < 0.8;
+          glow.setAttribute('opacity', aligned ? '1' : '0.35');
+          ray.setAttribute('stroke', aligned ? 'rgba(238,90,63,0.85)' : 'rgba(220,230,238,0.28)');
+          readout.textContent = aligned
+            ? `Bearing aligned · ${driftDeg.toFixed(1)}° drift`
+            : `Sighting transit · ${driftDeg.toFixed(1)}° offset`;
+        }
+      }, { passive: true, signal });
+    }
+  })();
 </script>

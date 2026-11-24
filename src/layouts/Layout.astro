@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import BakenMark from '../components/BakenMark.astro';
 import BeaconFooter from '../components/BeaconFooter.astro';
 import MarginFogShader from '../components/MarginFogShader.astro';
@@ -48,10 +49,13 @@ const {
       src="https://metrics.oculair.ca/script.js"
       data-website-id="cabd3ab0-d34d-495b-baec-6808d1118e45"
     ></script>
+    <ClientRouter />
   </head>
   <body>
-    <MarginFogShader />
-    <header class="site-nav">
+    <div transition:persist="margin-fog">
+      <MarginFogShader />
+    </div>
+    <header class="site-nav" transition:persist="site-nav">
       <div class="container wrap nav-inner">
         <div class="nav-left">
           <a href="/" class="brand-link" aria-label="Baken home">
@@ -80,6 +84,13 @@ const {
       <slot />
     </main>
 
-    <BeaconFooter />
+    <div transition:persist="beacon-footer">
+      <BeaconFooter />
+    </div>
+
+    <script>
+      import { initRiveHost } from '../lib/rive-host';
+      document.addEventListener('astro:page-load', () => initRiveHost());
+    </script>
   </body>
 </html>

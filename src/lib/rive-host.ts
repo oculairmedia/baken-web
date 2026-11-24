@@ -204,51 +204,70 @@ function createGazeState(stateName: string): GazeState {
   };
 }
 
+let globalsBound = false;
+const mascots: ActiveMascot[] = [];
+const marks: ActiveMark[] = [];
+const mountedMascots = new WeakSet<HTMLCanvasElement>();
+const mountedMarks = new WeakSet<HTMLCanvasElement>();
+
+const pointer = {
+  x: -9999,
+  y: -9999,
+  active: false,
+  lastMoveSec: -99,
+  speed: 0,
+};
+
+let sharedIo: IntersectionObserver | null = null;
+
 export function initRiveHost() {
   if (typeof window === 'undefined') return;
-  if ((window as any).__bakenRiveInitialized) return;
-  (window as any).__bakenRiveInitialized = true;
 
   ensureWasm();
 
   const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const darkSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-  const mascots: ActiveMascot[] = [];
-  const marks: ActiveMark[] = [];
-
-  // Shared pointer telemetry (does NOT directly drive every mascot)
-  const pointer = {
-    x: -9999,
-    y: -9999,
-    active: false,
-    lastMoveSec: -99,
-    speed: 0,
-  };
+  // Prune any instances detached by a client-side page transition
+  for (let i = mascots.length - 1; i >= 0; i--) {
+    if (!mascots[i].canvas.isConnected) {
+      try { sharedIo?.unobserve(mascots[i].canvas); } catch {}
+      try { mascots[i].rive.cleanup(); } catch {}
+      mascots.splice(i, 1);
+    }
+  }
+  for (let i = marks.length - 1; i >= 0; i--) {
+    if (!marks[i].canvas.isConnected) {
+      try { sharedIo?.unobserve(marks[i].canvas); } catch {}
+      try { marks[i].rive.cleanup(); } catch {}
+      marks.splice(i, 1);
+    }
+  }
 
   // Shared IntersectionObserver to pause off-screen canvases cleanly
-  const io = 'IntersectionObserver' in window
-    ? new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            const el = entry.target as HTMLCanvasElement;
-            const m = mascots.find((x) => x.canvas === el);
-            if (m) {
-              m.visible = entry.isIntersecting;
-              if (entry.isIntersecting) m.rive.play();
-              else m.rive.pause();
-            }
-            const mk = marks.find((x) => x.canvas === el);
-            if (mk) {
-              mk.visible = entry.isIntersecting;
-              if (entry.isIntersecting) mk.rive.play();
-              else mk.rive.pause();
-            }
+  if (!sharedIo && 'IntersectionObserver' in window) {
+    sharedIo = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const el = entry.target as HTMLCanvasElement;
+          const m = mascots.find((x) => x.canvas === el);
+          if (m) {
+            m.visible = entry.isIntersecting;
+            if (entry.isIntersecting) m.rive.play();
+            else m.rive.pause();
           }
-        },
-        { rootMargin: '80px 0px', threshold: 0.01 }
-      )
-    : null;
+          const mk = marks.find((x) => x.canvas === el);
+          if (mk) {
+            mk.visible = entry.isIntersecting;
+            if (entry.isIntersecting) mk.rive.play();
+            else mk.rive.pause();
+          }
+        }
+      },
+      { rootMargin: '80px 0px', threshold: 0.01 }
+    );
+  }
+  const io = sharedIo;
 
   // Fisher-Yates shuffle so visible mascots enter in an organic, non-mechanical order
   function shuffle<T>(arr: T[]): T[] {
@@ -496,11 +515,11 @@ export function initRiveHost() {
   }
 
   // Lazy-mount mascots as they approach the viewport, with randomized staggered entrances
-  const mascotEls = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-rive-mascot]'));
-  const mountedMascots = new WeakSet<HTMLCanvasElement>();
+  const mascotEls = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-rive-mascot]'))
+    .filter((c) => !mountedMascots.has(c));
 
   function scheduleMascotBatch(batch: HTMLCanvasElement[]) {
-    const pending = batch.filter((c) => !mountedMascots.has(c));
+    const pending = batch.filter((c) => !mountedMascots.has(c) && c.isConnected);
     if (pending.length === 0) return;
     pending.forEach((c) => mountedMascots.add(c));
 
@@ -515,9 +534,11 @@ export function initRiveHost() {
             ? 0
             : Math.max(40, Math.round(60 + idx * step + jitter));
           if (wait === 0 && idx === 0) {
-            mountMascot(canvas, buf);
+            if (canvas.isConnected) mountMascot(canvas, buf);
           } else {
-            window.setTimeout(() => mountMascot(canvas, buf), wait);
+            window.setTimeout(() => {
+              if (canvas.isConnected) mountMascot(canvas, buf);
+            }, wait);
           }
         });
       })
@@ -546,14 +567,16 @@ export function initRiveHost() {
   }
 
   // Mount baken_mark.riv instances (boot mark immediately; off-screen marks lazily on approach)
-  const markEls = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-rive-mark]'));
-  const mountedMarks = new WeakSet<HTMLCanvasElement>();
+  const markEls = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-rive-mark]'))
+    .filter((c) => !mountedMarks.has(c));
 
   function mountMarkSoon(canvas: HTMLCanvasElement) {
-    if (mountedMarks.has(canvas)) return;
+    if (mountedMarks.has(canvas) || !canvas.isConnected) return;
     mountedMarks.add(canvas);
     fetchRivBuffer('/rive/baken_mark.riv')
-      .then((buf) => mountMark(canvas, buf))
+      .then((buf) => {
+        if (canvas.isConnected) mountMark(canvas, buf);
+      })
       .catch((err) => console.error('baken_mark.riv load error:', err));
   }
 
@@ -581,6 +604,10 @@ export function initRiveHost() {
       }
     }
   }
+
+  if (globalsBound) return;
+  globalsBound = true;
+  (window as any).__bakenRiveInitialized = true;
 
   // Record pointer position & velocity passively; each mascot's GazeDirector decides independently
   // whether it even notices the cursor (proximity, state, habituation, and individual reaction delay).
