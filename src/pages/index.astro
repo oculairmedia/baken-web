@@ -11,7 +11,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 <Layout>
   <!-- 1. HERO: WHAT IT DOES + LIVE RIVE CAST + FULL PRODUCT WINDOW -->
   <section class="hero">
-    <div class="container hero-center">
+    <div class="container wrap hero-center">
       <!-- Real mascot.riv + baken_mark.riv cast row (same binaries shipped in the app) -->
       <div class="mascot-lineup">
         <div class="m-chip" title="Meridian — hover or poke">
@@ -53,7 +53,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
   <!-- 1b. PRODUCT SHOWCASE: ACCURATE BAKEN DESKTOP WINDOW, on its own screen -->
   <section class="showcase-band" id="showcase" aria-label="The Baken desktop app">
-    <div class="container">
+    <div class="container wrap">
       <div class="showcase-stage dark-surface">
         <PixelStageShader />
         <div class="app-window">
@@ -216,7 +216,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
   <!-- 2. BENTO CAPABILITY GRID (x.ai/bot style: each card is a concrete behavior + live mini-UI artifact) -->
   <section class="band screens-2" id="capabilities">
-    <div class="container">
+    <div class="container wrap">
       <div class="band-head">
         <h2>What a Baken agent does.</h2>
         <p>Each example below is taken from the app. The agent, its memory and its tools are the same on every device.</p>
@@ -352,8 +352,9 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   </section>
 
   <!-- 3. GIVE EACH AGENT A JOB (Interactive Role Switcher — x.ai/bot's signature section adapted to Baken) -->
-  <section class="band band-rule band-tinted" id="jobs">
-    <div class="container">
+  <section class="band band-rule band-tinted art-band" id="jobs" style="--band-art:url('/art/jobs.png'); --band-tone:var(--tone-verdigris)">
+    <div class="band-art" role="img" aria-label="Background: Strand met vissers (beach with fishermen), Carel Frederik Curtenius Bentinck, 1824"></div>
+    <div class="container wrap">
       <div class="band-head">
         <h2>One person's setup.</h2>
         <p>These are real examples from the developer who builds Baken. Each agent is a general agent given access to specific tools on his host. Baken doesn't ship these as features; they show what one agent with memory and tool access can be set up to do.</p>
@@ -478,8 +479,9 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   <MooringCanvas />
 
   <!-- 5. WHY THIS MATTERS + 3-STEP SETUP -->
-  <section class="band" id="details">
-    <div class="container">
+  <section class="band art-band" id="details" style="--band-art:url('/art/ownership.png'); --band-tone:var(--tone-indigo)">
+    <div class="band-art" role="img" aria-label="Background: Schip in nood bij storm op zee (ship in distress in a storm), Johannes Hilverdink, 1861"></div>
+    <div class="container wrap">
       <div class="band-head">
         <h2>Your agent outlives any one provider.</h2>
         <p>Most AI products store your agent's memory on their servers. Baken stores it on yours, so a pricing change, a policy change or a retired model does not take your agent with it.</p>
@@ -508,7 +510,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
   <!-- 6. FAQ -->
   <section class="band band-rule" id="faq">
-    <div class="container faq-container">
+    <div class="container wrap faq-container">
       <div class="band-head centered">
         <h2>Questions</h2>
       </div>
@@ -541,7 +543,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   <!-- 7. THE "WHY BAKEN" ORIGIN & INTERACTIVE TRANSIT (MOVED TO THE END AS THE SIGNATURE CODA) -->
   <section class="band band-rule band-tinted why-chart" id="why-baken">
     <div class="why-chart-bg" id="chartPlate" role="img" aria-label="Background: Paskaart van het Vlie en de Marsdiep, 1583, by Lucas Jansz. Waghenaer, engraved by Joannes van Doetechum, showing the Wadden Sea channels between Texel, Vlieland and Terschelling."></div>
-    <div class="container why-chart-inner">
+    <div class="container wrap why-chart-inner">
       <div class="origin-grid">
         <div class="origin-copy">
           <h2>Why it's called Baken.</h2>
@@ -553,6 +555,9 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
           </p>
           <p>
             Models and providers change in a similar way. Baken is meant to be the fixed reference: your computer holds the agent's memory, and your phone stays aligned with it wherever you are.
+          </p>
+          <p class="origin-cta">
+            <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-why">Download Baken</a>
           </p>
         </div>
 
@@ -817,11 +822,11 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 28px;
+    padding: 22px 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 22px;
+    gap: 16px;
     transition: border-color 160ms ease;
   }
   .bento-card:hover {
@@ -833,7 +838,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .bento-card[data-tone="ochre"]     { --tone: var(--tone-ochre); }
   /* Dithered engraving, inked in the card's chart tone */
   .bento-art {
-    height: 168px;
+    height: 128px;
     margin: -6px -6px 0;
     background-color: var(--tone);
     -webkit-mask-image: var(--art); mask-image: var(--art);
@@ -963,23 +968,25 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   }
 
   .job-stage {
-    background: #0C0C0F;
-    color: #F4F4F6;
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    padding: 34px 36px;
+    background: transparent;
+    color: var(--text);
+    padding: 28px 0 0;
   }
-  .job-panel {
+  .job-stage .job-desc h3 { color: var(--text); }
+  .job-stage .job-desc p { color: var(--muted); }
+  .job-panel { padding: 0;
     display: none;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 40px;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
     align-items: start;
   }
   .job-panel.active { display: grid; }
+  .job-panel > :first-child { grid-column: 1 / span 6; }
+  .job-panel > :last-child  { grid-column: 7 / span 6; }
   .job-desc h3 { margin: 0 0 10px; font-size: 24px; letter-spacing: -0.03em; color: #FFFFFF; }
   .job-desc p { margin: 0 0 16px; font-size: 15px; color: #A6A6B0; }
-  .job-desc ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px; color: #D4D4DC; }
-  .job-desc li::marker { color: #EE5A3F; }
+  .job-desc ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px; color: var(--text); }
+  .job-desc li::marker { color: var(--tone-verdigris); }
   .job-chat {
     background: #121216;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1084,12 +1091,34 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   }
   .why-chart-cap em { font-style: italic; color: var(--text); }
 
+  .art-band { position: relative; overflow: hidden; isolation: isolate; }
+  .art-band > .container { position: relative; z-index: 2; }
+  .band-art {
+    position: absolute; z-index: 0; inset: 0;
+    background-color: var(--band-tone);
+    -webkit-mask-image: var(--band-art), url('/art/dither-ramp-x.png');
+            mask-image: var(--band-art), url('/art/dither-ramp-x.png');
+    -webkit-mask-size: auto 100%, 3840px 64px;
+            mask-size: auto 100%, 3840px 64px;
+    -webkit-mask-position: right center, 50% 0;
+            mask-position: right center, 50% 0;
+    -webkit-mask-repeat: no-repeat, repeat-y;
+            mask-repeat: no-repeat, repeat-y;
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .origin-cta { margin: 26px 0 0; }
+  @media (max-width: 900px) { .band-art { opacity: 0.16; -webkit-mask-image: var(--band-art); mask-image: var(--band-art); -webkit-mask-size: cover; mask-size: cover; } }
   .origin-grid {
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 52px;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
     align-items: start;
   }
+  .origin-grid > .origin-copy { grid-column: 1 / span 6; }
+  .origin-grid > .origin-instrument { grid-column: 7 / span 6; }
   .origin-copy h2 {
     margin: 0 0 16px;
     font-size: clamp(30px, 3.6vw, 42px);
@@ -1133,6 +1162,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     .win-body { grid-template-columns: 52px 1fr; }
     .win-sidebar, .win-search { display: none; }
     .bento-grid, .job-panel.active, .origin-grid { grid-template-columns: 1fr; }
+    .job-panel > :first-child, .job-panel > :last-child,
+    .origin-grid > .origin-copy, .origin-grid > .origin-instrument { grid-column: 1 / -1; }
   }
   @media (max-width: 680px) {
     .win-titlebar { height: auto; min-height: 42px; padding: 8px 12px; }

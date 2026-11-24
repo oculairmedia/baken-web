@@ -104,10 +104,13 @@ code, pre, .mono {
 
 .container {
   width: min(var(--max-w), calc(100% - 48px));
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0;
   box-sizing: border-box;
 }
+/* sections are flex columns on desktop: keep the container its own width, centred */
+main > section > .container { align-self: center; }
 
 /* Header — airy, borderless, Osaurus height & restraint */
 .site-nav {
@@ -118,7 +121,6 @@ code, pre, .mono {
 }
 
 .nav-inner {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -398,6 +400,12 @@ code, pre, .mono {
   }
   .site-nav {
     height: 68px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
   }
 }
 
@@ -419,6 +427,11 @@ code, pre, .mono {
     overflow: hidden;
     justify-content: flex-start;
   }
-  main > section > .container,
-  main > section > .container-full { width: 100%; }
+}
+
+/* Keyboard focus: one ring for every control, shown at once */
+:where(a, button, [role="tab"], summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--tone-vermilion);
+  outline-offset: 3px;
+  transition: none;
 }

@@ -8,17 +8,17 @@
 ---
 
 <section class="mooring-band dark-surface" id="ownership" aria-label="Interactive substrate mooring simulation">
-  <div class="container mooring-head">
+  <div class="container wrap mooring-head">
     <h2>Memory stays put.<br />Everything else can change.</h2>
     <p class="mooring-lead">
       Models, prices and providers change often. The agent&#39;s memory, files and keys stay on your machine, anchored while the rest moves.
     </p>
 
-    <div class="tide-controls" id="tideControls" role="group" aria-label="Simulate shifting environment">
-      <button type="button" class="tide-btn active" data-tide="calm">Calm tide</button>
-      <button type="button" class="tide-btn" data-tide="retired">Model retired</button>
-      <button type="button" class="tide-btn" data-tide="outage">Cloud outage</button>
-      <button type="button" class="tide-btn" data-tide="swap">Swap provider</button>
+    <div class="tide-controls" id="tideControls" role="tablist" aria-label="Simulate shifting environment">
+      <button type="button" class="tide-btn active" data-tide="calm" role="tab" aria-selected="true">Calm tide</button>
+      <button type="button" class="tide-btn" data-tide="retired" role="tab" aria-selected="false">Model retired</button>
+      <button type="button" class="tide-btn" data-tide="outage" role="tab" aria-selected="false">Cloud outage</button>
+      <button type="button" class="tide-btn" data-tide="swap" role="tab" aria-selected="false">Swap provider</button>
     </div>
   </div>
 
@@ -26,7 +26,7 @@
     <canvas class="mooring-canvas" id="mooringCanvas" aria-label="Interactive moored buoys with live wave physics and seabed chains"></canvas>
   </div>
 
-  <div class="container mooring-readout-bar">
+  <div class="container wrap mooring-readout-bar">
     <span class="mono-readout" id="mooringTelemetry">DATUM NAP 0.00 · CURRENT +0.7 KT · TENSION 1.2 KN · ANCHOR DRIFT 0.00 M</span>
     <span class="mono-hint">slice the water, dunk a buoy, or trigger a squall — watch the chains hold</span>
   </div>
@@ -99,8 +99,10 @@
   }
 
   .tide-btn.active {
-    background: #FFFFFF;
-    color: #09090B;
+    background: transparent;
+    color: #FFFFFF;
+    box-shadow: inset 0 -2px 0 var(--tone-vermilion);
+    border-radius: 0;
   }
 
   .mooring-stage {
@@ -1166,7 +1168,7 @@
             env.rogueWaveX = W + 40;
           }
 
-          btns.forEach((b) => b.classList.toggle('active', b === btn));
+          btns.forEach((b) => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', String(b === btn)); });
         });
       });
     }
