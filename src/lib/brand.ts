@@ -1,5 +1,8 @@
 export const LINKS = {
+  // Every "Download" CTA lands here; the page links straight to the right release asset
+  download: '/download',
   releases: 'https://github.com/oculairmedia/letta-mobile/releases/latest',
+  releasesApi: 'https://api.github.com/repos/oculairmedia/letta-mobile/releases/latest',
   appRepo: 'https://github.com/oculairmedia/letta-mobile',
   webRepo: 'https://github.com/oculairmedia/baken-web',
   // Security reports go through GitHub private vulnerability reporting until a mailbox exists

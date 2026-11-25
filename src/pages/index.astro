@@ -8,7 +8,7 @@ import PixelStageShader from '../components/PixelStageShader.astro';
 import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 ---
 
-<Layout>
+<Layout appSchema>
   <!-- 1. HERO: WHAT IT DOES + LIVE RIVE CAST + FULL PRODUCT WINDOW -->
   <section class="hero">
     <div class="container wrap hero-center">
@@ -31,22 +31,33 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </div>
       </div>
 
-      <h1>Agents that run on<br />your own machine.</h1>
+      <h1>Agents that run on<br class="h1-break" /> your own machine.</h1>
 
-      <p class="hero-lead">
-        Baken is a client for persistent AI agents. Each agent runs on a Linux or Windows machine you control, keeps its memory as plain files on that machine, and pairs directly with your Android phone. You run the host; Baken connects to it.
+      <p class="hero-lead" data-aud="everyone">
+        Baken is a personal AI assistant that lives on your own computer and comes with you on your phone. It remembers what matters to you, works with your files and apps, and keeps what it learns on your machine, not on someone else's server.
+      </p>
+      <p class="hero-lead" data-aud="technical">
+        A native Android, Windows and Linux client for stateful agents on a host you run. letta-code runtime, plain-file memory on disk, MCP tools and any model provider or local inference, paired over end-to-end encrypted Iroh QUIC. No account, no Baken server, source available.
       </p>
 
       <div class="hero-cta-row">
-        <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-hero">
+        <a class="btn btn-primary" href={LINKS.download} data-umami-event="download-hero">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5M4 20h16" />
           </svg>
           Download for Android, Windows &amp; Linux
         </a>
-        <a class="btn btn-outline" href="#capabilities">
+        <a class="btn btn-outline" href="#capabilities" data-aud="everyone">
           See what they do
         </a>
+        <a class="btn btn-outline" href="#under-the-hood" data-aud="technical">
+          Under the hood
+        </a>
+      </div>
+      <p class="hero-req">Needs a Linux or Windows computer to run your agents. <a href="/download#host">What the host needs</a></p>
+      <div class="aud-toggle" role="group" aria-label="How much detail to show">
+        <button type="button" data-set-aud="everyone">Overview</button>
+        <button type="button" data-set-aud="technical">Technical</button>
       </div>
     </div>
   </section>
@@ -110,7 +121,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
               <div class="ctx-card">
                 <div class="ctx-model">
-                  <span>Claude Sonnet 4.5</span>
+                  <span>qwen3-coder · local</span>
                   <span aria-hidden="true">▾</span>
                 </div>
                 <div class="ctx-bar"><span style="width:20%"></span></div>
@@ -201,7 +212,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
                     <div class="comp-bar">
                       <div class="comp-left">
                         <span class="comp-ico" aria-hidden="true">+</span>
-                        <span class="comp-model-pill">Claude Sonnet 4.5 ▾</span>
+                        <span class="comp-model-pill">qwen3-coder · local ▾</span>
                       </div>
                       <div class="comp-right">
                         <span class="comp-wave" aria-hidden="true">
@@ -225,12 +236,39 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     </div>
   </section>
 
+  <!-- 1c. UNDER THE HOOD: technical audience only (GitHub, HN, ?for=technical) -->
+  <section class="band spec-band" id="under-the-hood" data-aud="technical" aria-label="Technical details">
+    <div class="container wrap">
+      <div class="band-head">
+        <h2>Under the hood.</h2>
+        <p>What runs where, and what leaves your machine.</p>
+      </div>
+      <dl class="spec-grid">
+        <div><dt>Runtime</dt><dd><a href="https://github.com/letta-ai/letta-code" target="_blank" rel="noreferrer">letta-code</a> on your host, wrapped by the Baken host service for pairing and transport.</dd></div>
+        <div><dt>Memory</dt><dd>Plain text files on the host's disk, readable and editable, safe to version with git or back up.</dd></div>
+        <div><dt>Transport</dt><dd>Iroh QUIC, end to end encrypted and mutually authenticated. Direct when possible; the fallback relay can't read traffic.</dd></div>
+        <div><dt>Pairing</dt><dd>QR invite from the host. No public port, reverse proxy or copied API token.</dd></div>
+        <div><dt>Models</dt><dd>Any provider letta-code supports, or local inference. Swap at any time; memory stays.</dd></div>
+        <div><dt>Tools</dt><dd>MCP servers plus the host's files, terminal and browser, under four permission modes: standard, accept edits, strict, unrestricted.</dd></div>
+        <div><dt>Clients</dt><dd>Android 8.0+, Windows x64, Linux x64 AppImage. Kotlin Multiplatform with Compose.</dd></div>
+        <div><dt>Host wrapper</dt><dd>JVM 21+, released for Linux x64, runs as a service.</dd></div>
+        <div><dt>Telemetry</dt><dd>None in release builds. No account, no Baken server.</dd></div>
+        <div><dt>Licence</dt><dd>Source available on GitHub. <a href="/licenses">Details</a>.</dd></div>
+      </dl>
+      <div class="spec-cta">
+        <a class="btn btn-primary" href={LINKS.appRepo} target="_blank" rel="noreferrer" data-umami-event="github-spec">View the source</a>
+        <a class="btn btn-outline" href="/docs">Read the docs</a>
+      </div>
+    </div>
+  </section>
+
   <!-- 2. BENTO CAPABILITY GRID (x.ai/bot style: each card is a concrete behavior + live mini-UI artifact) -->
   <section class="band screens-2" id="capabilities">
     <div class="container wrap">
       <div class="band-head">
         <h2>What a Baken agent does.</h2>
-        <p>Each example below is taken from the app. The agent, its memory and its tools are the same on every device.</p>
+        <p data-aud="everyone">Real examples from the app. Your assistant, what it remembers and what it can do are the same on your phone and your computer.</p>
+        <p data-aud="technical">Each example is taken from the app. Agent state, memory and tools live on the host, so every client sees the same thing.</p>
       </div>
 
       <div class="bento-grid">
@@ -238,8 +276,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <article class="bento-card" data-tone="indigo">
           <div class="bento-art" style="--art:url('/art/cards/memory.png')" role="img" aria-label="Sea chart west of Ireland, 1658"></div>
           <div class="bento-copy">
-            <h3>Memory as plain files.</h3>
-            <p>The agent's memory is a set of plain text files on your host. When you state a preference or a rule, it writes it there and applies it in later sessions. You can open and edit those files directly.</p>
+            <h3 data-aud="everyone">It remembers what you tell it.</h3>
+            <p data-aud="everyone">Tell it a preference or a rule once and it keeps it, in plain notes on your own computer that you can read and change whenever you like.</p>
+            <h3 data-aud="technical">Memory as plain files.</h3>
+            <p data-aud="technical">Memory is a tree of plain text files on the host. Stated preferences and rules are written there and loaded in later sessions; edit them by hand, diff them, or keep them under git.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-msg-u">Never put my personal Gmail on any public store page.</div>
@@ -258,8 +298,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <article class="bento-card" data-tone="vermilion">
           <div class="bento-art" style="--art:url('/art/cards/pairing.png')" role="img" aria-label="Anglers by a windmill and a baken, Jan van de Velde II, 1627"></div>
           <div class="bento-copy">
-            <h3>Direct phone pairing.</h3>
-            <p>Pair your phone by scanning a QR code. The connection is encrypted end to end and goes direct when it can. When a direct path fails it falls back to a relay, which cannot read the traffic. We run no Baken server.</p>
+            <h3 data-aud="everyone">Your phone, paired in seconds.</h3>
+            <p data-aud="everyone">Scan a QR code on your computer and your phone is connected, privately. Nobody in between can read your conversations, and there's no Baken account or server involved.</p>
+            <h3 data-aud="technical">Direct, end-to-end encrypted pairing.</h3>
+            <p data-aud="technical">QR invite from the host, then an Iroh QUIC connection that is end to end encrypted and mutually authenticated. Direct when the network allows; otherwise through a relay that only sees ciphertext. No port forwarding, no Baken server.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-pair-box">
@@ -276,8 +318,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <article class="bento-card" data-tone="ochre">
           <div class="bento-art" style="--art:url('/art/cards/permissions.png')" role="img" aria-label="Compass, Isaac Weissenbruch, 1836"></div>
           <div class="bento-copy">
-            <h3>Four permission modes.</h3>
-            <p>Agents use the host's files, terminal, browser and local apps. Each session runs in one of four permission modes: standard, accept edits, strict, or unrestricted.</p>
+            <h3 data-aud="everyone">You decide what it's allowed to do.</h3>
+            <p data-aud="everyone">It can work with the files, browser and apps on your computer. You choose how much freedom it has, from asking before every change to working on its own.</p>
+            <h3 data-aud="technical">Four permission modes.</h3>
+            <p data-aud="technical">Agents get the host's filesystem, shell, browser and local apps, plus MCP servers. Each session runs in one of four modes: standard, accept edits, strict or unrestricted.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-term-head">
@@ -300,8 +344,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <article class="bento-card" data-tone="verdigris">
           <div class="bento-art" style="--art:url('/art/cards/background.png')" role="img" aria-label="Dunes with a lighthouse, after Coenraet Decker, c.1685"></div>
           <div class="bento-copy">
-            <h3>Background tasks.</h3>
-            <p>Long tasks run in the background on the host, so the conversation stays usable. Running tasks show on both your phone and desktop.</p>
+            <h3 data-aud="everyone">Big jobs run while you get on with your day.</h3>
+            <p data-aud="everyone">Long tasks keep going on your computer in the background. You can keep chatting, and you'll see progress on your phone and desktop.</p>
+            <h3 data-aud="technical">Background tasks.</h3>
+            <p data-aud="technical">Long-running work executes on the host as background workers, so the conversation stays unblocked. Task state shows on every paired client.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-run-row">
@@ -320,10 +366,12 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
         <!-- Card 4: Agents work with each other -->
         <article class="bento-card" data-tone="indigo">
-          <div class="bento-art" style="--art:url('/art/cards/handoff.png')" role="img" aria-label="Harbour with a lighthouse, Reinier Zeeman, 1656"></div>
+          <div class="bento-art bento-art-top" style="--art:url('/art/cards/telegraph.png')" role="img" aria-label="Optical telegraph with an operator at the telescope, from De Bewonderenswaardige Telegraaph, 1794"></div>
           <div class="bento-copy">
-            <h3>Agent handoff.</h3>
-            <p>Agents on the same host can pass tasks to each other, for example from a general agent to a coding agent. Each handoff appears in the conversation.</p>
+            <h3 data-aud="everyone">Assistants that work together.</h3>
+            <p data-aud="everyone">Give different assistants different jobs. One can hand a task to another, and you see every handoff in the chat.</p>
+            <h3 data-aud="technical">Agent handoff.</h3>
+            <p data-aud="technical">Agents on the same host can delegate to each other, for example a general agent to a coding agent, with each handoff recorded in the conversation.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-handoff">
@@ -343,8 +391,10 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <article class="bento-card" data-tone="verdigris">
           <div class="bento-art" style="--art:url('/art/cards/voice.png')" role="img" aria-label="River landscape with a baken, H. J. H. Rijkelijkhuizen, 1857"></div>
           <div class="bento-copy">
-            <h3>Voice mode.</h3>
-            <p>Voice mode works on phone and desktop. Speech recognition runs on a speech server you configure on the host, and each agent can have its own voice.</p>
+            <h3 data-aud="everyone">Talk to it.</h3>
+            <p data-aud="everyone">Have a spoken conversation on your phone or computer, and give each assistant its own voice. Speech recognition runs on your own computer too.</p>
+            <h3 data-aud="technical">Voice mode.</h3>
+            <p data-aud="technical">Voice on phone and desktop, with speech recognition on a speech server you run on the host. Voices are set per agent.</p>
           </div>
           <div class="bento-ui dark-surface">
             <div class="ui-voice-box">
@@ -362,13 +412,26 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     </div>
   </section>
 
+  <!-- Plate VII: a fixed mark on the horizon, the thing the brand is named after -->
+  <section class="verkenning" aria-label="Plate VII">
+    <div class="vk-strip">
+      <div class="vk-art" role="img" aria-label="Etching: a wooden beacon on the horizon across choppy water, a sailing ship to the right. Houte Bake, Joost van Geel, c.1666."></div>
+      <span class="vk-mark" aria-hidden="true"><span class="vk-light"></span><span class="vk-tag mono">baken · fixed mark</span></span>
+    </div>
+    <div class="container wrap vk-meta mono">
+      <span>Plate VII · Houte bake · West zyde van de Maas</span>
+      <span>J. van Geel · c.1666 · Rijksmuseum RP-P-1882-A-6055</span>
+    </div>
+  </section>
+
   <!-- 3. GIVE EACH AGENT A JOB (Interactive Role Switcher — x.ai/bot's signature section adapted to Baken) -->
   <section class="band band-rule band-tinted art-band" id="jobs" style="--band-art:url('/art/jobs.png'); --band-tone:var(--tone-verdigris)">
     <div class="band-art" role="img" aria-label="Background: Strand met vissers (beach with fishermen), Carel Frederik Curtenius Bentinck, 1824"></div>
     <div class="container wrap">
       <div class="band-head">
         <h2>One person's setup.</h2>
-        <p>These are real examples from the developer who builds Baken. Each agent is a general agent given access to specific tools on his host. Baken doesn't ship these as features; they show what one agent with memory and tool access can be set up to do.</p>
+        <p data-aud="everyone">Real examples from the person who builds Baken. Each one is the same kind of general assistant, given access to different things on his computer. These aren't built-in features; they show what's possible once an assistant can remember things and use your tools.</p>
+        <p data-aud="technical">These are real examples from the developer who builds Baken. Each agent is a general agent given access to specific tools on his host. Baken doesn't ship these as features; they show what one agent with memory and tool access can be set up to do.</p>
       </div>
 
       <div class="jobs-pills" id="jobPills" role="tablist" aria-label="Agent roles">
@@ -500,16 +563,22 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
       <div class="clean-grid">
         <div class="clean-item">
-          <h3>Memory is plain files.</h3>
-          <p>Everything the agent learns is saved as readable text files on your computer. You can open, edit, version or back them up like any other files.</p>
+          <h3 data-aud="everyone">What it learns stays readable.</h3>
+          <p data-aud="everyone">Everything it learns is saved as ordinary text files on your computer. You can open them, change them or back them up like any other files.</p>
+          <h3 data-aud="technical">Memory is plain files.</h3>
+          <p data-aud="technical">Everything the agent learns is saved as readable text files on your computer. You can open, edit, version or back them up like any other files.</p>
         </div>
         <div class="clean-item">
-          <h3>Models are swappable.</h3>
-          <p>Because memory lives outside the model, you can switch to a different model at any time. The agent keeps its history and behaviour.</p>
+          <h3 data-aud="everyone">Switch AI models any time.</h3>
+          <p data-aud="everyone">Your assistant's memory isn't tied to any one AI company. Move to a newer or cheaper model and it keeps everything it knows.</p>
+          <h3 data-aud="technical">Models are swappable.</h3>
+          <p data-aud="technical">Because memory lives outside the model, you can change model or provider, or move to local inference, at any time. History and behaviour carry over.</p>
         </div>
         <div class="clean-item">
-          <h3>You run the host.</h3>
-          <p>Baken needs a host machine running letta-code and the Baken wrapper, set up as a service on Linux or Windows. Then install the Android or desktop app and scan the pairing code. No account is required. There is no macOS or iOS build yet.</p>
+          <h3 data-aud="everyone">Your computer is home base.</h3>
+          <p data-aud="everyone">Your assistant lives on a Linux or Windows computer you keep running, at home or on a server you rent. Install the app on your phone, scan a code, and you're set. No account. No iPhone or Mac version yet.</p>
+          <h3 data-aud="technical">You run the host.</h3>
+          <p data-aud="technical">Baken needs a host machine running letta-code and the Baken wrapper, set up as a service on Linux or Windows. Then install the Android or desktop app and scan the pairing code. No account is required. There is no macOS or iOS build yet.</p>
         </div>
         <div class="clean-item">
           <h3>No engagement tricks.</h3>
@@ -520,7 +589,8 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   </section>
 
   <!-- 6. FAQ -->
-  <section class="band band-rule" id="faq">
+  <section class="band band-rule faq-band" id="faq">
+    <div class="faq-rose" role="img" aria-label="Background: Tabula Anemographica, a wind rose with 32 winds in six languages, Johannes Janssonius, c.1652-80"></div>
     <div class="container wrap faq-container">
       <div class="band-head centered">
         <h2>Questions</h2>
@@ -529,13 +599,21 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
       <div class="faq-list">
         <details open>
           <summary>What happens if Baken stops being updated tomorrow?</summary>
-          <p>Your agent keeps working. The source is public, it runs without contacting any server we operate, and its memory is in plain text files on your disk.</p>
+          <p>Your agent keeps working. The source is published on GitHub (<a href="/licenses">source available</a>), it runs without contacting any server we operate, and its memory is in plain text files on your disk.</p>
+        </details>
+        <details data-aud="everyone">
+          <summary>What can I actually use it for?</summary>
+          <p>Anything you'd hand to a capable assistant with access to your computer: keeping track of projects, sorting files, running a home media server, checking a budget or researching a topic. <a href="#jobs">One person's setup</a> above has real examples.</p>
+        </details>
+        <details data-aud="everyone">
+          <summary>What kind of computer do I need?</summary>
+          <p>A Windows or Linux computer that stays on while you want to use your assistant, such as a desktop at home or a small home server. Your phone then connects to it from anywhere. <a href="/download#host">What the host needs</a>.</p>
         </details>
         <details>
           <summary>Is Baken free?</summary>
-          <p>Yes. Baken is free, and the source is public. Local models cost nothing to run. If you use a cloud model, you pay that provider directly.</p>
+          <p>Yes. Baken is free, and the source is published on GitHub (<a href="/licenses">source available</a>). Local models cost nothing to run. If you use a cloud model, you pay that provider directly.</p>
         </details>
-        <details>
+        <details data-aud="technical">
           <summary>Do I need my own computer?</summary>
           <p>Yes. The agent runs on a computer or server you control, and the phone app connects to it. This is what keeps memory and files on your hardware.</p>
         </details>
@@ -546,6 +624,22 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         <details>
           <summary>Who can see my conversations?</summary>
           <p>There is no Baken account and no central database. Your phone and computer connect directly, using a key that only those two devices hold. If you use a cloud model, that provider sees the requests you send it.</p>
+        </details>
+        <details data-aud="technical">
+          <summary>How does Baken relate to Letta?</summary>
+          <p>Baken is a client for <a href="https://github.com/letta-ai/letta-code" target="_blank" rel="noreferrer">letta-code</a>, Letta's open-source agent runtime, which runs on your host. Baken adds the native apps, pairing, the encrypted transport and agent presence. It is an independent project, not made by Letta.</p>
+        </details>
+        <details data-aud="technical">
+          <summary>What does the relay see?</summary>
+          <p>Encrypted packets and the endpoint identifiers needed to route them. Content is end to end encrypted between your devices, and the relay is only used when a direct connection can't be made.</p>
+        </details>
+        <details data-aud="technical">
+          <summary>Can I use local models?</summary>
+          <p>Yes. Any model letta-code can reach works, including local inference servers. Memory and tools don't depend on a particular provider.</p>
+        </details>
+        <details data-aud="technical">
+          <summary>Is anything exposed to the internet on the host?</summary>
+          <p>No port forwarding, reverse proxy or public endpoint is needed. Devices reach the host through NAT hole punching or the relay, and only a device paired with an invite from that host can connect.</p>
         </details>
       </div>
     </div>
@@ -568,7 +662,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
             Models and providers change in a similar way. Baken is meant to be the fixed reference: your computer holds the agent's memory, and your phone stays aligned with it wherever you are.
           </p>
           <p class="origin-cta">
-            <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-why">Download Baken</a>
+            <a class="btn btn-primary" href={LINKS.download} data-umami-event="download-why">Download Baken</a>
           </p>
         </div>
 
@@ -672,6 +766,77 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     margin: 0 0 30px; font-size: 17.5px; line-height: 1.62; color: var(--muted); max-width: 54ch;
   }
   .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .faq-list p a { text-decoration: underline; text-underline-offset: 3px; }
+  .hero-req { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); }
+  .hero-req a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
+  .hero-req a:hover { text-decoration-color: currentColor; }
+
+  /* Overview / Technical switch: segmented control, the active audience is filled */
+  .aud-toggle {
+    margin-top: 18px;
+    display: inline-flex;
+    padding: 3px;
+    gap: 2px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .aud-toggle button {
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .aud-toggle button:hover { color: var(--text); }
+  :global(html:not([data-audience="technical"])) .aud-toggle [data-set-aud="everyone"],
+  :global(html[data-audience="technical"]) .aud-toggle [data-set-aud="technical"] {
+    background: var(--primary-btn-bg);
+    color: var(--primary-btn-text);
+  }
+
+  .spec-band { scroll-margin-top: 24px; }
+  .spec-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--border);
+  }
+  .spec-grid > div {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-grid > div:nth-child(odd) { padding-right: 28px; }
+  .spec-grid dt {
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted); padding-top: 2px;
+  }
+  .spec-grid dd { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--text); }
+  .spec-grid a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
+  .spec-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  @media (max-width: 760px) {
+    .spec-grid { grid-template-columns: 1fr; }
+    .spec-grid > div:nth-child(odd) { padding-right: 0; }
+    .spec-grid > div { grid-template-columns: 1fr; gap: 4px; }
+  }
+  .hero h1 { text-wrap: balance; }
+  /* phones: the forced break leaves "on" alone on its own line; let balance do the wrapping */
+  @media (max-width: 680px) { .h1-break { display: none; } }
+  /* narrow phones: five 72px chips are wider than the 312px container and cause sideways scroll */
+  @media (max-width: 420px) {
+    .m-chip { width: 58px; height: 58px; }
+    .m-mark { margin: 0 4px; }
+    .mascot-lineup :global(canvas.rive-mascot-canvas) { width: 64px !important; height: 64px !important; }
+  }
 
   .showcase-stage {
     position: relative;
@@ -1230,6 +1395,68 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     .band { padding: 72px 0; }
     .clean-grid { grid-template-columns: 1fr; gap: 32px; }
     .job-stage { padding: 24px 20px; }
+  }
+
+  /* Card art anchored to the top of the plate (the telegraph's crossbar) */
+  .bento-art.bento-art-top { -webkit-mask-position: center 18%; mask-position: center 18%; }
+
+  /* Plate VII: full-bleed beacon strip between sections. The light sits on the beacon's lantern:
+     with mask-position equal to the mark's position, the mark stays put however the strip crops. */
+  /* pulled up into the previous band's bottom padding: the strip's top third is open sky */
+  .verkenning { --vk-x: 47.2%; --vk-y: 6.5%; position: relative; margin-top: -56px; padding-bottom: 56px; }
+  .vk-strip { position: relative; }
+  .vk-art {
+    /* the plate's own ratio (514/2400 = 21.4vw), cropped to start just above the beacon;
+       capped so wide screens crop the sides instead of growing a tall band */
+    height: clamp(120px, 21.4vw, 300px);
+    background-color: var(--muted);
+    -webkit-mask-image: url('/art/houte-bake-1666.png'), linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+            mask-image: url('/art/houte-bake-1666.png'), linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-size: cover, 100% 100%; mask-size: cover, 100% 100%;
+    -webkit-mask-position: var(--vk-x) var(--vk-y), 0 0; mask-position: var(--vk-x) var(--vk-y), 0 0;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+    opacity: 0.6;
+  }
+  .vk-mark { position: absolute; left: var(--vk-x); top: var(--vk-y); width: 0; height: 0; pointer-events: none; }
+  .vk-light {
+    position: absolute; left: -4px; top: -6px; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--stone-2);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--stone-2) 22%, transparent), 0 0 24px 6px color-mix(in srgb, var(--stone-2) 45%, transparent);
+    animation: vk-blink 4s ease-in-out infinite;
+  }
+  .vk-tag {
+    position: absolute; left: 18px; top: -10px; white-space: nowrap;
+    font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--stone-2);
+    padding-left: 34px;
+    background: linear-gradient(var(--stone-2), var(--stone-2)) left 50% / 28px 1px no-repeat;
+  }
+  @keyframes vk-blink { 0%, 100% { opacity: 1; } 46% { opacity: 1; } 50% { opacity: 0.25; } 54% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .vk-light { animation: none; } }
+  .vk-meta {
+    display: flex; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap;
+    margin-top: 14px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* Plate X: wind rose under the questions, faded to nothing before it reaches the text edges */
+  .faq-band { position: relative; overflow: hidden; isolation: isolate; }
+  .faq-band > .container { position: relative; z-index: 1; }
+  .faq-rose {
+    position: absolute; z-index: 0; left: 50%; top: 50%;
+    width: min(1180px, 150%); aspect-ratio: 1600 / 1292;
+    transform: translate(-50%, -50%);
+    background-color: var(--tone-ochre);
+    -webkit-mask-image: url('/art/windroos-janssonius.png'), radial-gradient(closest-side, #000 20%, transparent 100%);
+            mask-image: url('/art/windroos-janssonius.png'), radial-gradient(closest-side, #000 20%, transparent 100%);
+    -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+    opacity: 0.16;
+    pointer-events: none;
+  }
+
+  @media (max-width: 680px) {
+    .vk-tag { display: none; }
+    .verkenning { margin-top: -36px; padding-bottom: 40px; }
   }
 </style>
 

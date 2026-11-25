@@ -9,6 +9,7 @@
 
 ## Key links
 - Website: https://baken.ca
+- Download: https://baken.ca/download/
 - Docs: https://baken.ca/docs/
 - Latest releases (Android APK, Windows, Linux, host wrapper): https://github.com/oculairmedia/letta-mobile/releases/latest
 - Client & runtime source: https://github.com/oculairmedia/letta-mobile

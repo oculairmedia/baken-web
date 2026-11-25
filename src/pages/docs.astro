@@ -9,8 +9,8 @@ import { LINKS } from '../lib/brand';
       <header class="docs-plate">
         <div class="docs-plate-art" aria-hidden="true"></div>
         <div class="docs-plate-meta">
-          <span>HARBOUR MANUAL · DOCUMENTATION</span>
-          <span>Duinen met vuurtoren · after C. Decker · c. 1685</span>
+          <span>PLATE IX · DOCUMENTATION</span>
+          <span>Boussole des vents · P. Mortier · c. 1702 · RP-P-OB-83.034-278</span>
         </div>
       </header>
       <h1>Getting started with Baken</h1>
@@ -21,15 +21,15 @@ import { LINKS } from '../lib/brand';
       <div class="doc-block" id="install">
         <h2>1. Download &amp; Install</h2>
         <p>
-          Android APKs, Windows installers and the Linux AppImage are published on the latest-release page. There is no macOS or iOS build yet.
+          The download page links straight to the right file for your device: the Android APK, the Windows installer, the Linux AppImage and the host wrapper. There is no macOS or iOS build yet.
         </p>
         <p>
-          <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer">
-            Open GitHub Releases →
+          <a class="btn btn-primary" href={LINKS.download}>
+            Go to downloads →
           </a>
         </p>
         <p class="note">
-          <strong>Note during the Meridian → Baken rename:</strong> release asset filenames are transitioning from <code>meridian-desktop-*</code> to <code>baken-*</code>. Bookmarking the <code>/releases/latest</code> link above always points to the newest build.
+          <strong>Note during the rename to Baken:</strong> some release files still carry older names. The Android APKs are <code>letta-mobile-*.apk</code> and the host wrapper is <code>meridian-iroh-wrapper-*.tar</code>. The <a href={LINKS.releases} target="_blank" rel="noreferrer">latest-release page</a> always has the newest build.
         </p>
       </div>
 
@@ -97,13 +97,13 @@ import { LINKS } from '../lib/brand';
   .docs-plate-art {
     height: 156px;
     width: 100%;
-    background-color: var(--tone-verdigris);
-    -webkit-mask-image: url('/art/cards/background.png'), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
-            mask-image: url('/art/cards/background.png'), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
+    background-color: var(--tone-ochre);
+    -webkit-mask-image: url('/art/boussole-des-vents-1702.png'), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
+            mask-image: url('/art/boussole-des-vents-1702.png'), linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.22) 100%);
     -webkit-mask-size: cover, 100% 100%;
             mask-size: cover, 100% 100%;
-    -webkit-mask-position: center 44%, 0 0;
-            mask-position: center 44%, 0 0;
+    -webkit-mask-position: center 50%, 0 0;
+            mask-position: center 50%, 0 0;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
     -webkit-mask-composite: source-in;
