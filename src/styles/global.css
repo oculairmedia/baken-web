@@ -448,7 +448,8 @@ main > section > .container { align-self: center; }
     flex-direction: column;
     justify-content: center;
   }
-  main > section.screens-2 { min-height: 200vh; }
+  /* the feature grid takes its natural height: stretched to two screens it left dead space on wide monitors */
+  main > section.screens-2 { min-height: auto; }
   main > section.hero {
     height: auto;
     min-height: calc(100vh - 84px - clamp(150px, 22vh, 230px));
