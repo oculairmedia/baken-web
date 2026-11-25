@@ -9,12 +9,32 @@ import { LINKS } from '../lib/brand';
 interface Props {
   title?: string;
   description?: string;
+  /** Adds SoftwareApplication structured data (home and download pages). */
+  appSchema?: boolean;
 }
 
 const {
   title = 'Baken: agents that run on your own machine',
   description = 'Baken is a client for persistent AI agents. Agents run on a Linux or Windows host you control, keep their memory as plain files, and pair directly with your Android phone.',
+  appSchema = false,
 } = Astro.props;
+
+// Pages build as directories (/docs/index.html), so canonical URLs end in a slash like the sitemap
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(path, Astro.site).href;
+
+const softwareSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Baken',
+  description,
+  url: 'https://baken.ca/',
+  downloadUrl: 'https://baken.ca/download/',
+  applicationCategory: 'ProductivityApplication',
+  operatingSystem: 'Android 8.0+, Windows x64, Linux x64',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'CAD' },
+  publisher: { '@type': 'Organization', name: 'Oculair Media' },
+};
 ---
 
 <!doctype html>
@@ -24,6 +44,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FAFAFA" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#09090B" />
 
@@ -38,11 +59,12 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://baken.ca/og-card-1200x630.png" />
-    <meta property="og:url" content="https://baken.ca" />
+    <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://baken.ca/og-card-1200x630.png" />
+    {appSchema && <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />}
 
     <script
       defer
@@ -73,7 +95,7 @@ const {
         </div>
 
         <div class="nav-actions">
-          <a class="btn btn-nav" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-nav">
+          <a class="btn btn-nav" href={LINKS.download} data-umami-event="download-nav">
             Download
           </a>
         </div>
@@ -89,8 +111,17 @@ const {
     </div>
 
     <script>
-      import { initRiveHost } from '../lib/rive-host';
-      document.addEventListener('astro:page-load', () => initRiveHost());
+      // Rive (about 1 MB of wasm plus .riv files) waits until the browser is idle so it never competes
+      // with first paint, and is skipped for Save-Data visitors. Canvases stay transparent until mounted.
+      const saveData = (navigator as any).connection?.saveData === true;
+      const whenIdle = (fn: () => void) =>
+        'requestIdleCallback' in window
+          ? (window as any).requestIdleCallback(fn, { timeout: 2500 })
+          : window.setTimeout(fn, 1200);
+      document.addEventListener('astro:page-load', () => {
+        if (saveData) return;
+        whenIdle(() => import('../lib/rive-host').then((m) => m.initRiveHost()));
+      });
     </script>
   </body>
 </html>

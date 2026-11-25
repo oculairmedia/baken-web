@@ -8,7 +8,7 @@ import PixelStageShader from '../components/PixelStageShader.astro';
 import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 ---
 
-<Layout>
+<Layout appSchema>
   <!-- 1. HERO: WHAT IT DOES + LIVE RIVE CAST + FULL PRODUCT WINDOW -->
   <section class="hero">
     <div class="container wrap hero-center">
@@ -31,14 +31,14 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
         </div>
       </div>
 
-      <h1>Agents that run on<br />your own machine.</h1>
+      <h1>Agents that run on<br class="h1-break" /> your own machine.</h1>
 
       <p class="hero-lead">
         Baken is a client for persistent AI agents. Each agent runs on a Linux or Windows machine you control, keeps its memory as plain files on that machine, and pairs directly with your Android phone. You run the host; Baken connects to it.
       </p>
 
       <div class="hero-cta-row">
-        <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-hero">
+        <a class="btn btn-primary" href={LINKS.download} data-umami-event="download-hero">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5M4 20h16" />
           </svg>
@@ -48,6 +48,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
           See what they do
         </a>
       </div>
+      <p class="hero-req">Needs a Linux or Windows computer to run your agents. <a href="/download#host">What the host needs</a></p>
     </div>
   </section>
 
@@ -110,7 +111,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
               <div class="ctx-card">
                 <div class="ctx-model">
-                  <span>Claude Sonnet 4.5</span>
+                  <span>qwen3-coder · local</span>
                   <span aria-hidden="true">▾</span>
                 </div>
                 <div class="ctx-bar"><span style="width:20%"></span></div>
@@ -201,7 +202,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
                     <div class="comp-bar">
                       <div class="comp-left">
                         <span class="comp-ico" aria-hidden="true">+</span>
-                        <span class="comp-model-pill">Claude Sonnet 4.5 ▾</span>
+                        <span class="comp-model-pill">qwen3-coder · local ▾</span>
                       </div>
                       <div class="comp-right">
                         <span class="comp-wave" aria-hidden="true">
@@ -529,11 +530,11 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
       <div class="faq-list">
         <details open>
           <summary>What happens if Baken stops being updated tomorrow?</summary>
-          <p>Your agent keeps working. The source is public, it runs without contacting any server we operate, and its memory is in plain text files on your disk.</p>
+          <p>Your agent keeps working. The source is published on GitHub (<a href="/licenses">source available</a>), it runs without contacting any server we operate, and its memory is in plain text files on your disk.</p>
         </details>
         <details>
           <summary>Is Baken free?</summary>
-          <p>Yes. Baken is free, and the source is public. Local models cost nothing to run. If you use a cloud model, you pay that provider directly.</p>
+          <p>Yes. Baken is free, and the source is published on GitHub (<a href="/licenses">source available</a>). Local models cost nothing to run. If you use a cloud model, you pay that provider directly.</p>
         </details>
         <details>
           <summary>Do I need my own computer?</summary>
@@ -568,7 +569,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
             Models and providers change in a similar way. Baken is meant to be the fixed reference: your computer holds the agent's memory, and your phone stays aligned with it wherever you are.
           </p>
           <p class="origin-cta">
-            <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer" data-umami-event="download-why">Download Baken</a>
+            <a class="btn btn-primary" href={LINKS.download} data-umami-event="download-why">Download Baken</a>
           </p>
         </div>
 
@@ -672,6 +673,19 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     margin: 0 0 30px; font-size: 17.5px; line-height: 1.62; color: var(--muted); max-width: 54ch;
   }
   .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .faq-list p a { text-decoration: underline; text-underline-offset: 3px; }
+  .hero-req { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); }
+  .hero-req a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
+  .hero-req a:hover { text-decoration-color: currentColor; }
+  .hero h1 { text-wrap: balance; }
+  /* phones: the forced break leaves "on" alone on its own line; let balance do the wrapping */
+  @media (max-width: 680px) { .h1-break { display: none; } }
+  /* narrow phones: five 72px chips are wider than the 312px container and cause sideways scroll */
+  @media (max-width: 420px) {
+    .m-chip { width: 58px; height: 58px; }
+    .m-mark { margin: 0 4px; }
+    .mascot-lineup :global(canvas.rive-mascot-canvas) { width: 64px !important; height: 64px !important; }
+  }
 
   .showcase-stage {
     position: relative;

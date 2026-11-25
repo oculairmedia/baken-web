@@ -1,0 +1,253 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LINKS } from '../lib/brand';
+
+// Every link starts at the latest-release page and is upgraded in the browser to the exact asset,
+// so the page never goes stale between site deploys and still works if the GitHub API is unreachable.
+const fallback = LINKS.releases;
+---
+
+<Layout
+  title="Download · Baken"
+  description="Download Baken for Android, Windows and Linux, plus the host wrapper your agents run on. Free, no account."
+  appSchema
+>
+  <section class="dl-wrap">
+    <div class="container wrap dl-inner">
+      <h1>Download Baken</h1>
+      <p class="dl-lead">
+        Baken is free and needs no account. Install the app on your phone or computer, then pair it with a
+        host: the computer your agents run on.
+      </p>
+      <p class="dl-version" id="dlVersion" aria-live="polite">Latest release on GitHub</p>
+
+      <p class="dl-unsupported" id="dlUnsupported" hidden>
+        There is no macOS or iOS build yet. The Android, Windows and Linux builds are below.
+      </p>
+
+      <div class="dl-grid">
+        <article class="dl-card" data-platform="android">
+          <span class="dl-badge">For this device</span>
+          <h2>Android</h2>
+          <p class="dl-req">Android 8.0 or later</p>
+          <a class="btn btn-primary dl-main" data-asset="android-lite" href={fallback} data-umami-event="download-android-lite">
+            Download APK <span class="dl-size" data-size-for="android-lite"></span>
+          </a>
+          <p class="dl-note">
+            This is the <strong>lite</strong> build, which suits most phones: it connects to your host and runs on
+            arm64, 32-bit ARM and x86_64.
+          </p>
+          <p class="dl-alt">
+            <a data-asset="android-full" href={fallback} data-umami-event="download-android-full">Full build</a>
+            <span class="dl-size" data-size-for="android-full"></span>: arm64 only, and adds an on-device
+            runtime so the phone can run agents itself. Both builds install over each other.
+          </p>
+          <p class="dl-note">Android will ask you to allow installs from your browser the first time.</p>
+        </article>
+
+        <article class="dl-card" data-platform="windows">
+          <span class="dl-badge">For this device</span>
+          <h2>Windows</h2>
+          <p class="dl-req">Windows 10 or 11, x64</p>
+          <a class="btn btn-primary dl-main" data-asset="win-exe" href={fallback} data-umami-event="download-windows-exe">
+            Download installer <span class="dl-size" data-size-for="win-exe"></span>
+          </a>
+          <p class="dl-alt">
+            <a data-asset="win-msi" href={fallback} data-umami-event="download-windows-msi">MSI package</a>
+            <span class="dl-size" data-size-for="win-msi"></span> for managed or silent installs.
+          </p>
+        </article>
+
+        <article class="dl-card" data-platform="linux">
+          <span class="dl-badge">For this device</span>
+          <h2>Linux</h2>
+          <p class="dl-req">x64 AppImage</p>
+          <a class="btn btn-primary dl-main" data-asset="linux-appimage" href={fallback} data-umami-event="download-linux-appimage">
+            Download AppImage <span class="dl-size" data-size-for="linux-appimage"></span>
+          </a>
+          <p class="dl-alt">
+            <a data-asset="linux-sha" href={fallback}>SHA-256 checksum</a>. Make it executable with
+            <code>chmod +x</code>, then run it.
+          </p>
+        </article>
+      </div>
+
+      <div class="dl-host" id="host">
+        <h2>You also need a host</h2>
+        <p>
+          The apps are clients. Your agents, their memory and their tools live on a host: a computer or server you
+          control that stays on. Your phone pairs with it directly, end to end encrypted, with no Baken server in
+          between.
+        </p>
+        <ul class="dl-checklist">
+          <li><strong>A Linux or Windows computer</strong> that stays on while you want to reach your agents.</li>
+          <li><strong><a href="https://github.com/letta-ai/letta-code" target="_blank" rel="noreferrer">letta-code</a></strong>, the agent runtime Baken connects to.</li>
+          <li>
+            <strong>The Baken host wrapper</strong>, which handles pairing and the encrypted connection. It is
+            published for Linux x64 and needs Java 21 or later.
+            <a data-asset="host-linux" href={fallback} data-umami-event="download-host-linux">Download the host wrapper</a>
+            <span class="dl-size" data-size-for="host-linux"></span>
+          </li>
+          <li><strong>A model.</strong> Use a local model at no cost, or a cloud provider's API key, which you pay that provider for directly.</li>
+        </ul>
+        <p>
+          Then start the wrapper, generate a pairing QR code and scan it from the app.
+          <a href="/docs#pairing">Pairing steps in the docs</a>.
+        </p>
+      </div>
+
+      <p class="dl-foot">
+        Every build, including older versions and release notes, is on
+        <a href={LINKS.releases.replace('/latest', '')} target="_blank" rel="noreferrer">GitHub Releases</a>.
+        Downloads come from GitHub, not from a Baken server.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { LINKS } from '../lib/brand';
+
+  type Asset = { name: string; size: number; browser_download_url: string };
+  type Release = { tag_name: string; assets: Asset[] };
+
+  const MATCHERS: Record<string, RegExp> = {
+    'android-lite': /-lite\.apk$/i,
+    'android-full': /-full\.apk$/i,
+    'win-exe': /win-x64\.exe$/i,
+    'win-msi': /\.msi$/i,
+    'linux-appimage': /\.AppImage$/i,
+    'linux-sha': /\.AppImage\.sha256$/i,
+    'host-linux': /iroh-wrapper.*linux-x64\.tar$/i,
+  };
+  const CACHE_KEY = 'baken-latest-release';
+
+  function detectPlatform(): string | null {
+    const ua = navigator.userAgent;
+    const platform = ((navigator as any).userAgentData?.platform || navigator.platform || '').toLowerCase();
+    if (/android/i.test(ua)) return 'android';
+    if (/iphone|ipad|ipod/i.test(ua) || platform.includes('mac')) return 'apple';
+    if (platform.includes('win') || /windows/i.test(ua)) return 'windows';
+    if (platform.includes('linux') || /linux/i.test(ua)) return 'linux';
+    return null;
+  }
+
+  async function loadRelease(): Promise<Release | null> {
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      if (cached) return JSON.parse(cached);
+    } catch {}
+    try {
+      const res = await fetch(LINKS.releasesApi, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!res.ok) return null;
+      const data = (await res.json()) as Release;
+      try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ tag_name: data.tag_name, assets: data.assets })); } catch {}
+      return data;
+    } catch {
+      return null;
+    }
+  }
+
+  function mb(bytes: number) {
+    return `${Math.max(1, Math.round(bytes / 1048576))} MB`;
+  }
+
+  async function initDownloadPage() {
+    const root = document.querySelector('.dl-wrap');
+    if (!root) return;
+
+    const platform = detectPlatform();
+    if (platform === 'apple') {
+      root.querySelector<HTMLElement>('#dlUnsupported')?.removeAttribute('hidden');
+    } else if (platform) {
+      const card = root.querySelector<HTMLElement>(`.dl-card[data-platform="${platform}"]`);
+      if (card) {
+        card.classList.add('is-recommended');
+        card.parentElement?.prepend(card);
+      }
+    }
+
+    const release = await loadRelease();
+    if (!release) return;
+
+    const version = root.querySelector<HTMLElement>('#dlVersion');
+    if (version) version.textContent = `Latest release: ${release.tag_name}`;
+
+    for (const [key, re] of Object.entries(MATCHERS)) {
+      const asset = release.assets.find((a) => re.test(a.name));
+      if (!asset) continue;
+      root.querySelectorAll<HTMLAnchorElement>(`a[data-asset="${key}"]`).forEach((a) => {
+        a.href = asset.browser_download_url;
+        a.removeAttribute('target');
+      });
+      if (key !== 'linux-sha') {
+        root.querySelectorAll<HTMLElement>(`[data-size-for="${key}"]`).forEach((s) => {
+          s.textContent = `(${mb(asset.size)})`;
+        });
+      }
+    }
+  }
+
+  document.addEventListener('astro:page-load', initDownloadPage);
+</script>
+
+<style>
+  .dl-wrap { padding: 44px 0 96px; position: relative; z-index: 3; }
+  .dl-inner { max-width: 1040px; }
+  h1 { margin: 0 0 14px; font-size: clamp(36px, 4.8vw, 52px); letter-spacing: -0.04em; line-height: 1.06; }
+  .dl-lead { font-size: 17px; color: var(--muted); margin: 0 0 8px; max-width: 62ch; }
+  .dl-version {
+    margin: 0 0 32px;
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.04em; color: var(--muted);
+  }
+  .dl-unsupported {
+    margin: 0 0 24px; padding: 14px 16px;
+    border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface);
+    color: var(--muted); font-size: 14.5px;
+  }
+
+  .dl-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .dl-card {
+    position: relative;
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 24px;
+    border-radius: 12px; border: 1px solid var(--border); background: var(--surface);
+    min-width: 0;
+  }
+  .dl-card.is-recommended { border-color: var(--stone-2); box-shadow: 0 0 0 1px var(--stone-2) inset; }
+  .dl-badge {
+    display: none;
+    align-self: flex-start;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--stone-2);
+  }
+  .dl-card.is-recommended .dl-badge { display: inline-block; }
+  .dl-card h2 { margin: 0; font-size: 22px; letter-spacing: -0.025em; }
+  .dl-req { margin: 0 0 6px; font-size: 13.5px; color: var(--muted); }
+  .dl-main { align-self: stretch; justify-content: center; text-align: center; flex-wrap: wrap; }
+  .dl-size { font-weight: 500; opacity: 0.7; }
+  .dl-note, .dl-alt { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+  .dl-card strong { color: var(--text); }
+  .dl-alt a, .dl-host a, .dl-foot a {
+    color: var(--text); text-decoration: underline; text-underline-offset: 3px;
+    text-decoration-color: var(--border-strong);
+  }
+  .dl-alt a:hover, .dl-host a:hover, .dl-foot a:hover { text-decoration-color: currentColor; }
+  code {
+    font-size: 12.5px; background: var(--bg-subtle); border: 1px solid var(--border);
+    padding: 1px 5px; border-radius: 5px; color: var(--text);
+  }
+
+  .dl-host { margin-top: 48px; padding-top: 36px; border-top: 1px solid var(--border); max-width: 760px; scroll-margin-top: 24px; }
+  .dl-host h2 { margin: 0 0 14px; font-size: 26px; letter-spacing: -0.03em; }
+  .dl-host p, .dl-host li { color: var(--muted); font-size: 15px; }
+  .dl-host strong { color: var(--text); }
+  .dl-checklist { padding-left: 20px; margin: 16px 0; display: grid; gap: 10px; }
+
+  .dl-foot { margin-top: 40px; font-size: 13.5px; color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .dl-grid { grid-template-columns: 1fr; }
+  }
+</style>

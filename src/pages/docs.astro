@@ -21,15 +21,15 @@ import { LINKS } from '../lib/brand';
       <div class="doc-block" id="install">
         <h2>1. Download &amp; Install</h2>
         <p>
-          Android APKs, Windows installers and the Linux AppImage are published on the latest-release page. There is no macOS or iOS build yet.
+          The download page links straight to the right file for your device: the Android APK, the Windows installer, the Linux AppImage and the host wrapper. There is no macOS or iOS build yet.
         </p>
         <p>
-          <a class="btn btn-primary" href={LINKS.releases} target="_blank" rel="noreferrer">
-            Open GitHub Releases →
+          <a class="btn btn-primary" href={LINKS.download}>
+            Go to downloads →
           </a>
         </p>
         <p class="note">
-          <strong>Note during the Meridian → Baken rename:</strong> release asset filenames are transitioning from <code>meridian-desktop-*</code> to <code>baken-*</code>. Bookmarking the <code>/releases/latest</code> link above always points to the newest build.
+          <strong>Note during the rename to Baken:</strong> some release files still carry older names. The Android APKs are <code>letta-mobile-*.apk</code> and the host wrapper is <code>meridian-iroh-wrapper-*.tar</code>. The <a href={LINKS.releases} target="_blank" rel="noreferrer">latest-release page</a> always has the newest build.
         </p>
       </div>
 
