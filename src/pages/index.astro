@@ -712,7 +712,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
     <div class="container wrap">
       <div class="plates-head">
         <h2 id="plates-title">Plates in this edition</h2>
-        <p>Every image on this page is a public-domain print from the Rijksmuseum, Amsterdam, re-inked as a one-bit dither. <a href="/licenses">Full credits</a></p>
+        <p>Every image on this site is a public-domain print from the Rijksmuseum, Amsterdam, re-inked as a one-bit dither. Plates XII and XIII head the download and docs pages. <a href="/licenses">Full credits</a></p>
       </div>
       <ol class="plates-grid">
         <li class="plate" data-tone="indigo">
@@ -780,6 +780,18 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
           <span class="plate-no mono">XI</span>
           <span class="plate-title">Paskaart Vlie & Marsdiep</span>
           <span class="plate-by mono">L. J. Waghenaer · 1583 · NG-43</span>
+        </li>
+        <li class="plate" data-tone="verdigris">
+          <div class="plate-art" style="--art:url('/art/waghenaer-newcastle-1583.png')" aria-hidden="true"></div>
+          <span class="plate-no mono">XII · <a href="/download">Downloads</a></span>
+          <span class="plate-title">Noordt custe van Engelandt</span>
+          <span class="plate-by mono">L. J. Waghenaer · 1583 · RP-P-OB-50.147</span>
+        </li>
+        <li class="plate" data-tone="ochre">
+          <div class="plate-art" style="--art:url('/art/boussole-des-vents-1702.png')" aria-hidden="true"></div>
+          <span class="plate-no mono">XIII · <a href="/docs">Docs</a></span>
+          <span class="plate-title">Boussole des vents</span>
+          <span class="plate-by mono">P. Mortier · c.1702 · RP-P-OB-83.034-278</span>
         </li>
       </ol>
     </div>
@@ -1556,6 +1568,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   }
   .plate:hover .plate-art::before { transform: scale(1.06); }
   .plate-no { margin-top: 4px; font-size: 10.5px; letter-spacing: 0.08em; color: var(--tone); }
+  .plate-no a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
   .plate-title { font-size: 13.5px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
   .plate-by { font-size: 10.5px; letter-spacing: 0.02em; color: var(--muted); line-height: 1.45; overflow-wrap: anywhere; }
   @media (max-width: 1100px) { .plates-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
