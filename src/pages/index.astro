@@ -1403,11 +1403,12 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   /* Plate VII: full-bleed beacon strip between sections. The light sits on the beacon's lantern:
      with mask-position equal to the mark's position, the mark stays put however the strip crops. */
   /* pulled up into the previous band's bottom padding: the strip's top third is open sky */
-  .verkenning { --vk-x: 47.2%; --vk-y: 20.5%; position: relative; margin-top: -72px; padding-bottom: 64px; }
+  .verkenning { --vk-x: 47.2%; --vk-y: 6.5%; position: relative; margin-top: -56px; padding-bottom: 56px; }
   .vk-strip { position: relative; }
   .vk-art {
-    /* the plate's own ratio (605/2400 = 25.2vw), but never shorter than 150px; cover crops the sides */
-    height: clamp(150px, 25.2vw, 480px);
+    /* the plate's own ratio (514/2400 = 21.4vw), cropped to start just above the beacon;
+       capped so wide screens crop the sides instead of growing a tall band */
+    height: clamp(120px, 21.4vw, 300px);
     background-color: var(--muted);
     -webkit-mask-image: url('/art/houte-bake-1666.png'), linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
             mask-image: url('/art/houte-bake-1666.png'), linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
@@ -1455,7 +1456,7 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
   @media (max-width: 680px) {
     .vk-tag { display: none; }
-    .verkenning { margin-top: -48px; padding-bottom: 44px; }
+    .verkenning { margin-top: -36px; padding-bottom: 40px; }
   }
 </style>
 
