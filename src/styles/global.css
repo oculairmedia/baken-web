@@ -458,8 +458,7 @@ main > section > .container { align-self: center; }
   /* the product window rises into the first screen: a 170px peek of the app above the fold */
   main > section.showcase-band { min-height: auto; justify-content: flex-start; }
   /* interstitial plates size to their content, not the viewport */
-  main > section.verkenning,
-  main > section.plates-band { min-height: auto; display: block; }
+  main > section.verkenning { min-height: auto; display: block; }
   main > section.legal-wrap,
   main > section.docs-wrap { min-height: auto; display: block; }
 }
