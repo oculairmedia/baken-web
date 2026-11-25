@@ -33,8 +33,11 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
 
       <h1>Agents that run on<br class="h1-break" /> your own machine.</h1>
 
-      <p class="hero-lead">
-        Baken is a client for persistent AI agents. Each agent runs on a Linux or Windows machine you control, keeps its memory as plain files on that machine, and pairs directly with your Android phone. You run the host; Baken connects to it.
+      <p class="hero-lead" data-aud="everyone">
+        Baken is a personal AI assistant that lives on your own computer and comes with you on your phone. It remembers what matters to you, works with your files and apps, and keeps what it learns on your machine, not on someone else's server.
+      </p>
+      <p class="hero-lead" data-aud="technical">
+        A native Android, Windows and Linux client for stateful agents on a host you run. letta-code runtime, plain-file memory on disk, MCP tools and any model provider or local inference, paired over end-to-end encrypted Iroh QUIC. No account, no Baken server, source available.
       </p>
 
       <div class="hero-cta-row">
@@ -44,11 +47,18 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
           </svg>
           Download for Android, Windows &amp; Linux
         </a>
-        <a class="btn btn-outline" href="#capabilities">
+        <a class="btn btn-outline" href="#capabilities" data-aud="everyone">
           See what they do
+        </a>
+        <a class="btn btn-outline" href="#under-the-hood" data-aud="technical">
+          Under the hood
         </a>
       </div>
       <p class="hero-req">Needs a Linux or Windows computer to run your agents. <a href="/download#host">What the host needs</a></p>
+      <div class="aud-toggle" role="group" aria-label="How much detail to show">
+        <button type="button" data-set-aud="everyone">Overview</button>
+        <button type="button" data-set-aud="technical">Technical</button>
+      </div>
     </div>
   </section>
 
@@ -222,6 +232,32 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1c. UNDER THE HOOD: technical audience only (GitHub, HN, ?for=technical) -->
+  <section class="band spec-band" id="under-the-hood" data-aud="technical" aria-label="Technical details">
+    <div class="container wrap">
+      <div class="band-head">
+        <h2>Under the hood.</h2>
+        <p>What runs where, and what leaves your machine.</p>
+      </div>
+      <dl class="spec-grid">
+        <div><dt>Runtime</dt><dd><a href="https://github.com/letta-ai/letta-code" target="_blank" rel="noreferrer">letta-code</a> on your host, wrapped by the Baken host service for pairing and transport.</dd></div>
+        <div><dt>Memory</dt><dd>Plain text files on the host's disk, readable and editable, safe to version with git or back up.</dd></div>
+        <div><dt>Transport</dt><dd>Iroh QUIC, end to end encrypted and mutually authenticated. Direct when possible; the fallback relay can't read traffic.</dd></div>
+        <div><dt>Pairing</dt><dd>QR invite from the host. No public port, reverse proxy or copied API token.</dd></div>
+        <div><dt>Models</dt><dd>Any provider letta-code supports, or local inference. Swap at any time; memory stays.</dd></div>
+        <div><dt>Tools</dt><dd>MCP servers plus the host's files, terminal and browser, under four permission modes: standard, accept edits, strict, unrestricted.</dd></div>
+        <div><dt>Clients</dt><dd>Android 8.0+, Windows x64, Linux x64 AppImage. Kotlin Multiplatform with Compose.</dd></div>
+        <div><dt>Host wrapper</dt><dd>JVM 21+, released for Linux x64, runs as a service.</dd></div>
+        <div><dt>Telemetry</dt><dd>None in release builds. No account, no Baken server.</dd></div>
+        <div><dt>Licence</dt><dd>Source available on GitHub. <a href="/licenses">Details</a>.</dd></div>
+      </dl>
+      <div class="spec-cta">
+        <a class="btn btn-primary" href={LINKS.appRepo} target="_blank" rel="noreferrer" data-umami-event="github-spec">View the source</a>
+        <a class="btn btn-outline" href="/docs">Read the docs</a>
       </div>
     </div>
   </section>
@@ -677,6 +713,64 @@ import { LINKS, BAKEN_ANCHOR, BAKEN_PEBBLE } from '../lib/brand';
   .hero-req { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); }
   .hero-req a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
   .hero-req a:hover { text-decoration-color: currentColor; }
+
+  /* Overview / Technical switch: segmented control, the active audience is filled */
+  .aud-toggle {
+    margin-top: 18px;
+    display: inline-flex;
+    padding: 3px;
+    gap: 2px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .aud-toggle button {
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .aud-toggle button:hover { color: var(--text); }
+  :global(html:not([data-audience="technical"])) .aud-toggle [data-set-aud="everyone"],
+  :global(html[data-audience="technical"]) .aud-toggle [data-set-aud="technical"] {
+    background: var(--primary-btn-bg);
+    color: var(--primary-btn-text);
+  }
+
+  .spec-band { scroll-margin-top: 24px; }
+  .spec-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--border);
+  }
+  .spec-grid > div {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-grid > div:nth-child(odd) { padding-right: 28px; }
+  .spec-grid dt {
+    font-family: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted); padding-top: 2px;
+  }
+  .spec-grid dd { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--text); }
+  .spec-grid a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
+  .spec-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  @media (max-width: 760px) {
+    .spec-grid { grid-template-columns: 1fr; }
+    .spec-grid > div:nth-child(odd) { padding-right: 0; }
+    .spec-grid > div { grid-template-columns: 1fr; gap: 4px; }
+  }
   .hero h1 { text-wrap: balance; }
   /* phones: the forced break leaves "on" alone on its own line; let balance do the wrapping */
   @media (max-width: 680px) { .h1-break { display: none; } }
