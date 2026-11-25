@@ -30,9 +30,6 @@ const fallback = LINKS.releases;
           <span class="dl-badge">For this device</span>
           <h2>Android</h2>
           <p class="dl-req">Android 8.0 or later</p>
-          <a class="btn btn-primary dl-main" data-asset="android-lite" href={fallback} data-umami-event="download-android-lite">
-            Download APK <span class="dl-size" data-size-for="android-lite"></span>
-          </a>
           <p class="dl-note">
             This is the <strong>lite</strong> build, which suits most phones: it connects to your host and runs on
             arm64, 32-bit ARM and x86_64.
@@ -43,32 +40,35 @@ const fallback = LINKS.releases;
             runtime so the phone can run agents itself. Both builds install over each other.
           </p>
           <p class="dl-note">Android will ask you to allow installs from your browser the first time.</p>
+          <a class="btn btn-primary dl-main" data-asset="android-lite" href={fallback} data-umami-event="download-android-lite">
+            Download APK <span class="dl-size" data-size-for="android-lite"></span>
+          </a>
         </article>
 
         <article class="dl-card" data-platform="windows">
           <span class="dl-badge">For this device</span>
           <h2>Windows</h2>
           <p class="dl-req">Windows 10 or 11, x64</p>
-          <a class="btn btn-primary dl-main" data-asset="win-exe" href={fallback} data-umami-event="download-windows-exe">
-            Download installer <span class="dl-size" data-size-for="win-exe"></span>
-          </a>
           <p class="dl-alt">
             <a data-asset="win-msi" href={fallback} data-umami-event="download-windows-msi">MSI package</a>
             <span class="dl-size" data-size-for="win-msi"></span> for managed or silent installs.
           </p>
+          <a class="btn btn-primary dl-main" data-asset="win-exe" href={fallback} data-umami-event="download-windows-exe">
+            Download installer <span class="dl-size" data-size-for="win-exe"></span>
+          </a>
         </article>
 
         <article class="dl-card" data-platform="linux">
           <span class="dl-badge">For this device</span>
           <h2>Linux</h2>
           <p class="dl-req">x64 AppImage</p>
-          <a class="btn btn-primary dl-main" data-asset="linux-appimage" href={fallback} data-umami-event="download-linux-appimage">
-            Download AppImage <span class="dl-size" data-size-for="linux-appimage"></span>
-          </a>
           <p class="dl-alt">
             <a data-asset="linux-sha" href={fallback}>SHA-256 checksum</a>. Make it executable with
             <code>chmod +x</code>, then run it.
           </p>
+          <a class="btn btn-primary dl-main" data-asset="linux-appimage" href={fallback} data-umami-event="download-linux-appimage">
+            Download AppImage <span class="dl-size" data-size-for="linux-appimage"></span>
+          </a>
         </article>
       </div>
 
@@ -225,7 +225,9 @@ const fallback = LINKS.releases;
   .dl-card.is-recommended .dl-badge { display: inline-block; }
   .dl-card h2 { margin: 0; font-size: 22px; letter-spacing: -0.025em; }
   .dl-req { margin: 0 0 6px; font-size: 13.5px; color: var(--muted); }
-  .dl-main { align-self: stretch; justify-content: center; text-align: center; flex-wrap: wrap; }
+  /* the button sits at the bottom of every card, so the three line up whatever the copy length */
+  .dl-card > :nth-last-child(2) { margin-bottom: 10px; }
+  .dl-main { margin-top: auto; align-self: stretch; justify-content: center; text-align: center; flex-wrap: wrap; }
   .dl-size { font-weight: 500; opacity: 0.7; }
   .dl-note, .dl-alt { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.55; }
   .dl-card strong { color: var(--text); }
